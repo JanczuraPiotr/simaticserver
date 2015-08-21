@@ -1,9 +1,12 @@
 package pjpl.simaticserver.run;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -11,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * @author piotr
+ * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class SimaticServer {
 	public static long timeInterval;
@@ -19,6 +22,7 @@ public class SimaticServer {
 	public static Properties config;
 
 	private static pjpl.simaticserver.process.Brama ProcessBrama;
+	private static pjpl.simaticserver.util.DirCleaning dirCleaning;
 	private static ScheduledExecutorService executor;
 	private static FileReader configReader;
 	private static FileWriter configWriter;
@@ -37,8 +41,16 @@ public class SimaticServer {
 		timeInterval = Long.parseLong(config.getProperty("timeInterval"), 10);
 
 		executor = Executors.newScheduledThreadPool(5);
+
 		ProcessBrama = new pjpl.simaticserver.process.Brama();
 		executor.scheduleAtFixedRate(ProcessBrama,  ( timeInterval * 2 ) - ( System.currentTimeMillis() % timeInterval) , timeInterval, TimeUnit.MILLISECONDS);
+
+		dirCleaning = new pjpl.simaticserver.util.DirCleaning(
+						config.getProperty("dirDump"),
+						config.getProperty("fileNameDateFormat"),
+						config.getProperty("timeStorage")
+		);
+		executor.scheduleAtFixedRate(dirCleaning, 3, Long.parseLong(config.getProperty("timeStorage")), TimeUnit.MILLISECONDS);
 
 	}
 

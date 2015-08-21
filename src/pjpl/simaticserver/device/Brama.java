@@ -18,11 +18,11 @@ public class Brama extends S7Client{
 
 	private int errCode = 0;
 
-	private byte[] areaDB = new byte[areaDBMaxLenght];
+	private final byte[] areaDB = new byte[areaDBMaxLenght];
 	private int areaDBLenght;
-	private byte[] areaPA = new byte[areaPAMaxLenght];
+	private final byte[] areaPA = new byte[areaPAMaxLenght];
 	private int areaPALenght;
-	private byte[] areaPE = new byte[areaPEMaxLenght];
+	private final byte[] areaPE = new byte[areaPEMaxLenght];
 	private int areaPELenght;
 
 	private BramaAccess access = null;
@@ -41,10 +41,7 @@ public class Brama extends S7Client{
 	 * @return BramaDump
 	 */
 	public BramaDump getBramaDump(){
-		return new BramaDump(
-						areaDB, areaDBLenght,
-						areaPA, areaPALenght,
-						areaPE, areaPELenght);
+		return new BramaDump(areaDB, areaDBLenght,	areaPA, areaPALenght,	areaPE, areaPELenght);
 	}
 	/**
 	 * @return
@@ -52,10 +49,7 @@ public class Brama extends S7Client{
 	 */
 	public BramaAccess access(){
 		if( null == this.access ){
-			access = new BramaAccess(
-							areaDB, areaDBLenght,
-							areaPA, areaPALenght,
-							areaPE, areaPELenght);
+			access = new BramaAccess(areaDB, areaDBLenght, areaPA, areaPALenght,	areaPE, areaPELenght);
 		}
 		return access;
 	}

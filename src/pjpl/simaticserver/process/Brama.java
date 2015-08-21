@@ -14,18 +14,18 @@ import pjpl.simaticserver.util.FileJsonLogger;
  * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class Brama implements Runnable{
-	private DateFormat datePCFormat = new SimpleDateFormat(SimaticServer.config.getProperty("dateMSFormat"));
+	private final DateFormat datePCFormat = new SimpleDateFormat(SimaticServer.config.getProperty("dateMSFormat"));
 	private volatile String startTime = new String();
 	private long msStart = 0;
 	private long msStopRead = 0;
 	private long msStop = 0;
 
-	private pjpl.simaticserver.device.Brama Device;
+ 	private final pjpl.simaticserver.device.Brama Device;
 	private pjpl.simaticserver.device.BramaDump DeviceDump;
-	private pjpl.simaticserver.device.BramaAccess DeviceAccess;
-	private pjpl.simaticserver.util.FileJsonLogger PduJsonLogger;
-	private LinkedBlockingQueue<BramaDump> QueueDump;
-	private Thread LoggerThread;
+	private final pjpl.simaticserver.device.BramaAccess DeviceAccess;
+	private final pjpl.simaticserver.util.FileJsonLogger PduJsonLogger;
+	private final LinkedBlockingQueue<BramaDump> QueueDump;
+	private final Thread LoggerThread;
 
 	public Brama(){
 		Device = new pjpl.simaticserver.device.Brama();

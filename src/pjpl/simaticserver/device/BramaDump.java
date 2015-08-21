@@ -5,18 +5,16 @@ package pjpl.simaticserver.device;
  * @author piotr
  */
 public class BramaDump {
-	private int areaDBLenght;
-	private int areaPALenght;
-	private int areaPELenght;
-	private byte[] areaDB;
-	private byte[] areaPA;
-	private byte[] areaPE;
-	private byte[] timeStamp = new byte[100];
+	private final int areaDBLenght;
+	private final int areaPALenght;
+	private final int areaPELenght;
+	private final byte[] areaDB;
+	private final byte[] areaPA;
+	private final byte[] areaPE;
+	private final byte[] timeStamp = new byte[100];
 	private BramaAccess access = null;
 
-	public BramaDump(	byte[] areaDB, int areaDBLenght,
-											byte[] areaPA, int areaPALenght,
-											byte[] areaPE, int areaPELenght){
+	public BramaDump(byte[] areaDB, int areaDBLenght,	byte[] areaPA, int areaPALenght,	byte[] areaPE, int areaPELenght){
 		this.areaDBLenght = areaDBLenght;
 		this.areaPALenght = areaPALenght;
 		this.areaPELenght = areaPELenght;
@@ -29,10 +27,7 @@ public class BramaDump {
 		System.arraycopy(areaPA, 0, this.areaPA, 0, areaPALenght);
 		System.arraycopy(areaPE, 0, this.areaPE, 0, areaPELenght);
 
-		access = new BramaAccess(
-						areaDB, areaDBLenght,
-						areaPA, areaPALenght,
-						areaPE, areaPELenght);
+		access = new BramaAccess(areaDB, areaDBLenght,areaPA, areaPALenght,	areaPE, areaPELenght);
 	}
 
 	public String json(){

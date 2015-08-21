@@ -7,17 +7,14 @@ import Moka7.S7;
  */
 public class BramaAccess extends S7{
 
-	private byte[] areaDB;
-	private int areaDBLenght;
-	private byte[] areaPA;
-	private int areaPALenght;
-	private byte[] areaPE;
-	private int areaPELenght;
+	private final byte[] areaDB;
+	private final int areaDBLenght;
+	private final byte[] areaPA;
+	private final int areaPALenght;
+	private final byte[] areaPE;
+	private final int areaPELenght;
 
-	public BramaAccess(	byte[] areaDB, int areaDBLenght,
-											byte[] areaPA, int areaPALenght,
-											byte[] areaPE, int areaPELenght)
-	{
+	public BramaAccess(byte[] areaDB, int areaDBLenght,	byte[] areaPA, int areaPALenght, byte[] areaPE, int areaPELenght){
 		this.areaDBLenght = areaDBLenght;
 		this.areaPALenght = areaPALenght;
 		this.areaPELenght = areaPELenght;
