@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import pjpl.simaticserver.pdu.BramaDump;
+import pjpl.simaticserver.device.BramaDump;
 import pjpl.simaticserver.run.SimaticServer;
 import pjpl.simaticserver.util.FileJsonLogger;
 
@@ -20,17 +20,17 @@ public class Brama implements Runnable{
 	private long msStopRead = 0;
 	private long msStop = 0;
 
-	private pjpl.simaticserver.pdu.Brama Pdu;
-	private pjpl.simaticserver.pdu.BramaDump PduDump;
-	private pjpl.simaticserver.pdu.BramaAccess PduAccess;
+	private pjpl.simaticserver.device.Brama Device;
+	private pjpl.simaticserver.device.BramaDump DeviceDump;
+	private pjpl.simaticserver.device.BramaAccess DeviceAccess;
 	private pjpl.simaticserver.util.FileJsonLogger PduJsonLogger;
 	private LinkedBlockingQueue<BramaDump> QueueDump;
 	private Thread LoggerThread;
 
 	public Brama(){
-		Pdu = new pjpl.simaticserver.pdu.Brama();
-		PduDump = Pdu.getBramaDump();
-		PduAccess = Pdu.access();
+		Device = new pjpl.simaticserver.device.Brama();
+		DeviceDump = Device.getBramaDump();
+		DeviceAccess = Device.access();
 		QueueDump = new LinkedBlockingQueue<>();
 		PduJsonLogger = new FileJsonLogger(QueueDump, this);
 		LoggerThread = new Thread(PduJsonLogger);
@@ -44,7 +44,7 @@ public class Brama implements Runnable{
 		return startTime;
 	}
 	protected void readPDU(){
-		Pdu.readAll();
+		Device.readAll();
 	}
 	protected void writePDU(){
 
@@ -65,8 +65,8 @@ public class Brama implements Runnable{
 		msStopRead = System.currentTimeMillis();
 		System.out.println( datePCFormat.format(msStopRead)+" ProcessBrama.steep() po odczycie PDU");
 
-		PduDump = Pdu.getBramaDump();
-		QueueDump.put(PduDump);
+		DeviceDump = Device.getBramaDump();
+		QueueDump.put(DeviceDump);
 
 		msStop = System.currentTimeMillis();
 		System.out.println( datePCFormat.format(msStop)+" ProcessBrama.steep() Stop praca = "+(msStop - msStart)+"[ms]");

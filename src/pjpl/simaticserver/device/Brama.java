@@ -1,4 +1,4 @@
-package pjpl.simaticserver.pdu;
+package pjpl.simaticserver.device;
 
 import Moka7.S7;
 import Moka7.S7Client;
@@ -34,7 +34,7 @@ public class Brama extends S7Client{
 	public void ConnectTo(){
 		SetConnectionType(S7.OP);
 		errCode = super.ConnectTo(IP, Rack, Slot);
-		System.err.println("Kod uruchonmienia PDU na bramie " + errCode);
+		System.err.println("Kod uruchonmienia sterownika na bramie " + errCode);
 
 	}
 	/**

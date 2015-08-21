@@ -1,4 +1,4 @@
-package pjpl.simaticserver.pdu;
+package pjpl.simaticserver.device;
 
 import Moka7.S7;
 

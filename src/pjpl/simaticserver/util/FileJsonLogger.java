@@ -1,11 +1,10 @@
 package pjpl.simaticserver.util;
 
+import pjpl.simaticserver.device.BramaDump;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import pjpl.simaticserver.pdu.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;

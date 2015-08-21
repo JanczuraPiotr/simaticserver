@@ -1,4 +1,4 @@
-package pjpl.simaticserver.pdu.ex;
+package pjpl.simaticserver.device.ex;
 
 /**
  * @author piotr

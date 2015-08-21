@@ -1,4 +1,4 @@
-package pjpl.simaticserver.pdu;
+package pjpl.simaticserver.device;
 
 /**
  * Stan pamięci procesora po odczycie z urządzenia fizycznego
@@ -15,8 +15,8 @@ public class BramaDump {
 	private BramaAccess access = null;
 
 	public BramaDump(	byte[] areaDB, int areaDBLenght,
-										byte[] areaPA, int areaPALenght,
-										byte[] areaPE, int areaPELenght){
+											byte[] areaPA, int areaPALenght,
+											byte[] areaPE, int areaPELenght){
 		this.areaDBLenght = areaDBLenght;
 		this.areaPALenght = areaPALenght;
 		this.areaPELenght = areaPELenght;
