@@ -14,11 +14,12 @@ import pjpl.simaticserver.util.FileJsonLogger;
  * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class Brama implements Runnable{
-	private final DateFormat datePCFormat = new SimpleDateFormat(SimaticServer.config.getProperty("dateMSFormat"));
+	private final DateFormat datePCFormat = new SimpleDateFormat(SimaticServer.config.getProperty("format_dateMS"));
 	private volatile String startTime = new String();
 	private long msStart = 0;
 	private long msStopRead = 0;
 	private long msStop = 0;
+	private String summaryRun;
 
  	private final pjpl.simaticserver.device.Brama Device;
 	private pjpl.simaticserver.device.BramaDump DeviceDump;
@@ -51,25 +52,24 @@ public class Brama implements Runnable{
 	}
 
 	public void steep() throws InterruptedException{
-		String outStr = new String();
 		msStart = System.currentTimeMillis();
 		startTime = datePCFormat.format(msStart);
 		msStopRead = 0;
 		msStop = 0;
 
-		System.out.println("//------------------------------------------------------------------------------");
-		System.out.println( datePCFormat.format(msStart)+" ProcessBrama.steep() Start");
+		summaryRun = "------------------------------------------------------------------------------\n";
+		summaryRun += datePCFormat.format(msStart) + " ProcessBrama.steep() Start \n";
 
 		readPDU();
 
 		msStopRead = System.currentTimeMillis();
-		System.out.println( datePCFormat.format(msStopRead)+" ProcessBrama.steep() po odczycie PDU");
+		summaryRun += datePCFormat.format(msStopRead) + " ProcessBrama.steep() po odczycie PDU \n";
 
 		DeviceDump = Device.getBramaDump();
 		QueueDump.put(DeviceDump);
 
 		msStop = System.currentTimeMillis();
-		System.out.println( datePCFormat.format(msStop)+" ProcessBrama.steep() Stop praca = "+(msStop - msStart)+"[ms]");
+		summaryRun += datePCFormat.format(msStop) + " ProcessBrama.steep() Stop praca = " + (msStop - msStart) + "[ms]\n";
 
 
 	}
@@ -77,11 +77,10 @@ public class Brama implements Runnable{
 	public void run(){
 		try {
 			steep();
-//		while(doSteep){
-//			steep();
-//		}
 		} catch (InterruptedException ex) {
 			Logger.getLogger(Brama.class.getName()).log(Level.SEVERE, null, ex);
+		} finally{
+			//System.out.println(summaryRun);
 		}
 	}
 

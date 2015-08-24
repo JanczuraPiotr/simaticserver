@@ -16,47 +16,50 @@ import pjpl.simaticserver.run.SimaticServer;
  * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class FileJsonLogger implements Runnable{
-	private final String dirDump = SimaticServer.config.getProperty("dirDump");
-	private final DateFormat dateFormat = new SimpleDateFormat(SimaticServer.config.getProperty("dateMSFormat"));
-	private final DateFormat dateFileNameFormat = new SimpleDateFormat(SimaticServer.config.getProperty("dateMSPackedFormat"));
-	private final LinkedBlockingQueue<BramaDump> queue;
-	private volatile long timeStart;
-	private volatile long timeStop;
-	private final String s = new String();
-	private String json = new String();
-	private final pjpl.simaticserver.process.Brama parent;
 
 	public FileJsonLogger(LinkedBlockingQueue<BramaDump> queue, pjpl.simaticserver.process.Brama parent){
 		this.queue = queue;
 		this.parent = parent;
-		System.out.println(SimaticServer.timeInterval);
 	}
 
 	@Override
 	public void run() {
 		while(true){
 			try {
-
-				System.out.println( dateFormat.format(System.currentTimeMillis())+" FileJsonLogger.run() Start czyli czakanie na kolejkę");
+				summaryRun = "------------------------------------------------------------------------------\n";
+				summaryRun += format_date.format(System.currentTimeMillis()) + " FileJsonLogger.run() Start czyli czakanie na kolejkę\n";
 				json = queue.take().json();
 
-				System.out.println( dateFormat.format( timeStart = System.currentTimeMillis() )+" FileJsonLogger.run() Po queue.take().json()");
-				FileWriter writer = new FileWriter( dirDump + dateFileNameFormat.format(parent.getMsStartTime())+".pdu");
+				summaryRun += format_date.format( timeStart = System.currentTimeMillis() )+" FileJsonLogger.run() Po queue.take().json()\n";
+				FileWriter writer = new FileWriter( dir_dump + "/" + dateFileNameFormat.format(parent.getMsStartTime())+".pdu");
 				writer.write(json);
 				writer.close();
 
-				System.out.println( dateFormat.format(System.currentTimeMillis())+" FileJsonLogger.run() utworzono plik : "+parent.getMsStartTime()+".pdu");
+				summaryRun += format_date.format(System.currentTimeMillis())+" FileJsonLogger.run() utworzono plik : "+dateFileNameFormat.format(parent.getMsStartTime())+".pdu\n";
 				json = "\""+ parent.getMsStartTime() + "\" : "+json+"";
 
-				System.out.println( dateFormat.format( timeStop = System.currentTimeMillis() )+" FileJsonLogger.run() Stop praca = "+ (timeStop-timeStart)+"[ms]");
-				System.out.print(s);
+				summaryRun += format_date.format( timeStop = System.currentTimeMillis() )+" FileJsonLogger.run() Stop praca = "+ (timeStop-timeStart)+"[ms]\n";
 
 			} catch (InterruptedException ex) {
 				Logger.getLogger(FileJsonLogger.class.getName()).log(Level.SEVERE, null, ex);
 			} catch (IOException ex) {
 				Logger.getLogger(FileJsonLogger.class.getName()).log(Level.SEVERE, null, ex);
+			} finally {
+//				System.out.println(summaryRun);
+
 			}
 		}
 	}
+
+	//------------------------------------------------------------------------------
+	private final String dir_dump = SimaticServer.config.getProperty("dir_dump");
+	private final DateFormat format_date = new SimpleDateFormat(SimaticServer.config.getProperty("format_dateMS"));
+	private final DateFormat dateFileNameFormat = new SimpleDateFormat(SimaticServer.config.getProperty("format_datePackedMS"));
+	private final LinkedBlockingQueue<BramaDump> queue;
+	private volatile long timeStart;
+	private volatile long timeStop;
+	private String summaryRun = new String();
+	private String json = new String();
+	private final pjpl.simaticserver.process.Brama parent;
 
 }

@@ -2,6 +2,7 @@ package pjpl.simaticserver.device;
 
 import Moka7.S7;
 import Moka7.S7Client;
+import pjpl.simaticserver.run.SimaticServer;
 
 /**
  * Sterownik S7 zlokalizowany na bramie
@@ -12,9 +13,9 @@ public class Brama extends S7Client{
 	public final int areaPAMaxLenght = 1024;
 	public final int areaPEMaxLenght = 1024;
 
-	private final int Rack = 0;
-	private final int Slot = 0;
-	private final String IP = "192.168.1.150";
+	private final int Rack = Integer.parseInt( SimaticServer.config.getProperty("plc_brama_rack") );
+	private final int Slot = Integer.parseInt( SimaticServer.config.getProperty("plc_brama_slot") );
+	private final String IP = SimaticServer.config.getProperty("plc_brama_ip");
 
 	private int errCode = 0;
 
@@ -34,17 +35,13 @@ public class Brama extends S7Client{
 	public void ConnectTo(){
 		SetConnectionType(S7.OP);
 		errCode = super.ConnectTo(IP, Rack, Slot);
-		System.err.println("Kod uruchonmienia sterownika na bramie " + errCode);
+		System.out.println("Kod uruchonmienia sterownika na bramie " + errCode);
 
 	}
-	/**
-	 * @return BramaDump
-	 */
 	public BramaDump getBramaDump(){
 		return new BramaDump(areaDB, areaDBLenght,	areaPA, areaPALenght,	areaPE, areaPELenght);
 	}
 	/**
-	 * @return
 	 * @todo Zadbać by BramaInterface powstał tylko gdy isnieją dane w areaXX
 	 */
 	public BramaAccess access(){

@@ -3,8 +3,8 @@ package pjpl.simaticserver.util;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import pjpl.simaticserver.run.SimaticServer;
-import static pjpl.simaticserver.run.SimaticServer.config;
 
 /**
  * Kasuje pliki, których nazwa składa się z daty w formacie YYYYMMddHHmmssSSS i "jakiegoś" rozszerzenia.
@@ -22,43 +22,63 @@ public class DirCleaning implements Runnable{
 		this.fileNameFormat = new SimpleDateFormat(fileNameFormat);
 		this.fileAge_ms = Long.parseLong(fileAge_ms);
 	}
-
 	@Override
 	public void run() {
-		System.out.println( dateFormat.format(System.currentTimeMillis())+" DirCleaning.run() Start czyszczenia katalogu");
+		runStart  = System.currentTimeMillis();
+		summaryRun = "------------------------------------------------------------------------------\n";
+		summaryRun += dateFormat.format(runStart) + " DirCleaning.run() Start";
+		summaryRun += "\n";
 
 		long now_ms = System.currentTimeMillis();
 		long limes_ms = ( ( now_ms - fileAge_ms ) / fileAge_ms ) * fileAge_ms ;
-				// Pliki które powstały przed limes_ms należy usuwać
-		String limes_str = fileNameDateFormat.format(limes_ms);
-				// string do porównywania z nazwami plików
-		String plik_str = "1440177900000";
-
-		System.out.println("--- now_ms     : " + now_ms );
-		System.out.println("--- fileAge_ms : " + fileAge_ms + " = "+ ( fileAge_ms / 1000 ) + " [sek]");
-		System.out.println("--- Limes      : " + limes_ms );
-		System.out.println("--- now_ms                           : " + dateFormat.format(now_ms));
-		System.out.println("--- Należy usunąć pliki starsze niż  : " + dateFormat.format(limes_ms));
-		System.out.println("--- Data pliku                       : " + dateFormat.format(Long.parseLong(plik_str)));
-
-		if( limes_str.compareTo(plik_str) > 0 ){
-			// Ten warunek wykona się gdy plik_str wskazuje na starszą datę niż data wyliczona jako limes_str
+		String limes_str = format_fileName.format(limes_ms);
+		deleteObsolete(listObsolete(limes_str));
+		runStop = System.currentTimeMillis();
+		summaryRun += dateFormat.format(runStop) + " DirCleaning.run() Stop praca = "+ (runStop - runStart) + "[ms]" ;
+		summaryRun += "\n";
+		if(summaryShow){
+			System.out.println(summaryRun);
+			summaryShow = false;
 		}
-
 	}
 
-	private void listDir(){
+	private void deleteObsolete(ArrayList<String> listObsolete){
+		File fileToDelete;
+		for(String file : listObsolete){
+			fileToDelete = new File(dir+"/"+file);
+			summaryRun += "delete file : " + fileToDelete.toString() + "\n";
+			fileToDelete.delete();
+		}
+	}
+	private ArrayList<String> listObsolete(String limesDeleteFile){
+		String[] allFiles;
+		ArrayList<String> toDeleteFiles = new ArrayList<>();
 
+		allFiles = dir.list();
+		for( String file : allFiles){
+			if( limesDeleteFile.compareTo(file) > 0 ){
+				toDeleteFiles.add(file);
+			}
+
+		}
+		if( ! toDeleteFiles.isEmpty()){
+			summaryShow = true;
+		}
+		return toDeleteFiles;
 	}
 
+	//------------------------------------------------------------------------------
+	private long runStart;
+	private long runStop;
+	private String summaryRun;
+	private boolean summaryShow = false;
 	// Format czasu przy pomocy którego utworzono nazwę pliku.
 	private DateFormat fileNameFormat;
 	// Katalog z którego należy usunąć pliki.
 	private File dir;
-	// Wiek plików w ms
-	// Starsze pliki należy usunąć.
+	// Wiek plików w ms. Starsze pliki należy usunąć.
 	private long fileAge_ms;
 
-	/** @prace */ private final DateFormat dateFormat = new SimpleDateFormat(SimaticServer.config.getProperty("dateMSFormat"));
-	/** @prace */ private final DateFormat fileNameDateFormat = new SimpleDateFormat(SimaticServer.config.getProperty("fileNameDateFormat"));
+	private final DateFormat format_fileName = new SimpleDateFormat(SimaticServer.config.getProperty("format_fileName"));
+	private final DateFormat dateFormat = new SimpleDateFormat(SimaticServer.config.getProperty("format_dateMS"));
 }
