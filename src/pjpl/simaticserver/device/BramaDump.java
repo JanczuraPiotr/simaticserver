@@ -2,7 +2,7 @@ package pjpl.simaticserver.device;
 
 /**
  * Stan pamięci procesora po odczycie z urządzenia fizycznego
- * @author piotr
+ * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class BramaDump {
 	private final int areaDBLenght;
@@ -30,6 +30,22 @@ public class BramaDump {
 		access = new BramaAccess(areaDB, areaDBLenght,areaPA, areaPALenght,	areaPE, areaPELenght);
 	}
 
+	public String hex(){
+		String hex = "";
+		hex += "areaPE:\n";
+		for(int i = 0 ; i< areaPELenght; i++){
+			hex += String.format("%02x", areaPE[i]);
+		}
+		hex += "\nareaPA:\n";
+		for(int i = 0 ; i< areaPALenght; i++){
+			hex += String.format("%02x", areaPA[i]);
+		}
+		hex += "\nareaDB:\n";
+		for(int i = 0 ; i< areaDBLenght; i++){
+			hex += String.format("%02x", areaDB[i]);
+		}
+		return hex;
+	}
 	public String json(){
 		String json
 					= "{"

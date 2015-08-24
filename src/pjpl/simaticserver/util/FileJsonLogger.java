@@ -28,7 +28,7 @@ public class FileJsonLogger implements Runnable{
 			try {
 				summaryRun = "------------------------------------------------------------------------------\n";
 				summaryRun += format_date.format(System.currentTimeMillis()) + " FileJsonLogger.run() Start czyli czakanie na kolejkę\n";
-				json = queue.take().json();
+				json = queue.take().hex();
 
 				summaryRun += format_date.format( timeStart = System.currentTimeMillis() )+" FileJsonLogger.run() Po queue.take().json()\n";
 				FileWriter writer = new FileWriter( dir_dump + "/" + dateFileNameFormat.format(parent.getMsStartTime())+".pdu");
@@ -36,8 +36,7 @@ public class FileJsonLogger implements Runnable{
 				writer.close();
 
 				summaryRun += format_date.format(System.currentTimeMillis())+" FileJsonLogger.run() utworzono plik : "+dateFileNameFormat.format(parent.getMsStartTime())+".pdu\n";
-				json = "\""+ parent.getMsStartTime() + "\" : "+json+"";
-
+				summaryRun += format_date.format(parent.getMsStartTime()) + "\n"+json+"\n";
 				summaryRun += format_date.format( timeStop = System.currentTimeMillis() )+" FileJsonLogger.run() Stop praca = "+ (timeStop-timeStart)+"[ms]\n";
 
 			} catch (InterruptedException ex) {
@@ -45,9 +44,10 @@ public class FileJsonLogger implements Runnable{
 			} catch (IOException ex) {
 				Logger.getLogger(FileJsonLogger.class.getName()).log(Level.SEVERE, null, ex);
 			} finally {
-//				System.out.println(summaryRun);
+				System.out.println(summaryRun);
 
 			}
+				System.out.println(summaryRun);
 		}
 	}
 

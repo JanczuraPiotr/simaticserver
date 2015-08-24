@@ -41,9 +41,9 @@ public class SimaticServer {
 		executor.scheduleAtFixedRate(ProcessBrama,  ( time_interval * 2 ) - ( System.currentTimeMillis() % time_interval) , time_interval, TimeUnit.MILLISECONDS);
 
 		dirCleaning = new pjpl.simaticserver.util.DirCleaning(
-						config.getProperty("dir_dump"),
-						config.getProperty("format_fileName"),
-						config.getProperty("time_storage")
+				config.getProperty("dir_dump"),
+				config.getProperty("format_fileName"),
+				config.getProperty("time_storage")
 		);
 		executor.scheduleAtFixedRate(dirCleaning, 3000, Long.parseLong(config.getProperty("time_storageClean")), TimeUnit.MILLISECONDS);
 
