@@ -28,7 +28,7 @@ public class FileJsonLogger implements Runnable{
 			try {
 				summaryRun = "------------------------------------------------------------------------------\n";
 				summaryRun += format_date.format(System.currentTimeMillis()) + " FileJsonLogger.run() Start czyli czakanie na kolejkę\n";
-				json = queue.take().hex();
+				json = queue.take().json();
 
 				summaryRun += format_date.format( timeStart = System.currentTimeMillis() )+" FileJsonLogger.run() Po queue.take().json()\n";
 				FileWriter writer = new FileWriter( dir_dump + "/" + dateFileNameFormat.format(parent.getMsStartTime())+".pdu");
