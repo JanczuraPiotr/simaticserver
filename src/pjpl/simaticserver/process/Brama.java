@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.NamingException;
 import pjpl.simaticserver.device.BramaDump;
 import pjpl.simaticserver.run.SimaticServer;
 
@@ -24,17 +25,24 @@ public class Brama implements Runnable{
 	private pjpl.simaticserver.device.BramaDump DeviceDump;
 	private final pjpl.simaticserver.device.BramaAccess DeviceAccess;
 	private final pjpl.simaticserver.util.FileBinLogger PduBinLogger;
+	private final pjpl.simaticserver.util.MySqlStore mySqlStore;
 	private final LinkedBlockingQueue<BramaDump> QueueDump;
+	private final LinkedBlockingQueue<BramaDump> QueueMySql;
 	private final Thread LoggerThread;
+//	private final Thread mySqlThread;
 
-	public Brama(){
+	public Brama() throws NamingException, ClassNotFoundException, InstantiationException, IllegalAccessException{
 		Device = new pjpl.simaticserver.device.Brama();
 		DeviceDump = Device.getBramaDump();
 		DeviceAccess = Device.access();
 		QueueDump = new LinkedBlockingQueue<>();
+		QueueMySql = new LinkedBlockingQueue<>();
 		PduBinLogger = new pjpl.simaticserver.util.FileBinLogger(QueueDump, this);
 		LoggerThread = new Thread(PduBinLogger);
 		LoggerThread.start();
+		mySqlStore = new pjpl.simaticserver.util.MySqlStore(QueueMySql, this);
+//		mySqlThread = new Thread(mySqlStore);
+//		mySqlThread.start();
 
 	}
 	public long getMsStartTime(){
@@ -66,6 +74,7 @@ public class Brama implements Runnable{
 
 		DeviceDump = Device.getBramaDump();
 		QueueDump.put(DeviceDump);
+		QueueMySql.put(DeviceDump);
 
 		msStop = System.currentTimeMillis();
 		summaryRun += datePCFormat.format(msStop) + " ProcessBrama.steep() Stop praca = " + (msStop - msStart) + "[ms]\n";

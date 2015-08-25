@@ -54,7 +54,7 @@ public class FileBinLogger implements Runnable{
 				fos.close();
 
 
-				summaryRun += format_date.format(System.currentTimeMillis())+" FileBinLogger.run() utworzono plik : "+dateFileNameFormat.format(bramaDump.getTimeStamp())+".pdu\n";
+				summaryRun += format_date.format(System.currentTimeMillis())+" FileBinLogger.run() utworzono plik : "+dateFileNameFormat.format(bramaDump.getTimeStamp())+"\n";
 				summaryRun += format_date.format( timeStop = System.currentTimeMillis() )+" FileBinLogger.run() Stop praca = "+ (timeStop-timeStart)+"[ms]\n";
 
 			} catch (InterruptedException ex) {
