@@ -13,16 +13,33 @@ public class BramaAccess extends S7{
 	private final int areaPALenght;
 	private final byte[] areaPE;
 	private final int areaPELenght;
+	private String deviceName;
+	private long timeStamp;
 
-	public BramaAccess(byte[] areaDB, int areaDBLenght,	byte[] areaPA, int areaPALenght, byte[] areaPE, int areaPELenght){
+	public BramaAccess(
+			String deviceName,
+			byte[] areaDB,
+			int areaDBLenght,
+			byte[] areaPA,
+			int areaPALenght,
+			byte[] areaPE,
+			int areaPELenght,
+			long timeStamp){
+		this.deviceName = deviceName;
 		this.areaDBLenght = areaDBLenght;
 		this.areaPALenght = areaPALenght;
 		this.areaPELenght = areaPELenght;
 		this.areaDB = areaDB;
 		this.areaPA = areaPA;
 		this.areaPE = areaPE;
+		this.timeStamp = timeStamp;
 	}
-
+	public long getTimeStamp(){
+		return timeStamp;
+	}
+	public String getDivaceName(){
+		return deviceName;
+	}
 	public byte[] getAreaDB(){
 		return areaDB;
 	};

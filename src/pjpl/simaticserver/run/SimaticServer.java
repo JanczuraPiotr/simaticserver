@@ -15,6 +15,7 @@ public class SimaticServer {
 	public static long time_interval;
 	public static String configFile = "SimaticServer.ini";
 	public static pjpl.simaticserver.util.Properties config;
+	public static long timeStart;
 
 	private static pjpl.simaticserver.process.Brama ProcessBrama;
 	private static pjpl.simaticserver.util.DirCleaning dirCleaning;
@@ -23,7 +24,7 @@ public class SimaticServer {
 	private static FileWriter configWriter;
 
 	public static void main(String[] args) throws IOException {
-
+		timeStart = System.currentTimeMillis();
 		try{
 			configReader = new FileReader(configFile);
 			config = new pjpl.simaticserver.util.Properties(new pjpl.simaticserver.run.ConfigDefault());

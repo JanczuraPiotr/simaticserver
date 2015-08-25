@@ -1,5 +1,8 @@
 package pjpl.simaticserver.device;
 
+import Moka7.S7;
+import java.io.ByteArrayOutputStream;
+
 /**
  * Stan pamięci procesora po odczycie z urządzenia fizycznego
  * @author Piotr Janczura <piotr@janczura.pl>
@@ -11,13 +14,25 @@ public class BramaDump {
 	private final byte[] areaDB;
 	private final byte[] areaPA;
 	private final byte[] areaPE;
-	private final byte[] timeStamp = new byte[100];
+	private final long timeStamp; // Milisekunda w której odczytano stan urządzenia
+	private String deviceName;
 	private BramaAccess access = null;
 
-	public BramaDump(byte[] areaDB, int areaDBLenght,	byte[] areaPA, int areaPALenght,	byte[] areaPE, int areaPELenght){
+	public BramaDump(
+			String deviceName,
+			byte[] areaDB,
+			int areaDBLenght,
+			byte[] areaPA,
+			int areaPALenght,
+			byte[] areaPE,
+			int areaPELenght,
+			long timeStamp){
+
+		this.deviceName = deviceName;
 		this.areaDBLenght = areaDBLenght;
 		this.areaPALenght = areaPALenght;
 		this.areaPELenght = areaPELenght;
+		this.timeStamp = timeStamp;
 
 		this.areaDB = new byte[areaDBLenght];
 		this.areaPA = new byte[areaPALenght];
@@ -27,24 +42,38 @@ public class BramaDump {
 		System.arraycopy(areaPA, 0, this.areaPA, 0, areaPALenght);
 		System.arraycopy(areaPE, 0, this.areaPE, 0, areaPELenght);
 
-		access = new BramaAccess(areaDB, areaDBLenght,areaPA, areaPALenght,	areaPE, areaPELenght);
+		access = new BramaAccess(
+				deviceName,
+				areaDB,
+				areaDBLenght,
+				areaPA,
+				areaPALenght,
+				areaPE,
+				areaPELenght,
+				timeStamp);
 	}
+	public long getTimeStamp(){
+		return timeStamp;
+	}
+	public String getDivaceName(){
+		return deviceName;
+	}
+	public ByteArrayOutputStream bin(int areaCode){
+		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 
-	public String hex(){
-		String hex = "";
-		hex += "areaPE:\n";
-		for(int i = 0 ; i< areaPELenght; i++){
-			hex += String.format("%02x", areaPE[i]);
+		switch(areaCode){
+			case S7.S7AreaDB:
+				outStream.write(areaDB, 0, areaDBLenght);
+				break;
+			case S7.S7AreaPA:
+				outStream.write(areaPA, 0, areaPALenght);
+				break;
+			case S7.S7AreaPE:
+				outStream.write(areaPE, 0, areaPELenght);
+				break;
 		}
-		hex += "\nareaPA:\n";
-		for(int i = 0 ; i< areaPALenght; i++){
-			hex += String.format("%02x", areaPA[i]);
-		}
-		hex += "\nareaDB:\n";
-		for(int i = 0 ; i< areaDBLenght; i++){
-			hex += String.format("%02x", areaDB[i]);
-		}
-		return hex;
+
+		return outStream;
 	}
 	public String json(){
 		String json

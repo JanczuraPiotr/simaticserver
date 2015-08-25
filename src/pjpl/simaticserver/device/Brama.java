@@ -9,6 +9,7 @@ import pjpl.simaticserver.run.SimaticServer;
  * @author piotr
  */
 public class Brama extends S7Client{
+	public final String deviceName = "brama";
 	public final int areaDBMaxLenght = 1024;
 	public final int areaPAMaxLenght = 1024;
 	public final int areaPEMaxLenght = 1024;
@@ -25,7 +26,7 @@ public class Brama extends S7Client{
 	private int areaPALenght;
 	private final byte[] areaPE = new byte[areaPEMaxLenght];
 	private int areaPELenght;
-
+	private long timeStamp = 0; // Czas zakończenia odczytu
 	private BramaAccess access = null;
 
 	public Brama(){
@@ -39,23 +40,26 @@ public class Brama extends S7Client{
 
 	}
 	public BramaDump getBramaDump(){
-		return new BramaDump(areaDB, areaDBLenght,	areaPA, areaPALenght,	areaPE, areaPELenght);
+		return new BramaDump(deviceName, areaDB, areaDBLenght,	areaPA, areaPALenght,	areaPE, areaPELenght,timeStamp);
 	}
 	/**
 	 * @todo Zadbać by BramaInterface powstał tylko gdy isnieją dane w areaXX
 	 */
 	public BramaAccess access(){
 		if( null == this.access ){
-			access = new BramaAccess(areaDB, areaDBLenght, areaPA, areaPALenght,	areaPE, areaPELenght);
+			access = new BramaAccess(deviceName, areaDB, areaDBLenght, areaPA, areaPALenght,	areaPE, areaPELenght,timeStamp);
 		}
 		return access;
 	}
-
+	public long getTimeStamp(){
+		return timeStamp;
+	}
 
 	public void readAll(){
 		readAreaDB();
 		readAreaPE();
 		readAreaPA();
+		timeStamp = System.currentTimeMillis();
 	}
 	private int readAreaPA(){
 		int status = ReadArea(S7.S7AreaPA, 0, 0, areaPAMaxLenght, areaPA);

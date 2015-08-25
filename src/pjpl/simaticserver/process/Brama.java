@@ -7,7 +7,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import pjpl.simaticserver.device.BramaDump;
 import pjpl.simaticserver.run.SimaticServer;
-import pjpl.simaticserver.util.FileJsonLogger;
 
 
 /**
@@ -24,7 +23,7 @@ public class Brama implements Runnable{
  	private final pjpl.simaticserver.device.Brama Device;
 	private pjpl.simaticserver.device.BramaDump DeviceDump;
 	private final pjpl.simaticserver.device.BramaAccess DeviceAccess;
-	private final pjpl.simaticserver.util.FileJsonLogger PduJsonLogger;
+	private final pjpl.simaticserver.util.FileBinLogger PduBinLogger;
 	private final LinkedBlockingQueue<BramaDump> QueueDump;
 	private final Thread LoggerThread;
 
@@ -33,8 +32,8 @@ public class Brama implements Runnable{
 		DeviceDump = Device.getBramaDump();
 		DeviceAccess = Device.access();
 		QueueDump = new LinkedBlockingQueue<>();
-		PduJsonLogger = new FileJsonLogger(QueueDump, this);
-		LoggerThread = new Thread(PduJsonLogger);
+		PduBinLogger = new pjpl.simaticserver.util.FileBinLogger(QueueDump, this);
+		LoggerThread = new Thread(PduBinLogger);
 		LoggerThread.start();
 
 	}
@@ -80,7 +79,7 @@ public class Brama implements Runnable{
 		} catch (InterruptedException ex) {
 			Logger.getLogger(Brama.class.getName()).log(Level.SEVERE, null, ex);
 		} finally{
-			//System.out.println(summaryRun);
+			System.out.println(summaryRun);
 		}
 	}
 
