@@ -2,6 +2,9 @@ package pjpl.simaticserver.device;
 
 import Moka7.S7;
 import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.sql.Array;
 
 /**
  * Stan pamięci procesora po odczycie z urządzenia fizycznego
@@ -58,6 +61,24 @@ public class BramaDump {
 	public String getDivaceName(){
 		return deviceName;
 	}
+
+	public InputStream byteInput(int areaCode){
+		InputStream inStream = null;
+
+		switch(areaCode){
+			case S7.S7AreaDB:
+				inStream = new ByteArrayInputStream(areaDB);
+				break;
+			case S7.S7AreaPA:
+				inStream = new ByteArrayInputStream(areaPA);
+				break;
+			case S7.S7AreaPE:
+				inStream = new ByteArrayInputStream(areaPE);
+				break;
+		}
+
+		return inStream;
+	}
 	public ByteArrayOutputStream bin(int areaCode){
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 
@@ -89,4 +110,9 @@ public class BramaDump {
 					+ "}";
 		return json;
 	}
+
+	public InputStream byteInput() {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
 }

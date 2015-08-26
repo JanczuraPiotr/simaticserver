@@ -29,7 +29,7 @@ public class Brama implements Runnable{
 	private final LinkedBlockingQueue<BramaDump> QueueDump;
 	private final LinkedBlockingQueue<BramaDump> QueueMySql;
 	private final Thread LoggerThread;
-//	private final Thread mySqlThread;
+	private final Thread mySqlThread;
 
 	public Brama() throws NamingException, ClassNotFoundException, InstantiationException, IllegalAccessException{
 		Device = new pjpl.simaticserver.device.Brama();
@@ -41,8 +41,8 @@ public class Brama implements Runnable{
 		LoggerThread = new Thread(PduBinLogger);
 		LoggerThread.start();
 		mySqlStore = new pjpl.simaticserver.util.MySqlStore(QueueMySql, this);
-//		mySqlThread = new Thread(mySqlStore);
-//		mySqlThread.start();
+		mySqlThread = new Thread(mySqlStore);
+		mySqlThread.start();
 
 	}
 	public long getMsStartTime(){

@@ -1,12 +1,9 @@
 package pjpl.simaticserver.run;
 
-import com.mysql.jdbc.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -31,6 +28,7 @@ public class SimaticServer {
 
 	public static void main(String[] args){
 		timeStart = System.currentTimeMillis();
+		System.out.println(SimaticServer.class.getName());
 
 		try{
 			configReader = new FileReader(configFile);
@@ -50,9 +48,8 @@ public class SimaticServer {
 
 		time_interval = Long.parseLong(config.getProperty("time_interval"), 10);
 
-		executor = Executors.newScheduledThreadPool(5);
-
 		try {
+			executor = Executors.newScheduledThreadPool(5);
 			ProcessBrama = new pjpl.simaticserver.process.Brama();
 
 			executor.scheduleAtFixedRate(ProcessBrama,  ( time_interval * 2 ) - ( System.currentTimeMillis() % time_interval) , time_interval, TimeUnit.MILLISECONDS);
