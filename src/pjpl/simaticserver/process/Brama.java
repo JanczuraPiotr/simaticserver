@@ -2,10 +2,14 @@ package pjpl.simaticserver.process;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
+import pjpl.simaticserver.command.Command;
 import pjpl.simaticserver.device.BramaDump;
 import pjpl.simaticserver.run.SimaticServer;
 
@@ -14,6 +18,7 @@ import pjpl.simaticserver.run.SimaticServer;
  * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class Brama implements Runnable{
+	protected final byte id = Byte.parseByte( SimaticServer.config.getProperty("process_brama_id") );
 	private final DateFormat datePCFormat = new SimpleDateFormat(SimaticServer.config.getProperty("format_dateMS"));
 	private volatile String startTime = new String();
 	private long msStart = 0;
@@ -28,6 +33,8 @@ public class Brama implements Runnable{
 	private final pjpl.simaticserver.util.MySqlStore mySqlStore;
 	private final LinkedBlockingQueue<BramaDump> QueueDump;
 	private final LinkedBlockingQueue<BramaDump> QueueMySql;
+//	private final LinkedBlockingQueue<Command> QueueCommand;
+	private final ConcurrentLinkedQueue<Command> QueueCommand;
 	private final Thread LoggerThread;
 	private final Thread mySqlThread;
 
@@ -37,13 +44,16 @@ public class Brama implements Runnable{
 		DeviceAccess = Device.access();
 		QueueDump = new LinkedBlockingQueue<>();
 		QueueMySql = new LinkedBlockingQueue<>();
+		QueueCommand = new ConcurrentLinkedQueue<Command>();
 		PduBinLogger = new pjpl.simaticserver.util.FileBinLogger(QueueDump, this);
 		LoggerThread = new Thread(PduBinLogger);
 		LoggerThread.start();
 		mySqlStore = new pjpl.simaticserver.util.MySqlStore(QueueMySql, this);
 		mySqlThread = new Thread(mySqlStore);
 		mySqlThread.start();
-
+	}
+	public void addCommand(Command command){
+		QueueCommand.add(command);
 	}
 	public long getMsStartTime(){
 		return msStart;
@@ -54,8 +64,13 @@ public class Brama implements Runnable{
 	protected void readPDU(){
 		Device.readAll();
 	}
+	protected void process(){
+		while( ! QueueCommand.isEmpty() ){
+			System.out.println( QueueCommand.remove());
+		}
+	}
 	protected void writePDU(){
-
+		Device.writeAll();
 	}
 
 	public void steep() throws InterruptedException{
@@ -71,6 +86,16 @@ public class Brama implements Runnable{
 
 		msStopRead = System.currentTimeMillis();
 		summaryRun += datePCFormat.format(msStopRead) + " ProcessBrama.steep() po odczycie PDU \n";
+
+		process();
+
+		msStopRead = System.currentTimeMillis();
+		summaryRun += datePCFormat.format(msStopRead) + " ProcessBrama.steep() wykonaniu przetwarzania \n";
+
+		writePDU();
+
+		msStopRead = System.currentTimeMillis();
+		summaryRun += datePCFormat.format(msStopRead) + " ProcessBrama.steep() po zapisie PDU \n";
 
 		DeviceDump = Device.getBramaDump();
 		QueueDump.put(DeviceDump);

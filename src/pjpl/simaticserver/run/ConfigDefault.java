@@ -9,10 +9,17 @@ public class ConfigDefault extends Properties{
 
 	public ConfigDefault(){
 
+		// Procesy
+		setProperty("process_brama_id"     , "1");
+
 		// Sterowniki
+		setProperty("plc_brama_id"         , "1");
+		setProperty("plc_brama_process_id" , "1");
 		setProperty("plc_brama_ip"         , "192.168.1.150");
 		setProperty("plc_brama_rack"       , "0");
 		setProperty("plc_brama_slot"       , "0");
+
+		setProperty("simatic_server_port"  , "9000");
 
 		// katalogi
 		setProperty("dir_work"             , "d:\\tmp\\simaticserver");

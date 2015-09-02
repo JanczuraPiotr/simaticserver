@@ -58,10 +58,37 @@ public class BramaDump {
 	public long getTimeStamp(){
 		return timeStamp;
 	}
-	public String getDivaceName(){
+	public String getDeviceName(){
 		return deviceName;
 	}
+	public String hex(int areaCode){
+		String hex = "";
+		byte[] area;
+		int areaLenght;
 
+		switch(areaCode){
+			case S7.S7AreaDB:
+				area = areaDB;
+				areaLenght = areaDBLenght;
+				break;
+			case S7.S7AreaPA:
+				area = areaPA;
+				areaLenght = areaPALenght;
+					break;
+			case S7.S7AreaPE:
+				area = areaPE;
+				areaLenght = areaPELenght;
+				break;
+			default:
+				area = new byte[0];
+				areaLenght = 0;
+		}
+		for(int i = 0 ; i < areaLenght; i++){
+			hex += String.format("%02X", area[i]);
+			hex += " ";
+		}
+		return hex;
+	}
 	public InputStream byteInput(int areaCode){
 		InputStream inStream = null;
 
@@ -109,10 +136,6 @@ public class BramaDump {
 					+	"Input7 : " + access.input7() + ""
 					+ "}";
 		return json;
-	}
-
-	public InputStream byteInput() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 }

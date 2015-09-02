@@ -74,3 +74,13 @@ public class SimaticServer {
 	}
 
 }
+
+/**
+ * SimaticSerwer powinien mieć listę procesów i sterowników.
+ *
+ * Wątek przyjmujacy commendy sprawdza id procesu i sterownika i przy pomocy listy procesów i sterowników aplikacji
+ * będzie mógł skierować comendę do odpwoiedniego obiektu.
+ *
+ * Comenda wstawiana jest do kolejki fifo procesu i gdy wątek procesu jest budzony, po odczycie stanu, wykonywane są komenty
+ *
+ */

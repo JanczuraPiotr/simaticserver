@@ -37,7 +37,7 @@ public class DirCleaning implements Runnable{
 		summaryRun += dateFormat.format(runStop) + " DirCleaning.run() Stop praca = "+ (runStop - runStart) + "[ms]" ;
 		summaryRun += "\n";
 		if(summaryShow){
-			System.out.println(summaryRun);
+//			System.out.println(summaryRun);
 			summaryShow = false;
 		}
 	}

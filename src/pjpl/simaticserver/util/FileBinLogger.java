@@ -36,20 +36,25 @@ public class FileBinLogger implements Runnable{
 			try {
 
 				bramaDump = queue.take();
+				summaryRun += format_date.format( timeStart = System.currentTimeMillis() )+" FileBinLogger.run() Po queue.take()\n";
+
 				outputDB = bramaDump.bin(S7.S7AreaDB);
 				outputPA = bramaDump.bin(S7.S7AreaPA);
 				outputPE = bramaDump.bin(S7.S7AreaPE);
 				fileName =  dir_dump + "/" + dateFileNameFormat.format(bramaDump.getTimeStamp());
+				summaryRun += format_date.format( timeStart = System.currentTimeMillis() )+" FileBinLogger.run() Po zapisie do pliku\n";
 
-				summaryRun += format_date.format( timeStart = System.currentTimeMillis() )+" FileBinLogger.run() Po queue.take()\n";
+				summaryRun += format_date.format( timeStart = System.currentTimeMillis() )+" FileBinLogger.run()  bramaDump.hex(S7.S7AreaDB) = " + bramaDump.hex(S7.S7AreaDB)+"\n";
+				summaryRun += format_date.format( timeStart = System.currentTimeMillis() )+" FileBinLogger.run()  bramaDump.hex(S7.S7AreaPA) = " + bramaDump.hex(S7.S7AreaPA)+"\n";
+				summaryRun += format_date.format( timeStart = System.currentTimeMillis() )+" FileBinLogger.run()  bramaDump.hex(S7.S7AreaPE) = " + bramaDump.hex(S7.S7AreaPE)+"\n";
 
-				fos = new FileOutputStream( new File( fileName + ".db."+bramaDump.getDivaceName() ));
+				fos = new FileOutputStream( new File( fileName + ".db."+bramaDump.getDeviceName() ));
 				outputDB.writeTo(fos);
 				fos.close();
-				fos = new FileOutputStream( new File( fileName + ".pa."+bramaDump.getDivaceName() ));
+				fos = new FileOutputStream( new File( fileName + ".pa."+bramaDump.getDeviceName() ));
 				outputPA.writeTo(fos);
 				fos.close();
-				fos = new FileOutputStream( new File( fileName + ".pe."+bramaDump.getDivaceName() ));
+				fos = new FileOutputStream( new File( fileName + ".pe."+bramaDump.getDeviceName() ));
 				outputPE.writeTo(fos);
 				fos.close();
 

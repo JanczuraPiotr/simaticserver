@@ -17,7 +17,7 @@ public class Brama extends S7Client{
 	private final int Rack = Integer.parseInt( SimaticServer.config.getProperty("plc_brama_rack") );
 	private final int Slot = Integer.parseInt( SimaticServer.config.getProperty("plc_brama_slot") );
 	private final String IP = SimaticServer.config.getProperty("plc_brama_ip");
-
+	private final int dbNumber = 1;
 	private int errCode = 0;
 
 	private final byte[] areaDB = new byte[areaDBMaxLenght];
@@ -43,6 +43,7 @@ public class Brama extends S7Client{
 		return new BramaDump(deviceName, areaDB, areaDBLenght,	areaPA, areaPALenght,	areaPE, areaPELenght,timeStamp);
 	}
 	/**
+	 * @return
 	 * @todo Zadbać by BramaInterface powstał tylko gdy isnieją dane w areaXX
 	 */
 	public BramaAccess access(){
@@ -72,12 +73,27 @@ public class Brama extends S7Client{
 		return status;
 	}
 	private int readAreaDB(){
-		int status = ReadArea(S7.S7AreaDB, 0, 0, areaDBMaxLenght, areaDB);
+		int status = ReadArea(S7.S7AreaDB, dbNumber, 0,6/* areaDBMaxLenght */, areaDB);
 		areaDBLenght = PDULength();
 		return status;
 	}
 
 	public void writeAll(){
+		writeAreaDB();
+//		writeAreaPA();
+	}
+
+	private int writeAreaDB(){
+		byte[] out = { (byte)0xAA , (byte)0xBB}; //{99,2,3,4,5,6,7,8,9,0};
+		int status = WriteArea(S7.S7AreaDB, dbNumber, 2, 2, out);
+		System.out.println("status writeAreaDB = " + status);
+		return status;
+	}
+	public int writeAreaPA(){
+		byte[] out = {9};
+		int status = WriteArea(S7.S7AreaPA, dbNumber, 0, 1, out);
+		System.out.println("status writeAreaPA = " + status);
+		return status;
 
 	}
 

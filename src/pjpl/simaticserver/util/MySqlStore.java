@@ -39,11 +39,12 @@ public class MySqlStore implements Runnable {
 	public void run() {
 		while(true){
 			summaryRun = "------------------------------------------------------------------------------\n";
-			summaryRun += format_date.format(timeStart = System.currentTimeMillis()) + " MySqlStore.run() Start czyli czakanie na kolejkę\n";
+			summaryRun += format_date.format(System.currentTimeMillis()) + " MySqlStore.run() Start czyli czakanie na kolejkę\n";
 			try{
 				bramaDump = queue.take(); // <- wątek czeka na wstawienie danych do kolejki
+				timeStart = System.currentTimeMillis();
 
-				sql = "INSERT INTO " + bramaDump.getDivaceName() + " VALUES (default,?,?,?,?) ";
+				sql = "INSERT INTO " + bramaDump.getDeviceName() + " VALUES (default,?,?,?,?) ";
 				stmtPrepare = mySqlConnection.prepareStatement(sql);
 				stmtPrepare.setLong(1, bramaDump.getTimeStamp());
 				stmtPrepare.setBinaryStream(2, bramaDump.byteInput(S7.S7AreaDB));
@@ -67,7 +68,7 @@ public class MySqlStore implements Runnable {
 	}
 
 	//------------------------------------------------------------------------------
-	private String url = "jdbc:mysql://"+SimaticServer.config.getProperty("mysql_server")+":3306/"+SimaticServer.config.getProperty("mysql_db_name");
+	private String url = "jdbc:mysql://"+SimaticServer.config.getProperty("mysql_server")+":"+SimaticServer.config.getProperty("mysql_port")+"/"+SimaticServer.config.getProperty("mysql_db_name");
 	private String username = SimaticServer.config.getProperty("mysql_user_name");
 	private String password = SimaticServer.config.getProperty("mysql_user_password");
 	private String sql = "";
