@@ -12,7 +12,7 @@ public class BramaWriteDBWord extends Command{
 	}
 
 	@Override
-	protected void prepareWariable() {
+	protected void prepareVariable() {
 	}
 
 }

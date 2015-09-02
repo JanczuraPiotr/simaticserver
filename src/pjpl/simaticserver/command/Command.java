@@ -18,7 +18,7 @@ public abstract class Command {
 	public byte getDeviceId(){
 		return (byte) deviceId;
 	}
-	protected abstract void prepareWariable();
+	protected abstract void prepareVariable();
 	protected final DataInputStream commandInputStream;
 	// identyfikator sterowanika
 	protected int deviceId;

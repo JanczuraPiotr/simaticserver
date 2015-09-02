@@ -13,7 +13,7 @@ public class BramaWriteDBByte extends Command{
 	}
 
 	@Override
-	protected void prepareWariable() {
+	protected void prepareVariable() {
 	}
 
 }

@@ -14,7 +14,7 @@ public class CommandNull extends Command{
 	}
 
 	@Override
-	protected void prepareWariable() {
+	protected void prepareVariable() {
 
 	}
 

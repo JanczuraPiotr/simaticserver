@@ -23,7 +23,7 @@ public class BuilderCommand {
 		}
 		return instance;
 	}
-	public Command getCpmmand(){
+	public Command getCpmmand() throws IOException{
 		int commandCode;
 		Command command = new CommandNull(commandInputStream);
 
