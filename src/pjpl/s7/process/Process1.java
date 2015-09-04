@@ -69,29 +69,29 @@ public class Process1 extends Process{
 		msStop = 0;
 
 		summaryRun = "------------------------------------------------------------------------------\n";
-		summaryRun += datePCFormat.format(msStart) + " ProcessBrama.steep() Start \n";
+		summaryRun += datePCFormat.format(msStart) + " Process1.steep() Start \n";
 
 		readPDU();
 
 		msStopRead = System.currentTimeMillis();
-		summaryRun += datePCFormat.format(msStopRead) + " ProcessBrama.steep() po odczycie PDU \n";
+		summaryRun += datePCFormat.format(msStopRead) + " Process1.steep() po odczycie PDU \n";
 
 		process();
 
 		msStopRead = System.currentTimeMillis();
-		summaryRun += datePCFormat.format(msStopRead) + " ProcessBrama.steep() wykonaniu przetwarzania \n";
+		summaryRun += datePCFormat.format(msStopRead) + " Process1.steep() wykonaniu przetwarzania \n";
 
 		writePDU();
 
 		msStopRead = System.currentTimeMillis();
-		summaryRun += datePCFormat.format(msStopRead) + " ProcessBrama.steep() po zapisie PDU \n";
+		summaryRun += datePCFormat.format(msStopRead) + " Process1.steep() po zapisie PDU \n";
 
 		DeviceDump = plc1.getBramaDump();
 		QueueDump.put(DeviceDump);
 		QueueMySql.put(DeviceDump);
 
 		msStop = System.currentTimeMillis();
-		summaryRun += datePCFormat.format(msStop) + " ProcessBrama.steep() Stop praca = " + (msStop - msStart) + "[ms]\n";
+		summaryRun += datePCFormat.format(msStop) + " Process1.steep() Stop praca = " + (msStop - msStart) + "[ms]\n";
 
 
 	}
@@ -102,7 +102,7 @@ public class Process1 extends Process{
 		} catch (InterruptedException ex) {
 			Logger.getLogger(Process1.class.getName()).log(Level.SEVERE, null, ex);
 		} finally{
-			System.out.println(summaryRun);
+//			System.out.println(summaryRun);
 		}
 	}
 

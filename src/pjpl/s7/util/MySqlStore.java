@@ -63,7 +63,7 @@ public class MySqlStore implements Runnable {
 				summaryRun += "---- "+e.getMessage()+"\n";
 			} finally {
 			}
-			System.out.println(summaryRun);
+//			System.out.println(summaryRun);
 		}
 	}
 

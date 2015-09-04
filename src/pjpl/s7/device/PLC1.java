@@ -84,7 +84,6 @@ public class PLC1 extends PLC{
 	private int writeAreaDB(){
 		byte[] out = { (byte)0xAA , (byte)0xBB}; //{99,2,3,4,5,6,7,8,9,0};
 		int status = WriteArea(S7.S7AreaDB, dbNumber, 2, 2, out);
-		System.out.println("status writeAreaDB = " + status);
 		return status;
 	}
 	public int writeAreaPA(){

@@ -18,6 +18,7 @@ public class NetworkCommand extends Thread{
 	public NetworkCommand(Socket socket, pjpl.s7.process.Process process){
 		this.socket = socket;
 		this.process = process;
+		builderCommand = new BuilderCommand();
 	}
 	@Override
 	public void run(){

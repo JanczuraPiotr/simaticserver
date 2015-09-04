@@ -68,7 +68,7 @@ public class FileBinLogger implements Runnable{
 				Logger.getLogger(FileJsonLogger.class.getName()).log(Level.SEVERE, null, ex);
 			} finally {
 			}
-			System.out.println(summaryRun);
+//			System.out.println(summaryRun);
 		}
 	}
 
