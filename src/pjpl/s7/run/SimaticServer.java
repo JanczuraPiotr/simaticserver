@@ -97,3 +97,6 @@ public class SimaticServer {
 
 
 }
+/**
+ * @todo Wszystkie wystąpienia nazwy procesu : "Brama" zamienić na "process1"
+ */

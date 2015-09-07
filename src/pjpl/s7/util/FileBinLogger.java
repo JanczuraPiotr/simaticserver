@@ -16,8 +16,8 @@ import pjpl.s7.run.SimaticServer;
 /**
  * Zapisywanie stanu procesora do pliku binarnego.
  * Nazwa pliku składa się z pieczęci czasu a rozszerzeniem jest symbol bloku i nazwa urzadzenia:
- * 20150824180056113.pa.brama
- * 20150824180056113.pe.brama
+ * 20150824180056113.pa.plc
+ * 20150824180056113.pe.plc
  * lub plik będzie przechowywał całą zawrtość procesora
  *
  * @author Piotr Janczura <piotr@janczura.pl>
