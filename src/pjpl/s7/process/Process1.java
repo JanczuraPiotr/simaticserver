@@ -13,6 +13,20 @@ import javax.naming.NamingException;
  * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class Process1 extends Process{
+
+	public static final int BIT_COS_1 = 1;
+	public static final int BIT_COS_2 = 2;
+	public static final int BIT_COS_3 = 3;
+	// ....
+
+	public static final int DB_ZMIENNA_1 = 1;
+	public static final int DB_ZMIENNA_2 = 2;
+	public static final int DB_ZMIENNA_3 = 3;
+
+	public static final int IN_1 = 1;
+
+	public static final int OUT_1 =1;
+
 	protected final int id = Byte.parseByte( pjpl.s7.run.SimaticServer.config.getProperty("process_brama_id") );
 
 	public Process1() throws NamingException, ClassNotFoundException, InstantiationException, IllegalAccessException{
@@ -128,4 +142,17 @@ public class Process1 extends Process{
 
 	private pjpl.s7.device.BramaDump DeviceDump;
 
+	@Override
+	protected void initDb() {
+	}
+
+	@Override
+	protected void initIn() {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	protected void initOut() {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
 }

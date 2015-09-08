@@ -1,7 +1,7 @@
 package pjpl.s7.net;
 
 import java.net.Socket;
-import pjpl.s7.command.BuilderCommand;
+import pjpl.s7.command.BuilderProcessCommand;
 
 /**
  * Obróbka komendy nadesłanej przez sieć TCP.
@@ -18,7 +18,7 @@ public class NetworkCommand extends Thread{
 	public NetworkCommand(Socket socket, pjpl.s7.process.Process process){
 		this.socket = socket;
 		this.process = process;
-		builderCommand = new BuilderCommand();
+		builderCommand = new BuilderProcessCommand();
 	}
 	@Override
 	public void run(){
@@ -26,7 +26,7 @@ public class NetworkCommand extends Thread{
 	}
 	private final Socket socket;
 	private final pjpl.s7.process.Process process;
-	private BuilderCommand builderCommand;
+	private BuilderProcessCommand builderCommand;
 }
 /**
  * @prace Utworzyc BuilderCommand i utworzoną za jego pomocą komendę którą przekazać do procesu.

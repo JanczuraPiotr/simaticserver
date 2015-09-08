@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  * @author Piotr Janczura <piotr@janczura.pl>
  * @todo Usupełnić komentarz o nazwy wyjątków po ich zaprojektowaniu.
  */
-public class BuilderCommand {
+public class BuilderProcessCommand {
 	public static final int READ_DB_BLOCK   = 1;
 	public static final int READ_DB_BYTE    = 2;
 	public static final int READ_DB_WORD    = 3;
@@ -65,7 +65,7 @@ public class BuilderCommand {
 					//@todo wyrzucić wyjątek o nie znanym kodzie komendy
 			}
 		} catch (IOException ex) {
-			Logger.getLogger(BuilderCommand.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(BuilderProcessCommand.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		return command;
 	}
