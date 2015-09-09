@@ -142,17 +142,4 @@ public class Process1 extends Process{
 
 	private pjpl.s7.device.BramaDump DeviceDump;
 
-	@Override
-	protected void initDb() {
-	}
-
-	@Override
-	protected void initIn() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
-	protected void initOut() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
 }
