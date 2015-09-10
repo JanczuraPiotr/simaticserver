@@ -2,40 +2,24 @@ package pjpl.s7.process;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
 
-/**
- * @author Piotr Janczura <piotr@janczura.pl>
- */
+
 public class Process1 extends Process{
 
-	public static final int BIT_COS_1 = 1;
-	public static final int BIT_COS_2 = 2;
-	public static final int BIT_COS_3 = 3;
-	// ....
+	public static final int id = Byte.parseByte( pjpl.s7.run.SimaticServer.config.getProperty("process_brama_id") );
+	public static final int PLC1 = 1;
 
-	public static final int DB_ZMIENNA_1 = 1;
-	public static final int DB_ZMIENNA_2 = 2;
-	public static final int DB_ZMIENNA_3 = 3;
-
-	public static final int IN_1 = 1;
-
-	public static final int OUT_1 =1;
-
-	protected final int id = Byte.parseByte( pjpl.s7.run.SimaticServer.config.getProperty("process_brama_id") );
 
 	public Process1() throws NamingException, ClassNotFoundException, InstantiationException, IllegalAccessException{
 		super();
-		plcs = new HashMap<>();
-		plc1 = new pjpl.s7.device.PLC1();
-		plcs.put(id, plc1);
 
-		DeviceDump = plc1.getBramaDump();
+
+		PlcDump = plc1.getBramaDump();
 		DeviceAccess = plc1.access();
 		QueueDump = new LinkedBlockingQueue<>();
 		QueueMySql = new LinkedBlockingQueue<>();
@@ -76,49 +60,70 @@ public class Process1 extends Process{
 		plc1.writeAll();
 	}
 
-	public void steep() throws InterruptedException{
-		msStart = System.currentTimeMillis();
-		startTime = datePCFormat.format(msStart);
-		msStopRead = 0;
-		msStop = 0;
-
-		summaryRun = "------------------------------------------------------------------------------\n";
-		summaryRun += datePCFormat.format(msStart) + " Process1.steep() Start \n";
-
-		readPDU();
-
-		msStopRead = System.currentTimeMillis();
-		summaryRun += datePCFormat.format(msStopRead) + " Process1.steep() po odczycie PDU \n";
-
-		process();
-
-		msStopRead = System.currentTimeMillis();
-		summaryRun += datePCFormat.format(msStopRead) + " Process1.steep() wykonaniu przetwarzania \n";
-
-		writePDU();
-
-		msStopRead = System.currentTimeMillis();
-		summaryRun += datePCFormat.format(msStopRead) + " Process1.steep() po zapisie PDU \n";
-
-		DeviceDump = plc1.getBramaDump();
-		QueueDump.put(DeviceDump);
-		QueueMySql.put(DeviceDump);
-
-		msStop = System.currentTimeMillis();
-		summaryRun += datePCFormat.format(msStop) + " Process1.steep() Stop praca = " + (msStop - msStart) + "[ms]\n";
-
-
-	}
-
-	public void run(){
+	@Override
+	public void steep(){
 		try {
-			steep();
+			msStart = System.currentTimeMillis();
+			startTime = datePCFormat.format(msStart);
+			msStopRead = 0;
+			msStop = 0;
+
+			summaryRun = "------------------------------------------------------------------------------\n";
+			summaryRun += datePCFormat.format(msStart) + " Process1.steep() Start \n";
+
+			readPDU();
+
+			msStopRead = System.currentTimeMillis();
+			summaryRun += datePCFormat.format(msStopRead) + " Process1.steep() po odczycie PDU \n";
+
+			process();
+
+			msStopRead = System.currentTimeMillis();
+			summaryRun += datePCFormat.format(msStopRead) + " Process1.steep() wykonaniu przetwarzania \n";
+
+			writePDU();
+
+			msStopRead = System.currentTimeMillis();
+			summaryRun += datePCFormat.format(msStopRead) + " Process1.steep() po zapisie PDU \n";
+
+			PlcDump = plc1.getBramaDump();
+			QueueDump.put(PlcDump);
+			QueueMySql.put(PlcDump);
+
+			msStop = System.currentTimeMillis();
+			summaryRun += datePCFormat.format(msStop) + " Process1.steep() Stop praca = " + (msStop - msStart) + "[ms]\n";
 		} catch (InterruptedException ex) {
 			Logger.getLogger(Process1.class.getName()).log(Level.SEVERE, null, ex);
-		} finally{
+		} finally {
 //			System.out.println(summaryRun);
 		}
+
+
 	}
+
+	@Override
+	protected void initMemory() {
+		memoryDB = new MemoryDb(plcs);
+		memoryIn = new MemoryIn(plcs);
+		memoryOut = new MemoryOut(plcs);
+	}
+
+	@Override
+	protected void initPlcs() {
+		plc1 = new pjpl.s7.device.PLC1();
+		plcs.put(Process1.id, plc1);
+	}
+
+	@Override
+	public void steepException(Exception e) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public void steepFinaly() {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
 
 	//------------------------------------------------------------------------------
 
@@ -129,17 +134,16 @@ public class Process1 extends Process{
 	private long msStop = 0;
 	private String summaryRun;
 
- 	private final pjpl.s7.device.PLC1 plc1;
-	private final HashMap<Integer, pjpl.s7.device.PLC> plcs;
-	private final pjpl.s7.device.BramaAccess DeviceAccess;
+ 	private pjpl.s7.device.PLC1 plc1;
+	private final pjpl.s7.device.PlcAccess DeviceAccess;
 	private final pjpl.s7.util.FileBinLogger PduBinLogger;
 	private final pjpl.s7.util.MySqlStore mySqlStore;
-	private final LinkedBlockingQueue<pjpl.s7.device.BramaDump> QueueDump;
-	private final LinkedBlockingQueue<pjpl.s7.device.BramaDump> QueueMySql;
+	private final LinkedBlockingQueue<pjpl.s7.device.PlcDump> QueueDump;
+	private final LinkedBlockingQueue<pjpl.s7.device.PlcDump> QueueMySql;
 	private final ConcurrentLinkedQueue<pjpl.s7.command.Command> QueueCommand;
 	private final Thread LoggerThread;
 	private final Thread mySqlThread;
 
-	private pjpl.s7.device.BramaDump DeviceDump;
+	private pjpl.s7.device.PlcDump PlcDump;
 
 }

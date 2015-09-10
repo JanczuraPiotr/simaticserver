@@ -4,13 +4,12 @@ import Moka7.S7;
 import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.sql.Array;
 
 /**
  * Stan pamięci procesora po odczycie z urządzenia fizycznego
  * @author Piotr Janczura <piotr@janczura.pl>
  */
-public class BramaDump {
+public class PlcDump {
 	private final int areaDBLenght;
 	private final int areaPALenght;
 	private final int areaPELenght;
@@ -18,10 +17,10 @@ public class BramaDump {
 	private final byte[] areaPA;
 	private final byte[] areaPE;
 	private final long timeStamp; // Milisekunda w której odczytano stan urządzenia
-	private String deviceName;
-	private BramaAccess access = null;
+	private final String deviceName;
+	private PlcAccess access = null;
 
-	public BramaDump(
+	public PlcDump(
 			String deviceName,
 			byte[] areaDB,
 			int areaDBLenght,
@@ -45,7 +44,7 @@ public class BramaDump {
 		System.arraycopy(areaPA, 0, this.areaPA, 0, areaPALenght);
 		System.arraycopy(areaPE, 0, this.areaPE, 0, areaPELenght);
 
-		access = new BramaAccess(
+		access = new PlcAccess(
 				deviceName,
 				areaDB,
 				areaDBLenght,

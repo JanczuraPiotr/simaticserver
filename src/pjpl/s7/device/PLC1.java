@@ -3,8 +3,7 @@ package pjpl.s7.device;
 import Moka7.S7;
 
 /**
- * Sterownik S7 zlokalizowany na bramie
- * @author piotr
+ * Sterownik S7 
  */
 public class PLC1 extends PLC{
 	public final String deviceName = "brama";
@@ -25,7 +24,7 @@ public class PLC1 extends PLC{
 	private final byte[] areaPE = new byte[areaPEMaxLenght];
 	private int areaPELenght;
 	private long timeStamp = 0; // Czas zakończenia odczytu
-	private BramaAccess access = null;
+	private PlcAccess access = null;
 
 	public PLC1(){
 		super();
@@ -37,16 +36,16 @@ public class PLC1 extends PLC{
 		System.out.println("Kod uruchonmienia sterownika na bramie " + errCode);
 
 	}
-	public BramaDump getBramaDump(){
-		return new BramaDump(deviceName, areaDB, areaDBLenght,	areaPA, areaPALenght,	areaPE, areaPELenght,timeStamp);
+	public PlcDump getBramaDump(){
+		return new PlcDump(deviceName, areaDB, areaDBLenght,	areaPA, areaPALenght,	areaPE, areaPELenght,timeStamp);
 	}
 	/**
 	 * @return
 	 * @todo Zadbać by BramaInterface powstał tylko gdy isnieją dane w areaXX
 	 */
-	public BramaAccess access(){
+	public PlcAccess access(){
 		if( null == this.access ){
-			access = new BramaAccess(deviceName, areaDB, areaDBLenght, areaPA, areaPALenght,	areaPE, areaPELenght,timeStamp);
+			access = new PlcAccess(deviceName, areaDB, areaDBLenght, areaPA, areaPALenght,	areaPE, areaPELenght,timeStamp);
 		}
 		return access;
 	}

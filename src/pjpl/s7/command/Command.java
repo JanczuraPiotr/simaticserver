@@ -19,8 +19,10 @@ abstract public class Command { // _cmd
 
 	protected abstract void prepareContent();
 
+	//------------------------------------------------------------------------------
+	
 	/**
-	 * Strumień wktórym znajdują się pozostałe elementy komendy
+	 * Strumień w którym znajdują się elementy komendy
 	 */
 	protected final DataInputStream commandInputStream;
 	/**

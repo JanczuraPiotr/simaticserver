@@ -14,12 +14,20 @@ import java.util.Calendar;
 // Step 7 Constants and Conversion helper class
 public class S7 {
     // S7 ID Area (Area that we want to read/write)
-    public static final int S7AreaPE = 0x81;
-    public static final int S7AreaPA = 0x82;
-    public static final int S7AreaMK = 0x83;
-    public static final int S7AreaDB = 0x84;
-    public static final int S7AreaCT = 0x1C;
-    public static final int S7AreaTM = 0x1D;
+    public static final int S7AreaPE = 0x81; // I , E - wejście
+    public static final int S7AreaPA = 0x82; // Q , A - wyjście
+    public static final int S7AreaMK = 0x83; // F , M - flaga / marker
+    public static final int S7AreaDB = 0x84; // D , D - dane
+    public static final int S7AreaCT = 0x1C; // C , Z - licznik
+    public static final int S7AreaTM = 0x1D; // T , T - timer
+
+    public static final int I = 0x81; // I , E - wejście
+    public static final int Q = 0x82; // Q , A - wyjście
+    public static final int F = 0x83; // F , M - flaga / marker
+    public static final int D = 0x84; // D , D - dane
+    public static final int C = 0x1C; // C , Z - licznik
+    public static final int T = 0x1D; // T , T - timer
+		
     // Connection types
     public static final byte PG = 0x01;
     public static final byte OP = 0x02;

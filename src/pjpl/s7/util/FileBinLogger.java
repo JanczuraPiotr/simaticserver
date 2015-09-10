@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import pjpl.s7.device.BramaDump;
+import pjpl.s7.device.PlcDump;
 import pjpl.s7.run.SimaticServer;
 
 /**
@@ -24,7 +24,7 @@ import pjpl.s7.run.SimaticServer;
  */
 public class FileBinLogger implements Runnable{
 
-	public FileBinLogger(LinkedBlockingQueue<BramaDump> queue, pjpl.s7.process.Process1 parent){
+	public FileBinLogger(LinkedBlockingQueue<PlcDump> queue, pjpl.s7.process.Process1 parent){
 		this.queue = queue;
 		this.parent = parent;
 	}
@@ -73,13 +73,13 @@ public class FileBinLogger implements Runnable{
 	}
 
 	//------------------------------------------------------------------------------
-	private BramaDump bramaDump;
+	private PlcDump bramaDump;
 	private String fileName;
 	private FileOutputStream fos;
 	private final String dir_dump = SimaticServer.config.getProperty("dir_dump");
 	private final DateFormat format_date = new SimpleDateFormat(SimaticServer.config.getProperty("format_dateMS"));
 	private final DateFormat dateFileNameFormat = new SimpleDateFormat(SimaticServer.config.getProperty("format_datePackedMS"));
-	private final LinkedBlockingQueue<BramaDump> queue;
+	private final LinkedBlockingQueue<PlcDump> queue;
 	private volatile long timeStart;
 	private volatile long timeStop;
 	private String summaryRun = new String();

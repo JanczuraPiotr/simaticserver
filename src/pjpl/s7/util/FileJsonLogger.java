@@ -1,6 +1,6 @@
 package pjpl.s7.util;
 
-import pjpl.s7.device.BramaDump;
+import pjpl.s7.device.PlcDump;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -17,7 +17,7 @@ import pjpl.s7.run.SimaticServer;
  */
 public class FileJsonLogger implements Runnable{
 
-	public FileJsonLogger(LinkedBlockingQueue<BramaDump> queue, pjpl.s7.process.Process1 parent){
+	public FileJsonLogger(LinkedBlockingQueue<PlcDump> queue, pjpl.s7.process.Process1 parent){
 		this.queue = queue;
 		this.parent = parent;
 	}
@@ -55,7 +55,7 @@ public class FileJsonLogger implements Runnable{
 	private final String dir_dump = SimaticServer.config.getProperty("dir_dump");
 	private final DateFormat format_date = new SimpleDateFormat(SimaticServer.config.getProperty("format_dateMS"));
 	private final DateFormat dateFileNameFormat = new SimpleDateFormat(SimaticServer.config.getProperty("format_datePackedMS"));
-	private final LinkedBlockingQueue<BramaDump> queue;
+	private final LinkedBlockingQueue<PlcDump> queue;
 	private volatile long timeStart;
 	private volatile long timeStop;
 	private String summaryRun = new String();

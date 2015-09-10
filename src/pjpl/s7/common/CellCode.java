@@ -31,7 +31,7 @@ package pjpl.s7.common;
  *
  * @todo opracować przypisywanie identyfikatorów do bitów
  */
-abstract public class MemoryCode{
+abstract public class CellCode{
 
 	public static final int ZMIENNA_1 = 0x0001;
 	public static final int ZMIENNA_2 = 0x0002;

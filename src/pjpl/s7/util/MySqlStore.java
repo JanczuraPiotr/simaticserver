@@ -11,7 +11,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.LinkedBlockingQueue;
 import javax.naming.NamingException;
-import pjpl.s7.device.BramaDump;
+import pjpl.s7.device.PlcDump;
 import pjpl.s7.run.SimaticServer;
 
 /**
@@ -20,7 +20,7 @@ import pjpl.s7.run.SimaticServer;
  */
 public class MySqlStore implements Runnable {
 
-	public MySqlStore(LinkedBlockingQueue<BramaDump> queue, pjpl.s7.process.Process1 parent)
+	public MySqlStore(LinkedBlockingQueue<PlcDump> queue, pjpl.s7.process.Process1 parent)
 			throws NamingException, ClassNotFoundException, InstantiationException, IllegalAccessException{
 		this.queue = queue;
 		this.parent = parent;
@@ -76,8 +76,8 @@ public class MySqlStore implements Runnable {
 	private PreparedStatement stmtPrepare;
 
 	private pjpl.s7.process.Process1 parent;
-	private LinkedBlockingQueue<BramaDump> queue;
-	private BramaDump bramaDump;
+	private LinkedBlockingQueue<PlcDump> queue;
+	private PlcDump bramaDump;
 
 	//------------------------------------------------------------------------------
 	// Nie związane z głónym zadaniem

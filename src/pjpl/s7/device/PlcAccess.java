@@ -5,7 +5,7 @@ import Moka7.S7;
 /**
  * @author piotr
  */
-public class BramaAccess extends S7{
+public class PlcAccess extends S7{
 
 	private final byte[] areaDB;
 	private final int areaDBLenght;
@@ -13,10 +13,10 @@ public class BramaAccess extends S7{
 	private final int areaPALenght;
 	private final byte[] areaPE;
 	private final int areaPELenght;
-	private String deviceName;
-	private long timeStamp;
+	private final String deviceName;
+	private final long timeStamp;
 
-	public BramaAccess(
+	public PlcAccess(
 			String deviceName,
 			byte[] areaDB,
 			int areaDBLenght,
