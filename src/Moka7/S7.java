@@ -27,7 +27,6 @@ public class S7 {
     public static final int D = 0x84; // D , D - dane
     public static final int C = 0x1C; // C , Z - licznik
     public static final int T = 0x1D; // T , T - timer
-		
     // Connection types
     public static final byte PG = 0x01;
     public static final byte OP = 0x02;

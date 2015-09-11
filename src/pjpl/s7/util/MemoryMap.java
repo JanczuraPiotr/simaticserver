@@ -1,5 +1,6 @@
 package pjpl.s7.util;
 
+import Moka7.S7;
 import java.util.HashMap;
 import java.util.TreeMap;
 import pjpl.s7.device.PLC;
@@ -22,12 +23,19 @@ abstract public class MemoryMap {
 		m[cell.getPos()] = val;
 	}
 	public void write(int cellCode, short val){
-
+		MemoryCell cell = mapById.get(cellCode);
+		byte[] m = getMem(cell.getPlcId());
+		S7.SetWordAt(m, cell.getPos(), val);
 	}
 	public void write(String name, byte val){
-
+		MemoryCell cell = mapByName.get(name);
+		byte[] m = getMem(cell.getPlcId());
+		m[cell.getPos()] = val;
 	}
 	public void write(String name, short val){
+		MemoryCell cell = mapByName.get(name);
+		byte[] m = getMem(cell.getPlcId());
+		S7.SetWordAt(m, cell.getPos(), val);
 
 	}
 	public byte readByte(int cellCode){

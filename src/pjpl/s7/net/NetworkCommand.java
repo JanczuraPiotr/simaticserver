@@ -26,7 +26,7 @@ public class NetworkCommand extends Thread{
 	}
 	private final Socket socket;
 	private final pjpl.s7.process.Process process;
-	private BuilderProcessCommand builderCommand;
+	private final BuilderProcessCommand builderCommand;
 }
 /**
  * @prace Utworzyc BuilderCommand i utworzoną za jego pomocą komendę którą przekazać do procesu.

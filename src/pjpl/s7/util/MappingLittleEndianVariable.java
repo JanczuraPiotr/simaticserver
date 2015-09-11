@@ -27,11 +27,7 @@ public class MappingLittleEndianVariable{
 	 * @throws ArrayIndexOutOfBoundsException
 	 */
 	public static boolean _boolean(byte[] buff, int pos) throws ArrayIndexOutOfBoundsException{
-		if( pos < buff.length ){
 			return (boolean)( buff[pos] > 0);
-		}else{
-			throw new ArrayIndexOutOfBoundsException();
-		}
 	}
 	/**
 	 * Umieszcza wartość zmiennej logicznej val w buforze na pozycji pos.
@@ -41,11 +37,7 @@ public class MappingLittleEndianVariable{
 	 * @throws ArrayIndexOutOfBoundsException
 	 */
 	public static void _boolean(boolean val, byte[] buff, int pos) throws ArrayIndexOutOfBoundsException{
-		if( pos < buff.length ){
 			buff[pos] = (byte) ( val ? 1 : 0);
-		}else{
-			throw new ArrayIndexOutOfBoundsException();
-		}
 	}
 	/**
 	 * Pobiera wartość bitu posByte ze zmiennej zapisanej w buff na pozycji pos i zwraca ją jako boolean
@@ -56,13 +48,14 @@ public class MappingLittleEndianVariable{
 	 * @throws ArrayIndexOutOfBoundsException
 	 */
 	public static boolean _boolean(byte[] buff, int pos, int bit) throws ArrayIndexOutOfBoundsException{
-		if( pos < buff.length ){
-			if( bit < 0 ){ bit = 0; }; // @todo Może lepiej będzie rzucić wyjątek
-			if( bit > 7 ){ bit = 7; }; // @todo Może lepiej będzie rzucić wyjątek
-			return  ( buff[pos] & Mask[bit] ) != 0 ;
-		}else{
-			throw new ArrayIndexOutOfBoundsException();
-		}
+		return  ( buff[pos] & Mask[bit] ) != 0 ;
+//		if( pos < buff.length ){
+//			if( bit < 0 ){ bit = 0; }; // @todo Może lepiej będzie rzucić wyjątek
+//			if( bit > 7 ){ bit = 7; }; // @todo Może lepiej będzie rzucić wyjątek
+//			return  ( buff[pos] & Mask[bit] ) != 0 ;
+//		}else{
+//			throw new ArrayIndexOutOfBoundsException();
+//		}
 	}
 	public static void _boolean(boolean val, byte[] buff, int start, int pos){
 		throw new UnsupportedOperationException("Not supported yet. :  MappingStreamVariable._boolean(boolean val, byte[] buff, int start, int pos)");

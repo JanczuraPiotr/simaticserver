@@ -120,8 +120,13 @@ public class Process1 extends Process{
 	}
 
 	@Override
-	public void steepFinaly() {
+	public void steepExceptionFinally(Exception e) {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public void steepFinaly() {
+
 	}
 
 

@@ -8,10 +8,16 @@ import pjpl.s7.util.MemoryMap;
  public abstract class Process implements Runnable{
 
 	/**
-	 * Operacje wykonywane podczas każdego uruchomienia wątku
+	 * Operacje wykonywane podczas każdego uruchomienia wątku.
+	 * 1. Odczyt zmiennych
+	 *		- wszystkich gdy wączone jest logowanie ich stanu
+	 *		- odczyt tylko zmiennych do obsługi Komendy gdy nie ma logowania
+	 * 2. Wykonanie komendy
+	 * 3. Zapis zmiennych zmodyfikowanych przez komendę.
 	 */
 	abstract public void steep();
 	abstract public void steepException(Exception e);
+	abstract public void steepExceptionFinally(Exception e);
 	abstract public void steepFinaly();
 
 	@Override
@@ -22,6 +28,7 @@ import pjpl.s7.util.MemoryMap;
 			try{
 				steepException(e);
 			}catch(Exception eBis){
+				steepExceptionFinally(e);
 				System.out.println("Process.run nie udana próba obsłużenia wyjątku Exception eBis");
 			}
 		}finally{
