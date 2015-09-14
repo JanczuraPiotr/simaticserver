@@ -22,7 +22,7 @@ public class SimaticServer {
 	public static long timeStart;
 
 	private static HashMap<Integer, pjpl.s7.process.Process> processes;
-	private static pjpl.s7.process.Process1 process1;
+	private static pjpl.s7.process.Process process1;
 
 	private static pjpl.s7.util.DirCleaning dirCleaning;
 	private static pjpl.s7.net.SocketListener socketListener;
@@ -56,7 +56,7 @@ public class SimaticServer {
 		executor = Executors.newScheduledThreadPool(5);
 
 		try {
-			process1 = (pjpl.s7.process.Process1) processes.put(
+			process1 = processes.put(
 					Integer.getInteger(config.getProperty("process_brama_id"))
 					, new pjpl.s7.process.Process1()
 			);

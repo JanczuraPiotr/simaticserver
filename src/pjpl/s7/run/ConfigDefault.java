@@ -3,7 +3,6 @@ package pjpl.s7.run;
 import java.util.Properties;
 
 /**
- * @author piotr
  */
 public class ConfigDefault extends Properties{
 

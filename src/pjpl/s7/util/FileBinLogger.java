@@ -27,6 +27,7 @@ public class FileBinLogger implements Runnable{
 	public FileBinLogger(LinkedBlockingQueue<PlcDump> queue, pjpl.s7.process.Process1 parent){
 		this.queue = queue;
 		this.parent = parent;
+		System.out.println("FileBinLogget constructor");
 	}
 	@Override
 	public void run() {
@@ -67,8 +68,8 @@ public class FileBinLogger implements Runnable{
 			} catch (IOException ex) {
 				Logger.getLogger(FileJsonLogger.class.getName()).log(Level.SEVERE, null, ex);
 			} finally {
+				System.out.println(summaryRun);
 			}
-//			System.out.println(summaryRun);
 		}
 	}
 

@@ -1,21 +1,21 @@
 package pjpl.s7.process;
 
 import Moka7.S7;
-import java.util.HashMap;
+import java.util.TreeMap;
 import pjpl.s7.common.CellCode;
 import pjpl.s7.common.TypeCode;
 import pjpl.s7.device.PLC;
 import pjpl.s7.util.MemoryCell;
 import pjpl.s7.util.MemoryMap;
 
-public class MemoryIn extends MemoryMap{
+public class MemoryI extends MemoryMap{
 
-	public MemoryIn(HashMap<Integer, pjpl.s7.device.PLC> plcs) {
+	public MemoryI(TreeMap<Integer, PLC> plcs) {
 		super(plcs);
 	}
 
 	@Override
-	public void init() {
+	public void initCells() {
 		addCell(
 				CellCode.IN_1
 				, new MemoryCell(
@@ -28,7 +28,7 @@ public class MemoryIn extends MemoryMap{
 	}
 
 	@Override
-	protected int area() {
+	protected int areaCode() {
 		return S7.I;
 	}
 
