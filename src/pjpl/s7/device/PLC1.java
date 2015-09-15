@@ -33,7 +33,7 @@ public class PLC1 extends PLC{
 	}
 	/**
 	 * @return
-	 * @todo Zadbać by BramaInterface powstał tylko gdy isnieją dane w areaXX
+	 * @todo Zadbać by BramaInterface powstał tylko gdy istnieją dane w areaXX
 	 */
 	public PlcAccess access(){
 		if( null == this.access ){

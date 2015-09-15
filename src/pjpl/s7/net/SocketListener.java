@@ -39,7 +39,7 @@ public class SocketListener extends Thread{
 				}
 
 				if( 4096 > code && code > -1 ){ // komendy wewnętrzne biblioteki pjpl.s7
-					System.out.println("Kod wewnętrzny piblioteki : "+code);
+					System.out.println("Kod wewnętrzny biblioteki : "+code);
 				}else if( 4095 < code && code < 8192 ){
 					System.out.println("Kod nieprzypisany : "+code);
 				}else if( 8191 < code && code < 16384 ){

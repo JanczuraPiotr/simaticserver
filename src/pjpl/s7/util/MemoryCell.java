@@ -4,7 +4,7 @@ import pjpl.s7.common.TypeCode;
 import pjpl.s7.device.PLC;
 
 /**
- * Informacja o mapowaniu zminnej procesowej na sterownik i obszar pamięci
+ * Informacja o mapowaniu zmiennej procesowej na sterownik i obszar pamięci
  */
 public class MemoryCell {
 

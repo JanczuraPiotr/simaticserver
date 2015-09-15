@@ -12,7 +12,7 @@ import pjpl.s7.command.BuilderProcessCommand;
 public class NetworkCommand extends Thread{
 	/**
 	 *
-	 * @param socket Gniazdo utoworzone do pobrania komendy
+	 * @param socket Gniazdo utworzone do pobrania komendy
 	 * @param process Process do którego należy przekazać utworzoną komendę
 	 */
 	public NetworkCommand(Socket socket, pjpl.s7.process.Process process){
@@ -29,5 +29,5 @@ public class NetworkCommand extends Thread{
 	private final BuilderProcessCommand builderCommand;
 }
 /**
- * @prace Utworzyc BuilderCommand i utworzoną za jego pomocą komendę którą przekazać do procesu.
+ * @prace Utworzyć BuilderCommand i utworzoną za jego pomocą komendę którą przekazać do procesu.
  */

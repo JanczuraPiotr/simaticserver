@@ -10,12 +10,12 @@ import java.util.logging.Logger;
  * Buduje Komendę do wykonania przez process.
  *
  * Proces musi być przygotowany na jej wykonanie, w innym przypadku zgłasza wyjątek.
- * Zródłem komendy jest strumień binarny nadesłany na wejście servera z dowlnego źródła, np. przez połączenie sieciowe.
+ * Źródłem komendy jest strumień binarny nadesłany na wejście servera z dowolnego źródła, np. przez połączenie sieciowe.
  * Pierwszym elementem strumienia jest kod komendy zapisany na dwóch bajtach. Jeżeli kod nie jest znany zgłaszany jest
  * wyjątek.
  *
  * @author Piotr Janczura <piotr@janczura.pl>
- * @todo Usupełnić komentarz o nazwy wyjątków po ich zaprojektowaniu.
+ * @todo Uzupełnić komentarz o nazwy wyjątków po ich zaprojektowaniu.
  */
 public class BuilderProcessCommand {
 	public static final int READ_DB_BLOCK   = 1;
@@ -29,10 +29,10 @@ public class BuilderProcessCommand {
 	/**
 	 * Na podstawie strumienia wejściowego tworzy obiekt komendy do wykonania przez proces.
 	 *
-	 * @param commandStream Strumien binarny z definicją komendy
+	 * @param commandStream Strumień binarny z definicją komendy
 	 * @return
 	 * @throws IOException
-	 * @todo Zaprojektować wyjątki na wypadeg złego kodu komendy
+	 * @todo Zaprojektować wyjątki na wypadek złego kodu komendy
 	 */
 	public Command getCommand(InputStream commandStream) throws IOException{
 		int commandCode;

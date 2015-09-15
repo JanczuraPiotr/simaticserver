@@ -12,7 +12,7 @@ abstract public class PLC extends S7Client{
 	public void connectTo(String IPAddress, int Rack, int Slot){
 		SetConnectionType(S7.OP);
 		errCode = super.ConnectTo(IPAddress, Rack, Slot);
-		System.out.println("Kod uruchonmienia sterownika na bramie " + errCode);
+		System.out.println("Kod uruchomienia sterownika na bramie " + errCode);
 
 	}
 

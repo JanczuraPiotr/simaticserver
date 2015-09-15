@@ -2,6 +2,7 @@ package pjpl.s7.util;
 
 import Moka7.S7;
 import java.util.TreeMap;
+import javafx.util.Pair;
 import pjpl.s7.device.PLC;
 
 /**
@@ -15,37 +16,32 @@ abstract public class MemoryMap {
 		this.plcs = plcs;
 		currentPos = 0;
 		mem = new TreeMap<>();
-		mapById = new TreeMap<>();
-		mapByName = new TreeMap<>();
+		cellById = new TreeMap<>();
+		cellByName = new TreeMap<>();
 		init();
 	}
-
 	public void addCell(int cellCode, MemoryCell cell){
-		mapById.put(cellCode, cell);
-		mapByName.put(cell.getName(),cell);
-	}
-	protected void init(){
-		initCells();
-		initMem();
+		cellById.put(cellCode, cell);
+		cellByName.put(cell.getName(),cell);
 	}
 	public void write(int cellCode, byte val){
-		MemoryCell cell = mapById.get(cellCode);
-		byte[] m = getMem(cell.getPlcId());
+		MemoryCell cell = cellById.get(cellCode);
+		byte[] m = getMemReference(cell.getPlcId());
 		m[cell.getPos()] = val;
 	}
 	public void write(int cellCode, short val){
-		MemoryCell cell = mapById.get(cellCode);
-		byte[] m = getMem(cell.getPlcId());
+		MemoryCell cell = cellById.get(cellCode);
+		byte[] m = getMemReference(cell.getPlcId());
 		S7.SetWordAt(m, cell.getPos(), val);
 	}
 	public void write(String name, byte val){
-		MemoryCell cell = mapByName.get(name);
-		byte[] m = getMem(cell.getPlcId());
+		MemoryCell cell = cellByName.get(name);
+		byte[] m = getMemReference(cell.getPlcId());
 		m[cell.getPos()] = val;
 	}
 	public void write(String name, short val){
-		MemoryCell cell = mapByName.get(name);
-		byte[] m = getMem(cell.getPlcId());
+		MemoryCell cell = cellByName.get(name);
+		byte[] m = getMemReference(cell.getPlcId());
 		S7.SetWordAt(m, cell.getPos(), val);
 
 	}
@@ -62,34 +58,55 @@ abstract public class MemoryMap {
 		return 2;
 	}
 
+
+	protected void init(){
+		initCells();
+		initMem();
+	}
+
+
 	/**
-	 * Kod obszaru obsługowanego przez obiekt.
+	 * Kod obszaru obsługiwanego przez obiekt.
 	 * Typ tego obszaru "zakodowany" jest klasą obiektu ale może być konieczne podanie wartości liczbowej oznaczającej
 	 * obszar pamięci obowiązujący w bibliotece Moka7
 	 * @return
 	 */
 	abstract protected int areaCode();
 	/**
-	 * Kod obaszaru wewnątrz D.
+	 * Kod obszaru wewnątrz D.
 	 * Na razie nie wiem jak się tym posłużyć i wszędzie zwracam 0;
 	 * @return
 	 */
 	abstract protected int dbNumber();
 	/**
+	 * Zwraca całą pamięć danego typu w jednym buforze byte[].
+	 * Puki zmienne procesu są przechowywane w tej klasie to
+	 * @return
+	 */
+	public byte[] getMemCopy(){
+		byte[] memCopy;
+
+		return memCopy;
+	}
+	/**
+	 * Zwraca kopię obszaru pamięci dla procesora o wskazanym identyfikatorze
+	 * @param plcId
+	 * @return
+	 */
+	public byte[] getMemCopy(int plcId){
+		int size = plcs.get(plcId).getSizeArea(areaCode());
+		byte[] memArea = getMemReference(plcId);
+ 		byte[] memCopy = new byte[size];
+		System.arraycopy(memArea, 0, memCopy, 0, size);
+		return memCopy;
+	}
+	/**
 	 * Zwraca bufor zrzutu pamięci dla procesora podanego jako parametr wywołania
 	 * @param plc
 	 * @return
 	 */
-	public byte[] getMem(int plcId){
-		byte[] m = mem.get(plcId);
-
-//		if( m != null ){
-//			m = new byte[memSize];
-//			plcs.get(plcId).ReadArea(areaCode(), dbNumber(), 0, memSize, m);
-//			mem.put(plcId, m);
-//		}
-
-		return m;
+	public byte[] getMemReference(int plcId){
+		return mem.get(plcId);
 	}
 	/**
 	 * Musi być napisane tak by do memmoryMap wstawiać kolejne obiekty opisujące zmienne procesu.
@@ -117,24 +134,32 @@ abstract public class MemoryMap {
 
 	//------------------------------------------------------------------------------
 
-	// Sterowniki których pamięć przchowywana jest w tym obiekcie
+	// Sterowniki których pamięć przechowywana jest w tym obiekcie
 	protected TreeMap<Integer, PLC> plcs;
+	// el.key = identyfikator sterownika
+	// el.val.key = index pierwszj komórki pamięci dla sterownika el.key
+	// el.val.val = rozmiar obszaru pamięci dla sterownika el.key
+	protected TreeMap<Integer, Pair<Integer, Integer> > memDimension;
+	// obszar danych procesowych
+//	protected byte[] mem;
+	// Obie kolekcje przechowują ten sam zbiór dla ułatwienia dostępu przez id zmiennej i nazwę zmiennej.
+	private final TreeMap<Integer, MemoryCell> cellById;
+	private final TreeMap<String, MemoryCell> cellByName;
+
 
 	// Zrzuty bloków pamięci z procesorów.
 	// Kluczem jest identyfikator odpowiadający identyfikatorowi sterownika umieszczonego w plcs.
 	// Zrzut wykonywany jest tylko przy pierwszej próbie odczytu w tym cyklu.
-	// Na koniec każdego cyklu wszystkie bloki są czyszczone.
 	private final TreeMap<Integer, byte[]> mem;
-
-	// Obie kolekcje przechowują ten sam zbiór dla ułatwienia dostępu przez id zmiennej i nazwę zmiennej.
-	private final TreeMap<Integer, MemoryCell> mapById;
-	private final TreeMap<String, MemoryCell> mapByName;
+	// @prace 00 Przerobić mem tak aby była jedną przestrzenią a nie mapą buforów
 
 	// Aktualna pozycja pierwszego bajtu dla następnej zmiennej.
 	private int currentPos;
 
 }
 /**
+ * @prace 00 pamięć zostaje podzielona na mapę byforów
+ * @prace 00 pos() musi uwzględniać że przy zmianie procesora zmienia się pozycja.
  * @prace 01 oznaczać komórki zmienione podczas steep
  * @prace 02 zapisać do sterownika komórki oznaczone jako zmienione
  */
