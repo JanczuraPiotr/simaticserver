@@ -11,19 +11,19 @@ public class Dump extends Thread{
 
 	/**
 	 * Tworzy wątek z na obiekcie dumpExpert i uruchamia go.
-	 * @param memoryClip
+	 * @param memClip
 	 * @param dumpExpert
 	 */
-	public Dump(MemoryClip memoryClip, DumpExpert dumpExpert){
-		this.memoryClip = memoryClip;
+	public Dump(MemClip memClip, DumpExpert dumpExpert){
+		this.memClip = memClip;
 		this.dumpExpert = dumpExpert;
-		this.queueDump = new LinkedBlockingQueue<MemoryByteClip>();
+		this.queueDump = new LinkedBlockingQueue<MemByteClip>();
 		start();
 	}
 	private Dump(){}
 
 	public void run(){
-		MemoryByteClip tmp;
+		MemByteClip tmp;
 		while(true){
 			try {
 				System.out.println("Dump.run() -> czekanie na dane");
@@ -43,13 +43,14 @@ public class Dump extends Thread{
 	 */
 	public void newData(){
 		System.out.println("Dump.newData()");
-		System.out.println("memoryClip.timeStamp = "+memoryClip.timeStamp);
-		
-		MemoryByteClip tmp = new MemoryByteClip(
-				memoryClip.memoryD.getMemCopy()
+		System.out.println("memoryClip.timeStamp = "+memClip.timeStamp);
+
+		MemByteClip tmp = new MemByteClip(
+				memClip.memD.getMemCopy()
 				, tmpBuffI
 				, tmpBuffQ
-				, memoryClip.timeStamp
+				, memClip.timeStamp
+				, memClip.plcId
 		);
 
 	}
@@ -57,13 +58,13 @@ public class Dump extends Thread{
 	// Obiekty zebrane w memoryClip odnoszą się do bloków danych w obiekcie klasy Process.
 	// Za każdym wykonaniem metody this.newData() na podstawie tych obiektów przygotowywane są bufory które w kolejnym
 	// kroku zostaną zrzucone do bazy, pliku, wysłane "gdzieś"
-	private MemoryClip memoryClip;
+	private MemClip memClip;
 
 	// Obiekt który będzie pobierał dane przygotowane do zrzutu i zebrane w kolejce : ??? jakiej
 	private DumpExpert dumpExpert;
 
 	// Kolejka do której wstawiane są zrzuty pamięci przez metodę this.newData()
-	private LinkedBlockingQueue<MemoryByteClip> queueDump;
+	private LinkedBlockingQueue<MemByteClip> queueDump;
 
 	//------------------------------------------------------------------------------
 	// poniższe chyba nie

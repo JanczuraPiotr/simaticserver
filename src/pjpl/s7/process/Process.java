@@ -3,46 +3,40 @@ package pjpl.s7.process;
 import Moka7.S7;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Map.Entry;
 import java.util.TreeMap;
+import pjpl.s7.common.ConstPLC;
 import pjpl.s7.device.PLC;
-import pjpl.s7.util.MemoryCell;
-import pjpl.s7.util.MemoryClip;
+import pjpl.s7.util.MemCell;
+import pjpl.s7.util.MemClip;
 
 /**
  */
  public abstract class Process implements Runnable{
 	 public Process(){
 		System.out.println("Process.constructor");
-		plcs = new TreeMap<>();
 
-		initPlcs();
-		initMemory();
-		memoryClip = new MemoryClip(memoryD, memoryI, memoryQ,0);
+		init();
+		memClip = new MemClip(memD, memI, memQ);
 	}
 
 	 /**
 		* Uruchomienie operacji odczytu wszystkich bloków danych
 		*/
 	 protected void steepPrepareRead(){
-		 PLC plc;
-		 // @prace 00 Przerobić mem tak aby była jedną przestrzenią a nie mapą buforów
 		 // W procesie jest więcej niż jeden PLC a każda grupa zmiennych wymaga osobnego odczytu.
 		 // Odczytanie wszystkich bloków danych z jednego PLC w przechodząc z bloku do kolejnego bloku
 		 // generuje zwłokę czasową związaną na oczekiwanie na wykonanie poprzedniego odczytu.
 		 // Dla tego odczyt odbywa się z podziałem na bloki danych a nie na procesory dzięki temu w jednym czasie
 		 // wszystkie procesory wykonują komunikację.
-		 for( Entry<Integer, PLC> el : plcs.entrySet()){
-			 plc = el.getValue();
-			 plc.ReadArea(S7.D, 0, 0, plc.getSizeAreaD(), memoryD.getMemReference(el.getKey()));
+
+		 for( int i = 0 ; i < ConstPLC.COUNT ; i++){
+			 resultInputD = plcs[i].ReadArea(S7.D, 0, 0, memD.getSize(), inputBuffD);
 		 }
-		 for( Entry<Integer, PLC> el : plcs.entrySet()){
-			 plc = el.getValue();
-			 plc.ReadArea(S7.I, 0, 0, plc.getSizeAreaI(), memoryI.getMemReference(el.getKey()));
+		 for( int i = 0 ; i < ConstPLC.COUNT ; i++){
+			 resultInputI = plcs[i].ReadArea(S7.I, 0, 0, memI.getSize(), inputBuffI);
 		 }
-		 for( Entry<Integer, PLC> el : plcs.entrySet()){
-			 plc = el.getValue();
-			 plc.ReadArea(S7.Q, 0, 0, plc.getSizeAreaQ(), memoryQ.getMemReference(el.getKey()));
+		 for( int i = 0 ; i < ConstPLC.COUNT ; i++){
+			 resultInputQ = plcs[i].ReadArea(S7.Q, 0, 0, memQ.getSize(), inputBuffQ);
 		 }
 	 }
 	 /**
@@ -59,6 +53,7 @@ import pjpl.s7.util.MemoryClip;
 	 protected void steepRead(){
 		 // Do czasu zmodyfikowania obiektu S7Client całą operację pobrania danych ze sterownika wykonywana jest w metodzie
 		 // steepPrepareRead() w sposób blokujący.
+		 // @prace 00 odebrać wczytane dane;
 	 };
 	/**
 	 * Główne operacje wątku
@@ -85,7 +80,7 @@ import pjpl.s7.util.MemoryClip;
 			msSteepStart =  System.currentTimeMillis();
 			steepPrepareRead();      msSteepPrepareRead = System.currentTimeMillis();
 			steepWaitRead();         msSteepWaitRead = System.currentTimeMillis();
-			memoryClip.timeStamp = System.currentTimeMillis();
+			memClip.timeStamp = System.currentTimeMillis();
 			steepRead();             msSteepRead = System.currentTimeMillis();
 			steep();                 msSteep = System.currentTimeMillis();
 			steepWrite();            msSteepWrite = System.currentTimeMillis();
@@ -104,27 +99,57 @@ import pjpl.s7.util.MemoryClip;
 		podsumowanieSteep();
 	}
 
+	//------------------------------------------------------------------------------
+	// metody chronione
+
+	protected void addPlc(int codePLC, PLC newPlc){
+		plcs[codePLC] = newPlc;
+	}
 
 	abstract protected void initMemory();
 	abstract protected void initPlcs();
-	protected void addPlc(PLC newPlc){
-		plcs.put(Process1.id, newPlc);
+	protected void initTempBuff(){
+		inputBuffD = new byte[memD.getSize()];
+		inputBuffI = new byte[memI.getSize()];
+		inputBuffQ = new byte[memQ.getSize()];
 	}
+
+	//------------------------------------------------------------------------------
+	// metody prywatne
+
+	private void init(){
+		initPlcs();
+		initMemory();
+		initTempBuff();
+	}
+
+	//------------------------------------------------------------------------------
+	// atrybuty chronione
+
+	protected MemD memD;
+	protected MemI memI;
+	protected MemQ memQ;
+	protected MemClip memClip;
+	// @todo opracować pozostałe bloki pamięci
+
+	// Sterowniki obsługujące process.
+	protected PLC[] plcs = new PLC[ConstPLC.COUNT];
+
+	// Komórki pamięci zmienione podczas tego kroku. Będą wysłane do sterownika w metodzie steepWrite().
+	protected TreeMap<Integer, MemCell> memDBChangedId;
+	// Wyjścia zmienione podczas tego kroku. Będą wysłane do sterownika w metodzie steepWrite().
+	protected TreeMap<Integer, MemCell> memOutChangedId;
 
 
 	//------------------------------------------------------------------------------
-	protected MemoryD memoryD;
-	protected MemoryI memoryI;
-	protected MemoryQ memoryQ;
-	protected MemoryClip memoryClip;
-	// @todo opracować pozostałe bloki pamięci
+	// atrybuty prywatne
 
-	protected TreeMap<Integer, PLC> plcs;
-	// Komórki pamięci zmienione podczas tego kroku. Będą wysłane do sterownika w metodzie steepWrite().
-	protected TreeMap<Integer, MemoryCell> memDBChangedId;
-	// Wyjścia zmienione podczas tego kroku. Będą wysłane do sterownika w metodzie steepWrite().
-	protected TreeMap<Integer, MemoryCell> memOutChangedId;
-
+	private byte[] inputBuffD;
+	private byte[] inputBuffI;
+	private byte[] inputBuffQ;
+	private int resultInputD;
+	private int resultInputI;
+	private int resultInputQ;
 
 
 

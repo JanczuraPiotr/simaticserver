@@ -8,5 +8,5 @@ import java.text.SimpleDateFormat;
  * Wszystkie klasy pochodne zapisuję oddzielnie każdy blok danych, w osobnym pliku, tabeli bazy danych ...
  */
 abstract public class DumpExpert{
-	public abstract void dump(MemoryByteClip data);
+	public abstract void dump(MemByteClip data);
 }

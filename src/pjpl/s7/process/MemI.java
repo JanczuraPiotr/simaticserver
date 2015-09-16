@@ -1,29 +1,28 @@
 package pjpl.s7.process;
 
 import Moka7.S7;
-import java.util.TreeMap;
 import pjpl.s7.common.CellCode;
+import pjpl.s7.common.ConstPLC;
 import pjpl.s7.common.TypeCode;
 import pjpl.s7.device.PLC;
-import pjpl.s7.util.MemoryCell;
-import pjpl.s7.util.MemoryMap;
+import pjpl.s7.util.MemCell;
+import pjpl.s7.util.MemMap;
 
-public class MemoryI extends MemoryMap{
+public class MemI extends MemMap{
 
-	public MemoryI(TreeMap<Integer, PLC> plcs) {
+	public MemI(PLC[] plcs) {
 		super(plcs);
 	}
 
 	@Override
-	public void initCells() {
-		addCell(
-				CellCode.IN_1
-				, new MemoryCell(
+	public void addCells() {
+		addCell(CellCode.IN_1
+				, new MemCell(
 						"in_1"
 						, pos(TypeCode.size[TypeCode.BYTE])
 						, TypeCode.BYTE
-						, Process1.PLC1
-						, plcs.get(Process1.PLC1)
+						, ConstPLC.PLC1
+						, plcs[ConstPLC.PLC1]
 		));
 	}
 

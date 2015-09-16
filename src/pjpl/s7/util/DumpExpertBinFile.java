@@ -21,7 +21,7 @@ public class DumpExpertBinFile extends DumpExpert{
 	}
 
 	@Override
-	public void dump(MemoryByteClip data) {
+	public void dump(MemByteClip data) {
 
 //		FileWriter writerD = new FileWriter( dirDump + "/" + dateFileNameFormat.format(parent.getMsStartTime())+".pdu");
 //		writerD.write(json);
