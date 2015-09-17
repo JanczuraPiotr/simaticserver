@@ -3,6 +3,7 @@ package pjpl.s7.process;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import javax.naming.NamingException;
+import pjpl.s7.common.CellCode;
 import pjpl.s7.common.ConstPLC;
 import pjpl.s7.run.SimaticServer;
 import pjpl.s7.util.Dump;
@@ -28,12 +29,42 @@ public class Process1 extends Process{
 
 	@Override
 	protected void steepRead(){
+		super.steepRead();
 		dump.newData();
 	}
 
 	@Override
 	protected void steep(){
 		System.out.println("Process1.steepStart()");
+
+		memD.write(CellCode.ZMIENNA_1, 3);
+		memD.write(CellCode.ZMIENNA_2, 34);
+
+		memQ.write(CellCode.OUT_1, out++);
+
+		String s = "";
+		byte[] mem;
+
+		mem =	memD.getMem();
+		for ( int i = 0 ; i < mem.length ; i++ ){
+			s += " "+String.format("%02X", mem[i]);
+		}
+		System.out.println(" memD : " + s);
+		s = "";
+		mem =	memI.getMem();
+		for( int i = 0; i < mem.length ; i++ ){
+			s += " "+String.format("%02X", mem[i]);
+		}
+		System.out.println(" memI : "+ s);
+		mem =	memQ.getMem();
+
+		s = "";
+		for( int i = 0; i < mem.length ; i++ ){
+			s += " "+String.format("%02X", mem[i]);
+		}
+		System.out.println(" memQ : "+ s);
+
+//		memD.write(CellCode.ZMIENNA_1, 33);
 
 //		try {
 //			msProcess1Start = System.currentTimeMillis();
@@ -74,6 +105,7 @@ public class Process1 extends Process{
 	@Override
 	public void steepException(Exception e) {
 		System.err.println("Process1.steepException -> wyjątek : "+e.toString());
+		System.err.println("Process1.steepException -> stos : "+e.getStackTrace().toString());
 	}
 
 	@Override
@@ -88,6 +120,8 @@ public class Process1 extends Process{
 
 
 	//------------------------------------------------------------------------------
+
+	protected static byte out = 1;
 
 	private final DateFormat datePCFormat = new SimpleDateFormat(pjpl.s7.run.SimaticServer.config.getProperty("format_dateMS"));
 	private volatile String startTime = new String();

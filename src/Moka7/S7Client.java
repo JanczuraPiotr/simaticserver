@@ -21,6 +21,7 @@ public class S7Client
     private static final byte S7WLCounter = 0x1C;
     private static final byte S7WLTimer   = 0x1D;
     // Error Codes
+		public static final int errIsOK                = 0;
     public static final int errTCPConnectionFailed = 0x0001;
     public static final int errTCPDataSend         = 0x0002;
     public static final int errTCPDataRecv         = 0x0003;

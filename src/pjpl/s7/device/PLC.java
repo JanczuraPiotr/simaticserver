@@ -32,7 +32,6 @@ abstract public class PLC extends S7Client{
 		return ret;
 	}
 
-	// @todo Może lepiej usunąć metody getSizeXX a rozmiar danych określać w klasach MemoryX
 	abstract public int getSizeAreaD();
 	abstract public int getSizeAreaI();
 	abstract public int getSizeAreaQ();

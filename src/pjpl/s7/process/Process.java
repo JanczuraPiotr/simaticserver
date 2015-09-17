@@ -1,6 +1,7 @@
 package pjpl.s7.process;
 
 import Moka7.S7;
+import Moka7.S7Client;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TreeMap;
@@ -12,12 +13,29 @@ import pjpl.s7.util.MemClip;
 /**
  */
  public abstract class Process implements Runnable{
+	 public static final int PLC_DB_BLOCK = 1;
+	 public static final int PLC_INTPUT_BUFF_D = 0;
+	 public static final int PLC_INTPUT_BUFF_I = 1;
+	 public static final int PLC_INTPUT_BUFF_Q = 2;
+	 public static final int PLC_INTPUT_BUFF_ = 3;
+	 public static final int PLC_OPERATION_RESULT_READ_D = 0;
+	 public static final int PLC_OPERATION_RESULT_READ_I = 1;
+	 public static final int PLC_OPERATION_RESULT_READ_Q = 2;
+	 public static final int PLC_OPERATION_RESULT_ = 3;
+
 	 public Process(){
 		System.out.println("Process.constructor");
 
 		init();
 		memClip = new MemClip(memD, memI, memQ);
 	}
+
+	 //------------------------------------------------------------------------------
+	 // interfejs - początek
+
+	 // interfejs - koniec
+	 //------------------------------------------------------------------------------
+
 
 	 /**
 		* Uruchomienie operacji odczytu wszystkich bloków danych
@@ -29,14 +47,17 @@ import pjpl.s7.util.MemClip;
 		 // Dla tego odczyt odbywa się z podziałem na bloki danych a nie na procesory dzięki temu w jednym czasie
 		 // wszystkie procesory wykonują komunikację.
 
-		 for( int i = 0 ; i < ConstPLC.COUNT ; i++){
-			 resultInputD = plcs[i].ReadArea(S7.D, 0, 0, memD.getSize(), inputBuffD);
+		 for( int plcIx = 0 ; plcIx < plcs.length ; plcIx++){
+			 resultPlcsOperations[plcIx][PLC_OPERATION_RESULT_READ_D]
+					 = plcs[plcIx].ReadArea(S7.D, 1, 0, memD.getSize(), inputPlcsBuffs[plcIx][PLC_INTPUT_BUFF_D]);
 		 }
 		 for( int i = 0 ; i < ConstPLC.COUNT ; i++){
-			 resultInputI = plcs[i].ReadArea(S7.I, 0, 0, memI.getSize(), inputBuffI);
+			 resultPlcsOperations[i][PLC_OPERATION_RESULT_READ_I]
+					 = plcs[i].ReadArea(S7.I, 0, 0, memI.getSize(), inputPlcsBuffs[i][PLC_INTPUT_BUFF_I]);
 		 }
 		 for( int i = 0 ; i < ConstPLC.COUNT ; i++){
-			 resultInputQ = plcs[i].ReadArea(S7.Q, 0, 0, memQ.getSize(), inputBuffQ);
+			 resultPlcsOperations[i][PLC_OPERATION_RESULT_READ_Q]
+					 = plcs[i].ReadArea(S7.Q, 0, 0, memQ.getSize(), inputPlcsBuffs[i][PLC_INTPUT_BUFF_Q]);
 		 }
 	 }
 	 /**
@@ -50,11 +71,13 @@ import pjpl.s7.util.MemClip;
 		* Wykonane gdy zakończyły pracę wszystkie operacje odczytu danych.
 		* Po tej metodzie wszystkie obiekty przechowujące stan pamięci i portów sterownika są aktualne.
 		*/
-	 protected void steepRead(){
-		 // Do czasu zmodyfikowania obiektu S7Client całą operację pobrania danych ze sterownika wykonywana jest w metodzie
-		 // steepPrepareRead() w sposób blokujący.
-		 // @prace 00 odebrać wczytane dane;
-	 };
+	protected void steepRead(){
+		for( int plcIx = 0 ; plcIx < inputPlcsBuffs.length ; plcIx++){
+			memD.writeMem(inputPlcsBuffs[plcIx][PLC_INTPUT_BUFF_D], plcIx);
+			memI.writeMem(inputPlcsBuffs[plcIx][PLC_INTPUT_BUFF_I], plcIx);
+			memQ.writeMem(inputPlcsBuffs[plcIx][PLC_INTPUT_BUFF_Q], plcIx);
+		}
+	};
 	/**
 	 * Główne operacje wątku
 	 */
@@ -63,7 +86,24 @@ import pjpl.s7.util.MemClip;
 	 * Zapisywanie zmodyfikowanych zmiennych do sterownika
 	 */
 	protected void steepWrite(){
+		byte[] buff;
+		int start;
 
+		for( int plcIx = 0; plcIx <  plcs.length; plcIx++ ){
+			buff = memD.readModifiedMem(plcIx);
+			start = memD.getStartModifiedMem(plcIx);
+			plcs[plcIx].WriteArea(S7.D, PLC_DB_BLOCK , start, buff.length, buff);
+		}
+		for( int plcIx = 0; plcIx <  plcs.length; plcIx++ ){
+			buff = memI.readModifiedMem(plcIx);
+			start = memI.getStartModifiedMem(plcIx);
+			plcs[plcIx].WriteArea(S7.I, PLC_DB_BLOCK , start, buff.length, buff);
+		}
+		for( int plcIx = 0; plcIx <  plcs.length; plcIx++ ){
+			buff = memQ.readModifiedMem(plcIx);
+			start = memQ.getStartModifiedMem(plcIx);
+			plcs[plcIx].WriteArea(S7.Q, PLC_DB_BLOCK , start, buff.length, buff);
+		}
 	};
 	abstract protected void steepException(Exception e);
 	abstract protected void steepExceptionFinally(Exception e);
@@ -91,9 +131,17 @@ import pjpl.s7.util.MemClip;
 				steepException(e);
 			}catch(Exception eBis){
 				steepExceptionFinally(e);
+			}finally{
+				System.out.println("Process.run -> Exception e -> try -> finally ");
 			}
 		}finally{
 			steepFinaly();
+
+			for( int i = 0; i < resultPlcsOperations.length; i++){
+				for( int j = 0 ; j < resultPlcsOperations[i].length ; j++ ){
+					resultPlcsOperations[i][j] = S7Client.errIsOK;
+				}
+			}
 			msSteepFinally = System.currentTimeMillis();
 		}
 		podsumowanieSteep();
@@ -108,10 +156,14 @@ import pjpl.s7.util.MemClip;
 
 	abstract protected void initMemory();
 	abstract protected void initPlcs();
-	protected void initTempBuff(){
-		inputBuffD = new byte[memD.getSize()];
-		inputBuffI = new byte[memI.getSize()];
-		inputBuffQ = new byte[memQ.getSize()];
+	protected void initInputBuff(){
+		inputPlcsBuffs = new byte[plcs.length][PLC_INTPUT_BUFF_][];
+		for( int i = 0; i < plcs.length; i++ ){
+			inputPlcsBuffs[i][PLC_INTPUT_BUFF_D] = new byte[memD.getPlcMemSize(i)];
+			inputPlcsBuffs[i][PLC_INTPUT_BUFF_I] = new byte[memI.getPlcMemSize(i)];
+			inputPlcsBuffs[i][PLC_INTPUT_BUFF_Q] = new byte[memQ.getPlcMemSize(i)];
+		}
+		resultPlcsOperations = new int[plcs.length][PLC_OPERATION_RESULT_];
 	}
 
 	//------------------------------------------------------------------------------
@@ -120,7 +172,7 @@ import pjpl.s7.util.MemClip;
 	private void init(){
 		initPlcs();
 		initMemory();
-		initTempBuff();
+		initInputBuff();
 	}
 
 	//------------------------------------------------------------------------------
@@ -144,15 +196,9 @@ import pjpl.s7.util.MemClip;
 	//------------------------------------------------------------------------------
 	// atrybuty prywatne
 
-	private byte[] inputBuffD;
-	private byte[] inputBuffI;
-	private byte[] inputBuffQ;
-	private int resultInputD;
-	private int resultInputI;
-	private int resultInputQ;
-
-
-
+	// Tablica buforów wejściowych dla wszystkich PLC
+	private byte[][][] inputPlcsBuffs;
+	private int[][] resultPlcsOperations;
 
 
 

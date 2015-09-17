@@ -99,4 +99,6 @@ public class SimaticServer {
 }
 /**
  * @todo Wszystkie wystąpienia nazwy procesu : "Brama" zamienić na "process1"
+ * @prace 10 utworzyć Command
+ * @prace 20 modyfikować stan PLC za pomocą Command
  */

@@ -9,12 +9,12 @@ public class MemClip {
 	public MemMap memQ;
 	/**
 	 * Moment wykonania zrzutu.
-	 * Jeżel 0 to dane utworzono wewnątrz SimaticServer
+	 * Jeżel < 0 to dane utworzono wewnątrz SimaticServer
 	 */
 	public long timeStamp;
 	/**
 	 * PLC w którym wykonano zrzut.
-	 * Jeżeli 0 to dane powstały wewnątrz SimaticServer
+	 * Jeżeli < 0 to dane powstały wewnątrz SimaticServer
 	 */
 	public int plcId;
 
