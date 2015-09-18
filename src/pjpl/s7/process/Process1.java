@@ -2,12 +2,14 @@ package pjpl.s7.process;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.NamingException;
-import pjpl.s7.common.CellCode;
 import pjpl.s7.common.ConstPLC;
 import pjpl.s7.run.SimaticServer;
-import pjpl.s7.util.Dump;
+import pjpl.s7.util.DumpThread;
 import pjpl.s7.util.DumpExpertBinFile;
+import pjpl.s7.util.DumpExpertBinMySql;
 
 
 public class Process1 extends Process{
@@ -18,11 +20,23 @@ public class Process1 extends Process{
 	public Process1() throws NamingException, ClassNotFoundException, InstantiationException, IllegalAccessException{
 		super();
 		System.out.println("Process1 constructor");
-		dump = new Dump(
+		dumpFile = new DumpThread(
 				memClip
 				, new DumpExpertBinFile(
 						SimaticServer.config.getProperty("dir_dump")
-						, SimaticServer.config.getProperty("format_dateMS")
+						, SimaticServer.config.getProperty("format_datePackedMS")
+				)
+		);
+
+		dumpMySql = new DumpThread(
+				memClip
+				, new DumpExpertBinMySql(
+						"jdbc:mysql://"+SimaticServer.config.getProperty("mysql_server")
+								+":"+SimaticServer.config.getProperty("mysql_port")
+								+"/"+SimaticServer.config.getProperty("mysql_db_name")
+						,	SimaticServer.config.getProperty("mysql_user_name")
+						,	SimaticServer.config.getProperty("mysql_user_password")
+						, "process1"
 				)
 		);
 	}
@@ -30,17 +44,17 @@ public class Process1 extends Process{
 	@Override
 	protected void steepRead(){
 		super.steepRead();
-		dump.newData();
+		dumpFile.newData();
+		dumpMySql.newData();
 	}
-
 	@Override
 	protected void steep(){
 		System.out.println("Process1.steepStart()");
 
-		memD.write(CellCode.ZMIENNA_1, 3);
-		memD.write(CellCode.ZMIENNA_2, 34);
-
-		memQ.write(CellCode.OUT_1, out++);
+//		memD.write(CellCode.ZMIENNA_1, 3);
+//		memD.write(CellCode.ZMIENNA_2, 34);
+//
+//		memQ.write(CellCode.OUT_1, out++);
 
 		String s = "";
 		byte[] mem;
@@ -63,22 +77,6 @@ public class Process1 extends Process{
 			s += " "+String.format("%02X", mem[i]);
 		}
 		System.out.println(" memQ : "+ s);
-
-//		memD.write(CellCode.ZMIENNA_1, 33);
-
-//		try {
-//			msProcess1Start = System.currentTimeMillis();
-//
-//			startTime = datePCFormat.format(msProcess1Start);
-//			summaryRun = "------------------------------------------------------------------------------\n";
-//			summaryRun += datePCFormat.format(msProcess1Start) + " Process1.steep() Start \n";
-//
-//			msProcess1Stop = System.currentTimeMillis();
-//			summaryRun += datePCFormat.format(msProcess1Stop) + " Process1.steep() Stop praca = " + (msProcess1Stop - msProcess1Start) + "[ms]\n";
-//		} finally {
-//			System.out.println(summaryRun);
-//			System.out.println("Process1.steepEnd()");
-//		}
 
 
 	}
@@ -105,7 +103,11 @@ public class Process1 extends Process{
 	@Override
 	public void steepException(Exception e) {
 		System.err.println("Process1.steepException -> wyjątek : "+e.toString());
-		System.err.println("Process1.steepException -> stos : "+e.getStackTrace().toString());
+	}
+
+	@Override
+	protected void steepExceptionBis(Exception e) {
+		System.out.println("Process1.steepExceptionBis -> wyjątek :  "+e.toString());
 	}
 
 	@Override
@@ -129,6 +131,7 @@ public class Process1 extends Process{
 	private long msProcess1StopRead = 0;
 	private long msProcess1Stop = 0;
 	private String summaryRun;
-	private Dump dump;
+	private DumpThread dumpFile;
+	private DumpThread dumpMySql;
 
 }

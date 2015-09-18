@@ -1,59 +1,57 @@
 package pjpl.s7.util;
-// Zrzuca zmienne w rozdzieleniu na typy bloków
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Pobiera zrzut zmiennych porcesu i zapisuje je za pomocą DumpExpert.
+ * Metoda i miejsce zapisania zrzutu zależy od klasy obiektu DunpExpert.
+ *
+ * @author Piotr Janczura <piotr@janczura.pl>
  */
-public class Dump extends Thread{
-
+public class DumpThread extends Thread{
 	/**
-	 * Tworzy wątek z na obiekcie dumpExpert i uruchamia go.
-	 * @param memClip
-	 * @param dumpExpert
+	 * @param memClip Bloki danych procesu z których ma być wykonywany zrzut.
+	 * @param dumpExpert Obiekt klasy wyspecjalozowanej w zapisie zrzutu.
 	 */
-	public Dump(MemClip memClip, DumpExpert dumpExpert){
+	public DumpThread(MemClip memClip, DumpExpert dumpExpert){
 		this.memClip = memClip;
 		this.dumpExpert = dumpExpert;
 		this.queueDump = new LinkedBlockingQueue<MemByteClip>();
 		start();
 	}
-	private Dump(){}
+	private DumpThread(){}
 
 	public void run(){
 		MemByteClip tmp;
 		while(true){
 			try {
-				System.out.println("Dump.run() -> czekanie na dane");
+				System.out.println("DumpThread.run() -> czekanie na dane");
 				tmp = queueDump.take();
-				System.out.println("Dump.run() -> odczytano dane");
+				System.out.println("DumpThread.run() -> odczytano dane");
+				dumpExpert.dump(tmp);
 
 			} catch (InterruptedException ex) {
-				Logger.getLogger(Dump.class.getName()).log(Level.SEVERE, null, ex);
+				Logger.getLogger(DumpThread.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
 	}
 
 	/**
-	 * Metoda musi być wykonana w przez Process.steepRead().
-	 * Dzięki temu obiekt jest na bierząco informowany o aktualizowaniu stanu pamięci procesu
-	 * i może przystapić do zrzutu.
+	 * Metoda musi być wykonana przez steepRead() w klasie dziedziczącej po Process.
 	 */
 	public void newData(){
-		System.out.println("Dump.newData()");
-		System.out.println("memoryClip.timeStamp = "+memClip.timeStamp);
-
-		MemByteClip tmp = new MemByteClip(
-				memClip.memD.getMemCopy()
-				, tmpBuffI
-				, tmpBuffQ
-				, memClip.timeStamp
-				, memClip.plcId
-		);
-
+		queueDump.add(memClip.toMemByteClip());
 	}
+
+	//------------------------------------------------------------------------------
+	// atrybuty chronione
+
+
+
+	//------------------------------------------------------------------------------
+	// atrybuty prywatne
 
 	// Obiekty zebrane w memoryClip odnoszą się do bloków danych w obiekcie klasy Process.
 	// Za każdym wykonaniem metody this.newData() na podstawie tych obiektów przygotowywane są bufory które w kolejnym

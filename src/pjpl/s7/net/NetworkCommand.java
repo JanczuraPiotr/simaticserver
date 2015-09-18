@@ -29,5 +29,5 @@ public class NetworkCommand extends Thread{
 	private final BuilderProcessCommand builderCommand;
 }
 /**
- * @prace 11 Utworzyć BuilderCommand i utworzoną za jego pomocą komendę którą przekazać do procesu.
+ * @prace 40 Obsłużyć komendy przychodzące siecią.
  */

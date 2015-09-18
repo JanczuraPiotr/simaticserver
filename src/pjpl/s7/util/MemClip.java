@@ -34,5 +34,19 @@ public class MemClip {
 		this.plcId = -1;
 	}
 
-	private MemClip(){}
+	//------------------------------------------------------------------------------
+	// interfejs
+
+	public MemByteClip toMemByteClip(){
+		return new MemByteClip(memD.getMemCopy(), memI.getMemCopy(), memQ.getMemCopy(), timeStamp, plcId);
+	}
+
+	// interfejs
+	//------------------------------------------------------------------------------
+
+	//------------------------------------------------------------------------------
+	// metody prywatne
+
+
+private MemClip(){}
 }

@@ -106,6 +106,7 @@ import pjpl.s7.util.MemClip;
 		}
 	};
 	abstract protected void steepException(Exception e);
+	abstract protected void steepExceptionBis(Exception eBis);
 	abstract protected void steepExceptionFinally(Exception e);
 	abstract protected void steepFinaly();
 	/**
@@ -130,9 +131,9 @@ import pjpl.s7.util.MemClip;
 			try{
 				steepException(e);
 			}catch(Exception eBis){
-				steepExceptionFinally(e);
+				steepExceptionBis(eBis);
 			}finally{
-				System.out.println("Process.run -> Exception e -> try -> finally ");
+				steepExceptionFinally(e);
 			}
 		}finally{
 			steepFinaly();
