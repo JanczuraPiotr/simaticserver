@@ -27,7 +27,7 @@ public class DumpThread extends Thread{
 		MemByteClip tmp;
 		while(true){
 			try {
-				System.out.println("DumpThread.run() -> czekanie na dane");
+				System.out.println(dumpExpert.getClass().getName()+".run() -> czekanie na dane");
 				tmp = queueDump.take();
 				System.out.println("DumpThread.run() -> odczytano dane");
 				dumpExpert.dump(tmp);

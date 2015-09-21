@@ -6,6 +6,7 @@ import javax.naming.NamingException;
 import pjpl.s7.common.CellCode;
 import pjpl.s7.common.ConstPLC;
 import pjpl.s7.run.SimaticServer;
+import pjpl.s7.type.Variable;
 import pjpl.s7.util.DumpThread;
 import pjpl.s7.util.DumpExpertBinFile;
 import pjpl.s7.util.DumpExpertBinMySql;
@@ -49,6 +50,15 @@ public class Process1 extends Process{
 	@Override
 	protected void steep(){
 		System.out.println("Process1.steepStart()");
+
+		short zmienna_1 = memD.readInt(CellCode.ZMIENNA_1);
+		short zmienna_2 = memD.readInt(CellCode.ZMIENNA_2);
+
+		zmienna_1 += 1;
+		zmienna_2 += 2;
+
+		System.out.println("zmienna_1 = " + String.format("%02X",zmienna_1 ));
+		System.out.println("zmienna_2 = " + String.format("%02X",zmienna_2 ));
 
 
 		memD.write(CellCode.ZMIENNA_1, zmienna_1++);
@@ -123,8 +133,6 @@ public class Process1 extends Process{
 
 	//------------------------------------------------------------------------------
 
-	private short zmienna_1 = 3;
-	private short zmienna_2 = 44;
 	private static byte out = 1;
 
 	private final DateFormat datePCFormat = new SimpleDateFormat(pjpl.s7.run.SimaticServer.config.getProperty("format_dateMS"));

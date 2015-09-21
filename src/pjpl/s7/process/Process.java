@@ -100,7 +100,6 @@ import pjpl.s7.util.MemClip;
 			);
 			modCells.clear();
 		}
-
 		if( ( modCells = memI.getModifiedCells() ) != null){
 			byte[] mem = memI.getMem();
 			modCells.forEach(

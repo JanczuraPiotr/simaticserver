@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import pjpl.s7.common.ConstPLC;
 import pjpl.s7.common.TypeCode;
 import pjpl.s7.device.PLC;
+import pjpl.s7.type.Variable;
 
 /**
  * Mapuje zmienne procesowe na bloki danych sterowników obsługujących proces.
@@ -135,7 +136,7 @@ abstract public class MemMap {
 
 
 	public void write(int cellCode, int val){
-		switch(cells[cellCode].typ){
+		switch(cells[cellCode].getTyp()){
 			case TypeCode.BYTE:
 				writeByte(cellCode, (byte)val);
 				break;
@@ -151,7 +152,7 @@ abstract public class MemMap {
 		onUpdateCell(cells[cellCode]);
 	}
 	public void write(int cellCode, float val){
-		switch(cells[cellCode].typ){
+		switch(cells[cellCode].getTyp()){
 			case TypeCode.REAL:
 				break;
 			case TypeCode.LREAL:
@@ -162,7 +163,7 @@ abstract public class MemMap {
 		onUpdateCell(cells[cellCode]);
 	}
 	public void write(int cellCode, double val){
-		switch(cells[cellCode].typ){
+		switch(cells[cellCode].getTyp()){
 			case TypeCode.LREAL:
 				break;
 			default:
@@ -170,24 +171,52 @@ abstract public class MemMap {
 		}
 		onUpdateCell(cells[cellCode]);
 	}
-	public byte readByte(int cellCode){
-		return mem[cells[cellCode].pos];
+	/**
+	 * @deprecated falne ale mało wydajne
+	 */
+	public Variable read(int cellCode){
+		Variable var = null;
+		switch(cells[cellCode].getTyp()){
+			case TypeCode.BYTE:
+				var =  new pjpl.s7.type.Byte(readByte(cellCode) );
+				break;
+			case TypeCode.INT:
+				var = new pjpl.s7.type.Int( readInt(cellCode) );
+				break;
+			case TypeCode.DINT:
+				var = new pjpl.s7.type.DInt( readDInt(cellCode) );
+				break;
+			case TypeCode.REAL:
+				var = new pjpl.s7.type.Real( readReal(cellCode) );
+				break;
+//			case TypeCode.LREAL:
+//				var = new pjpl.s7.type.LReal( readLReal(cellCode) );
+//				break;
+			default :
+				return var;
+		}
+		return var;
 	}
-	public int readInt(int cellCode){
-		return S7.GetShortAt(mem, cells[cellCode].pos);
+	public byte readByte(int cellCode){
+		// @todo sprawdź rzeczywisty typ zmiennej i ewentualnie rzuć wyjątek
+		return (byte)mem[cells[cellCode].getPos()];
+	}
+	public short readInt(int cellCode){
+		// @todo sprawdź rzeczywisty typ zmiennej i ewentualnie rzuć wyjątek
+		return (short)S7.GetShortAt(mem, cells[cellCode].getPos());
 	}
 	public int readDInt(int cellCode){
-		// @prace public int readDInt(int cellCode){
-		return 1;
+		// @todo sprawdź rzeczywisty typ zmiennej i ewentualnie rzuć wyjątek
+		return (int)S7.GetDIntAt(mem, cells[cellCode].getPos());
 	}
 	public float readReal(int cellCode){
-		// @prace public float readReal(int cellCode)
-		return 1;
+		// @todo sprawdź rzeczywisty typ zmiennej i ewentualnie rzuć wyjątek
+		return (float)S7.GetFloatAt(mem, cells[cellCode].getPos());
 	}
-	public double readLReal(int cellCode){
-		// @prace public double readLReal(int cellCode)
-		return 1;
-	}
+//	public double readLReal(int cellCode){
+//		// @prace public double readLReal(int cellCode)
+//		return 1;
+//	}
 
 	public int getSize(){
 		return memSize;
@@ -208,7 +237,7 @@ abstract public class MemMap {
 	 * @param val
 	 */
 	private void writeByte(int cellCode, byte val){
-		mem[cells[cellCode].pos] = val;
+		mem[cells[cellCode].getPos()] = val;
 	}
 	/**
 	 * Modyfikuje zmienną PLC Short 16 bitów ze znakiem
@@ -216,7 +245,7 @@ abstract public class MemMap {
 	 * @param val
 	 */
 	private void writeInt(int cellCode, short val){
-		S7.SetShortAt(mem, cells[cellCode].pos, val);
+		S7.SetShortAt(mem, cells[cellCode].getPos(), val);
 	}
 	/**
 	 * Modyfikuje zmienną PLC DInt 32 bity ze znakiem
@@ -224,12 +253,12 @@ abstract public class MemMap {
 	 * @param val
 	 */
 	private void writeDInt(int cellCode, int val){
-		S7.SetDIntAt(mem, cells[cellCode].pos, val);
+		S7.SetDIntAt(mem, cells[cellCode].getPos(), val);
 	}
 
 	protected void addCell(int cellCode, MemCell cell){
 		tempCellMap.put(cellCode, cell);
-		memSize += cell.size;
+		memSize += cell.getSize();
 	}
 	/**
 	 * Kod obszaru obsługiwanego przez obiekt.
@@ -297,7 +326,7 @@ abstract public class MemMap {
 		memSize = 0;
 		tempCellMap.entrySet().stream().forEach(
 				(el)->{
-					memSize += el.getValue().size;
+					memSize += el.getValue().getSize();
 				}
 		);
 		mem = new byte[memSize];
@@ -326,10 +355,10 @@ abstract public class MemMap {
 
 		clearMemArrange();
 		for( int c = 0 ; c < cellsCount ; c++ ){
-			memArrange[cells[c].plcId][PLC_MEM_ARRANGE_SIZE] += cells[c].size;
+			memArrange[cells[c].getPlcId()][PLC_MEM_ARRANGE_SIZE] += cells[c].getSize();
 			// Dla wszystkich procesorów leżących w dalszej kolejności przesuwa się punkt startowy
-			for ( int p = cells[c].plcId + 1 ; p < plcs.length ; p++){
-				memArrange[p][PLC_MEM_ARRANGE_START] += cells[c].size;
+			for ( int p = cells[c].getPlcId() + 1 ; p < plcs.length ; p++){
+				memArrange[p][PLC_MEM_ARRANGE_START] += cells[c].getSize();
 			}
 		}
 	}

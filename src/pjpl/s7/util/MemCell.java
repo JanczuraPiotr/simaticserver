@@ -1,13 +1,14 @@
 package pjpl.s7.util;
 
+import pjpl.s7.common.CellCode;
 import pjpl.s7.common.TypeCode;
 import pjpl.s7.device.PLC;
+import pjpl.s7.type.Variable;
 
 /**
  * Informacja o mapowaniu zmiennej procesowej na sterownik i obszar pamięci.
  * Podczas konstrukcji należy wstawiać zmienne w takiej kolejności w jakiej są umieszczone w pamięci plc wraz z
  * zachowaniem kolejności sterowników.
- * @prace 10 MemCell powinna być fabryką zwracającą obiekt klasy odpowiadającej typowi zmiennej wynikającego z typ
  */
 public class MemCell {
 
@@ -95,18 +96,18 @@ public class MemCell {
 
 	//------------------------------------------------------------------------------
 	// pozycja pierwszego bitu w obszarze pamięci. Nie jest pozycją w wewnętrznej pamięci PLC
-	public int pos;
+	private int pos;
 	// typ danych
-	public int typ;
-	public int size;
+	private int typ;
+	private int size;
 	// nazwa zmiennej
-	public String name;
+	private String name;
 	// opis zmiennej
-	public String description;
+	private String description;
 	// identyfikator sterownika
-	public int plcId; // @todo nie wiem czy jest konieczny ten identyfikator
+	private int plcId; // @todo nie wiem czy jest konieczny ten identyfikator
 	// sterownik obsługujący tą zmienną
-	public PLC plc;
+	private PLC plc;
 
 	private byte BIT;
 	private short INT;
