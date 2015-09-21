@@ -2,9 +2,8 @@ package pjpl.s7.process;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.NamingException;
+import pjpl.s7.common.CellCode;
 import pjpl.s7.common.ConstPLC;
 import pjpl.s7.run.SimaticServer;
 import pjpl.s7.util.DumpThread;
@@ -51,10 +50,11 @@ public class Process1 extends Process{
 	protected void steep(){
 		System.out.println("Process1.steepStart()");
 
-//		memD.write(CellCode.ZMIENNA_1, 3);
-//		memD.write(CellCode.ZMIENNA_2, 34);
-//
-//		memQ.write(CellCode.OUT_1, out++);
+
+		memD.write(CellCode.ZMIENNA_1, zmienna_1++);
+		memD.write(CellCode.ZMIENNA_2, zmienna_2++);
+
+		memQ.write(CellCode.OUT_1, out++);
 
 		String s = "";
 		byte[] mem;
@@ -101,7 +101,7 @@ public class Process1 extends Process{
 	}
 
 	@Override
-	public void steepException(Exception e) {
+	protected void steepException(Exception e) {
 		System.err.println("Process1.steepException -> wyjątek : "+e.toString());
 	}
 
@@ -123,7 +123,9 @@ public class Process1 extends Process{
 
 	//------------------------------------------------------------------------------
 
-	protected static byte out = 1;
+	private short zmienna_1 = 3;
+	private short zmienna_2 = 44;
+	private static byte out = 1;
 
 	private final DateFormat datePCFormat = new SimpleDateFormat(pjpl.s7.run.SimaticServer.config.getProperty("format_dateMS"));
 	private volatile String startTime = new String();

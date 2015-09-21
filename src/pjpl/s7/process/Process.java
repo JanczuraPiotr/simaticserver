@@ -4,6 +4,7 @@ import Moka7.S7;
 import Moka7.S7Client;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.TreeMap;
 import pjpl.s7.common.ConstPLC;
 import pjpl.s7.device.PLC;
@@ -86,23 +87,37 @@ import pjpl.s7.util.MemClip;
 	 * Zapisywanie zmodyfikowanych zmiennych do sterownika
 	 */
 	protected void steepWrite(){
-		byte[] buff;
+		ArrayList<MemCell> modCells;
 		int start;
 
-		for( int plcIx = 0; plcIx <  plcs.length; plcIx++ ){
-			buff = memD.readModifiedMem(plcIx);
-			start = memD.getStartModifiedMem(plcIx);
-			plcs[plcIx].WriteArea(S7.D, PLC_DB_BLOCK , start, buff.length, buff);
+
+		if( ( modCells = memD.getModifiedCells() ) != null){
+			byte[] mem = memD.getMem();
+			modCells.forEach(
+					(el)->{
+						el.getPlc().WriteArea(S7.D, PLC_DB_BLOCK, el.getPos(), el.getSize(), mem);
+					}
+			);
+			modCells.clear();
 		}
-		for( int plcIx = 0; plcIx <  plcs.length; plcIx++ ){
-			buff = memI.readModifiedMem(plcIx);
-			start = memI.getStartModifiedMem(plcIx);
-			plcs[plcIx].WriteArea(S7.I, PLC_DB_BLOCK , start, buff.length, buff);
+
+		if( ( modCells = memI.getModifiedCells() ) != null){
+			byte[] mem = memI.getMem();
+			modCells.forEach(
+					(el)->{
+						el.getPlc().WriteArea(S7.I, 0, el.getPos(), el.getSize(), mem);
+					}
+			);
+			modCells.clear();
 		}
-		for( int plcIx = 0; plcIx <  plcs.length; plcIx++ ){
-			buff = memQ.readModifiedMem(plcIx);
-			start = memQ.getStartModifiedMem(plcIx);
-			plcs[plcIx].WriteArea(S7.Q, PLC_DB_BLOCK , start, buff.length, buff);
+		if( ( modCells = memQ.getModifiedCells() ) != null){
+			byte[] mem = memQ.getMem();
+			modCells.forEach(
+					(el)->{
+						el.getPlc().WriteArea(S7.Q, 0, el.getPos(), el.getSize(), mem);
+					}
+			);
+			modCells.clear();
 		}
 	};
 	abstract protected void steepException(Exception e);
@@ -219,7 +234,7 @@ import pjpl.s7.util.MemClip;
 	protected long msSteepFinally = 0;
 	protected void podsumowanieSteep(){
 		System.out.println("------------------------------------------------------------------------------");
-		System.out.println("Podsumowanie zadania process");
+		System.out.println("Podsumowanie zadania : " + getClass().getName());
 		System.out.println( datePCFormat.format(msSteepStart) + " Process.msSteepStart");
 		System.out.println( datePCFormat.format(msSteepPrepareRead)
 				+ " Process.msSteepPrepareRead       "

@@ -1,6 +1,8 @@
 package pjpl.s7.util;
 
 import Moka7.S7;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import pjpl.s7.common.ConstPLC;
@@ -74,6 +76,18 @@ abstract public class MemMap {
 		return memCopy;
 	}
 	/**
+	 * Zwraca zbiór zmodyfikowanych komórek.
+	 * Jeżeli nie zmodyfikowano żadnej zwraca null.
+	 * @return
+	 */
+	public ArrayList<MemCell> getModifiedCells(){
+		if( modifiedCells.size() > 0){
+			return modifiedCells;
+		}else{
+			return null;
+		}
+	}
+	/**
 	 * Zapisuje do pamięci wewnętrznej podany buff jako nową zawartość całej pamięci.
 	 * @param buff
 	 */
@@ -90,6 +104,7 @@ abstract public class MemMap {
 	}
 	/**
 	 * Odczytuje obszar oznaczony jako przeznaczony do przesłania do sterownika.
+	 * @deprecated Zamiast całego bufora są wysyłane pojedynczo
 	 * @param plcId
 	 * @param start
 	 * @return
@@ -133,7 +148,7 @@ abstract public class MemMap {
 			default:
 				// @todo rzuć wyjątek
 		}
-		updateMemModified(cells[cellCode]);
+		onUpdateCell(cells[cellCode]);
 	}
 	public void write(int cellCode, float val){
 		switch(cells[cellCode].typ){
@@ -144,7 +159,7 @@ abstract public class MemMap {
 			default:
 				// @todo rzuć wyjątek
 		}
-		updateMemModified(cells[cellCode]);
+		onUpdateCell(cells[cellCode]);
 	}
 	public void write(int cellCode, double val){
 		switch(cells[cellCode].typ){
@@ -153,7 +168,7 @@ abstract public class MemMap {
 			default:
 				// @todo rzuć wyjątek
 		}
-		updateMemModified(cells[cellCode]);
+		onUpdateCell(cells[cellCode]);
 	}
 	public byte readByte(int cellCode){
 		return mem[cells[cellCode].pos];
@@ -214,9 +229,8 @@ abstract public class MemMap {
 
 	protected void addCell(int cellCode, MemCell cell){
 		tempCellMap.put(cellCode, cell);
-		updateMemArrange(cellCode, cell);
+		memSize += cell.size;
 	}
-
 	/**
 	 * Kod obszaru obsługiwanego przez obiekt.
 	 * Typ tego obszaru "zakodowany" jest klasą obiektu ale może być konieczne podanie wartości liczbowej oznaczającej
@@ -230,7 +244,6 @@ abstract public class MemMap {
 	 * @return
 	 */
 	abstract protected int dbNumber();
-
 	/**
 	 * Musi być napisane tak by do memmoryMap wstawiać kolejne obiekty opisujące zmienne procesu.
 	 * Wypełnić za pomocą wywołania metod addCell dla każdej dodawanej komórki
@@ -250,20 +263,50 @@ abstract public class MemMap {
 	//------------------------------------------------------------------------------
 	// private
 
+	/**
+	 * Czyści informację o rozmieszczeniu pamięci sterowników plcs w buforze danych procesowych.
+	 */
+	private void clearMemArrange(){
+		for( int[] plci : memArrange ){
+			plci[PLC_MEM_ARRANGE_START] = 0;
+			plci[PLC_MEM_ARRANGE_SIZE] = 0;
+		}
+	}
+	/**
+	 * Tworzy tabicę informującą o rozmieszczeniu pamięci sterowników "plcs" w buforze danych procesowych "mem"
+	 */
+	private void createMemArrange(){
+		memArrange = new int[ConstPLC.COUNT][2];
+		clearMemArrange();
+	}
+	/**
+	 * Wszystkie operacje wymagane do poprawnego uruchomienia obiektu
+	 */
 	private void init(){
-		initMemArarange();
+		modifiedCells = new ArrayList<>();
+		createMemArrange();
 		addCells();
 		initArrCells();
 		initMem();
-//		initMemArarange();
+		initMemArarange();
 	}
 	/**
 	 * Na podstawie memSize wyznaczonego podczas wstawiania MemCell
 	 */
 	private void initMem(){
+		memSize = 0;
+		tempCellMap.entrySet().stream().forEach(
+				(el)->{
+					memSize += el.getValue().size;
+				}
+		);
 		mem = new byte[memSize];
 	}
-
+	/**
+	 * Na podstawie tymczasowaje mapy w której zostały zebrane zmienne podczas tworzenia obiektu, tworzona jest
+	 * tablica cells przechowująca zmienne w postaci tablicy dla szybszego działania. W czasie normalnej pracy
+	 * obiektu dostęp do zmiennyc odbywa się tylko z apomocą tablicy cells.
+	 */
 	private void initArrCells(){
 		cellsCount = tempCellMap.size();
 		cells = new MemCell[cellsCount];
@@ -274,16 +317,15 @@ abstract public class MemMap {
 		);
 	}
 	/**
-	 * Na podstawie cells inicjuje memArrange
+	 * Na podstawie cells inicjuje memArrange czyli informację o tym gdzie zaczynają się o kończą obszary pamięci
+	 * poszczególnych PLC w buforze przechowującym pamięć procesu
 	 */
 	private void initMemArarange(){
 		// dla plc o identyfikatorze zgodnym z przekazanym w memCell zwiększyć rozmiar pamięci
 		// dla wszystkich plc leżących w plcs za plc przesunąć index pierwszego bufora pamięci o tą samą wartość.
 
-		memSize = 0;
-
+		clearMemArrange();
 		for( int c = 0 ; c < cellsCount ; c++ ){
-			memSize += cells[c].size;
 			memArrange[cells[c].plcId][PLC_MEM_ARRANGE_SIZE] += cells[c].size;
 			// Dla wszystkich procesorów leżących w dalszej kolejności przesuwa się punkt startowy
 			for ( int p = cells[c].plcId + 1 ; p < plcs.length ; p++){
@@ -292,30 +334,14 @@ abstract public class MemMap {
 		}
 	}
 	/**
-	 * Na podstawie cell.size modyfikuje licznik ilości bajtów potrzebnych do obsługi zmiennych zmapowanych w tym obiekcie.
-	 * @param cellCode
+	 * Wywoływana gdy na zmiennej wykonano write.
+	 * Metoda sprawdza czy wartość zmiennej uległa rzeczywistej zmianie i jeżeli tak jest to dodaje ją do listy zmiennych
+	 * które trzeba wysłać do PLC.
 	 * @param cell
 	 */
-	private void updateMemArrange(int cellCode, MemCell cell){
-		memSize += cell.size;
-		memArrange[cell.plcId][PLC_MEM_ARRANGE_SIZE] += cell.size;
-		for( int p = cell.plcId + 1 ; p < ConstPLC.COUNT ; p++ ){
-			memArrange[p][PLC_MEM_ARRANGE_START] += cell.size;
-		}
-	}
-	private void updateMemModified(MemCell cell){
-		if( memModified[cell.plcId][PLC_MEM_MODIFIED_FIRST] > cell.pos){
-			memModified[cell.plcId][PLC_MEM_MODIFIED_FIRST] = cell.pos;
-		}
-		if( memModified[cell.plcId][PLC_MEM_MODIFIED_LAST] < cell.pos + cell.size - 1 ){
-			memModified[cell.plcId][PLC_MEM_MODIFIED_LAST] = cell.pos + cell.size - 1;
-		}
-	}
-	private void clearMemArrange(){
-		for( int[] plci : memArrange ){
-			plci[PLC_MEM_ARRANGE_START] = 0;
-			plci[PLC_MEM_ARRANGE_SIZE] = 0;
-		}
+	private void onUpdateCell(MemCell cell){
+		// @todo Do modifiedCell wstawić tylko te zmienne których wartość jest inna niż zmiennej zapisanej w mem
+		modifiedCells.add(cell);
 	}
 
 	//------------------------------------------------------------------------------
@@ -323,34 +349,40 @@ abstract public class MemMap {
 
 	// Sterowniki których pamięć przechowywana jest w tym obiekcie
 	protected PLC[] plcs;
+	// obszar danych procesowych
+	protected byte[] mem;
+	// Licznik ilości bajtów potrzebnych do obsługi zmiennych mapowanych w tym obiekcie.
+	protected int memSize = 0;
 	// Rozmieszczenie pamięci sterowników "plcs" w buforze danych procesowych "mem"
 	// memArrange[plcId][PLC_MEM_ARRANGE_START] index pierwszej komórki pamięci plcId w mem
 	// memArrange[plcId][PLC_MEM_ARRANGE_SIZE] rozmiar pamięci w mem przynależnej procesorowi plcId
-	protected int[][] memArrange = new int[ConstPLC.COUNT][2];
+	protected int[][] memArrange;
+
 	// Obszary zmodyfikowane przez metody zapisu zmiennych do pamięci procesu.
 	// Do PLC zapisywane są bajty pomiędzy pierwszym bajtem zmodyfikowanej zmiennej o najmniejszym kodzie a ostatnim
 	// bajtem zmodyfikowanej zmiennej o największym identyfikatorze.
+	// @depreciated
 	protected int[][] memModified = new int[ConstPLC.COUNT][2];
-	// Licznik ilości bajtów potrzebnych do obsługi zmiennych mapowanych w tym obiekcie.
-	protected int memSize = 0;
-	// obszar danych procesowych
-	protected byte[] mem;
+
 
 	//------------------------------------------------------------------------------
 	// atrybuty prywatne
 
-	// Obie kolekcje przechowują ten sam zbiór dla ułatwienia dostępu przez id zmiennej i nazwę zmiennej.
-	// cellMapById włożona jest podczas dodawania kolejnych komórek do mapy pamięci. Po dodaniu ostatniej komórki
-	// metoda initCells() tworzy roboczą tablicę cells która będzie służyć jako obiekt dostępu do komórek.
-	// Mapa cellMapById służy tylko do zebrania listy komórek.
+	// Kolekcje tempCellMap i cells przechowują ten sam zbiór. Mapa tempCellMap wykorzystywana jest podczas zbierania
+	// informacji o zmiennych procesu podczas inicjacji obiektu gdy ilość zmiennych nie jest jeszcze znana.
+	// Po dodaniu ostatniej komórki metoda initCells() tworzy roboczą tablicę cells która będzie służyć jako obiekt
+	// szybszego dostępu do komórek.
 	private final TreeMap<Integer, MemCell> tempCellMap;
+	// Ilość zmiennych zebranych przez metodę addCell()
 	private int cellsCount = 0;
+	// Tabela przechowująca wskaźniki do zmiennych procesowych.
 	private MemCell[] cells;
+	private ArrayList<MemCell> modifiedCells;
 
 	// Aktualna pozycja pierwszego bajtu dla następnej zmiennej.
 	private int currentPos;
 
 }
 /**
- * 
+ *
  */

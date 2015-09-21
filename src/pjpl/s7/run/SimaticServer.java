@@ -99,6 +99,7 @@ public class SimaticServer {
 }
 /**
  * @todo Wszystkie wystąpienia nazwy procesu : "Brama" zamienić na "process1"
+ * @prace 00 Zmiana zapisu zmiennych ze zrzutu przestrzeni mem na indywodualny zapis każdej zmiennej
  * @prace 20 utworzyć Command
  * @prace 30 modyfikować stan PLC za pomocą Command
  */

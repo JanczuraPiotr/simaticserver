@@ -44,19 +44,27 @@ public class DumpExpertBinMySql extends DumpExpert{
 			sql = "INSERT INTO " + processName + " VALUES (default,?,?,?,?) ";
 			stmtPrepare = mySqlConnection.prepareStatement(sql);
 				stmtPrepare.setLong(1, memClip.timeStamp);
+				timePrepareQueryStart = System.currentTimeMillis();
 				stmtPrepare.setBinaryStream(2, new ByteArrayInputStream(memClip.buffD));
 				stmtPrepare.setBinaryStream(3, new ByteArrayInputStream(memClip.buffI));
 				stmtPrepare.setBinaryStream(4, new ByteArrayInputStream(memClip.buffQ));
+				timePrepareQueryStop = System.currentTimeMillis();
 				stmtPrepare.executeUpdate();
+				timeQueryExecute = System.currentTimeMillis();
 
-				summaryRun += format_date.format(System.currentTimeMillis())
-						+ " MySqlStore.run() utworzono plik : "
-						+ dateFileNameFormat.format(memClip.timeStamp)
-						+"\n";
+				summaryRun += format_date.format(timePrepareQueryStart)
+						+ " MySqlStore.run() utworzono zapytanie"
+						+ String.format("%4d", timePrepareQueryStop - timePrepareQueryStart ) + " [ms]"
+						+ "\n";
+				summaryRun += format_date.format(timeQueryExecute)
+						+ " MySqlStore.run() wykonano zapytanie"
+						+ String.format("%4d", ( timeQueryExecute - timePrepareQueryStop )) + " [ms]"
+						+ "\n";
 				summaryRun += format_date.format( timeStop = System.currentTimeMillis() )
 						+ " MySqlStore.run() Stop praca = "
 						+ (timeStop-timeStart)
-						+ "[ms]\n";
+						+ " [ms]"
+						+ "\n";
 
 			} catch (SQLException e) {
 				summaryRun += "-- SQLException\n";
@@ -84,6 +92,9 @@ public class DumpExpertBinMySql extends DumpExpert{
 	private final DateFormat dateFileNameFormat = new SimpleDateFormat(SimaticServer.config.getProperty("format_datePackedMS"));
 	private String summaryRun = new String();
 	private volatile long timeStart;
+	private volatile long timePrepareQueryStart;
+	private volatile long timePrepareQueryStop;
+	private volatile long timeQueryExecute;
 	private volatile long timeStop;
 
 }
