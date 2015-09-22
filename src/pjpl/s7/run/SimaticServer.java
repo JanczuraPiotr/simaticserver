@@ -5,35 +5,32 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
+import pjpl.s7.common.ConstProcess;
 
 /**
  * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class SimaticServer {
-	public static long time_interval;
 	public static String configFile = "SimaticServer.ini";
 	public static pjpl.s7.util.Properties config;
+	public static long time_interval;
 	public static long timeStart;
-
-	private static HashMap<Integer, pjpl.s7.process.Process> processes;
-	private static pjpl.s7.process.Process process1;
-
-	private static pjpl.s7.util.DirCleaning dirCleaning;
-	private static pjpl.s7.net.SocketListener socketListener;
-
-	private static ScheduledExecutorService executor;
-	private static FileReader configReader;
-	private static FileWriter configWriter;
 
 	public static void main(String[] args) throws IOException{
 		timeStart = System.currentTimeMillis();
 		System.out.println(SimaticServer.class.getName());
+
+		//------------------------------------------------------------------------------
+		// konfiguracja
 
 		try{
 			configReader = new FileReader(configFile);
@@ -51,28 +48,61 @@ public class SimaticServer {
 			Logger.getLogger(SimaticServer.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
+		// konfiguracja
+		//------------------------------------------------------------------------------
+
+		//------------------------------------------------------------------------------
+		// inicjacja zmiennych
+
 		time_interval = Long.parseLong(config.getProperty("time_interval"), 10);
 		processes = new HashMap<>();
 		executor = Executors.newScheduledThreadPool(5);
 
+		// inicjacja zmiennych
+		//------------------------------------------------------------------------------
+
 		try {
-			process1 = processes.put(
-					Integer.getInteger(config.getProperty("process_brama_id"))
-					, new pjpl.s7.process.Process1()
-			);
-			executor.scheduleAtFixedRate(
-					processes.get(
-							Integer.getInteger(
-									config.getProperty("process_brama_id"))
-					)
-					, ( time_interval * 2 ) - ( System.currentTimeMillis() % time_interval)
-					, time_interval
-					, TimeUnit.MILLISECONDS
-			);
+
+			//------------------------------------------------------------------------------
+			// processy
+
+			process1 = new pjpl.s7.process.Process1(ConstProcess.PROCESS1_ID);
+
+			processes.put(process1.id(), process1 );
+
+			// processy
+			//------------------------------------------------------------------------------
+
+			//------------------------------------------------------------------------------
+			// komunikacja
+
+			commandWebListener = new pjpl.s7.command.CommandWebListener(Integer.parseInt(config.getProperty("web-listener-port")));
+			commandWebListener.addQueue(process1.id(), process1.getCommadQueue());
+			commandWebListener.start();
+
+			// komunikacja
+			//------------------------------------------------------------------------------
+
+			//------------------------------------------------------------------------------
+			// pomocnicze
+
 			dirCleaning = new pjpl.s7.util.DirCleaning(
 					config.getProperty("dir_dump")
 					,	config.getProperty("format_fileName")
 					,	config.getProperty("time_storage")
+			);
+
+			// pomocnicze
+			//------------------------------------------------------------------------------
+
+			//------------------------------------------------------------------------------
+			// uruchamianie
+
+			executor.scheduleAtFixedRate(
+					processes.get(process1.id())
+					, ( time_interval * 2 ) - ( System.currentTimeMillis() % time_interval)
+					, time_interval
+					, TimeUnit.MILLISECONDS
 			);
 			executor.scheduleAtFixedRate(
 					dirCleaning, 3000, Long.parseLong(
@@ -80,25 +110,36 @@ public class SimaticServer {
 					)
 					, TimeUnit.MILLISECONDS
 			);
-			socketListener = new pjpl.s7.net.SocketListener();
-			socketListener.start();
 
-		} catch (NamingException ex) {
-			Logger.getLogger(SimaticServer.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (ClassNotFoundException ex) {
-			Logger.getLogger(SimaticServer.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (InstantiationException ex) {
-			Logger.getLogger(SimaticServer.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (IllegalAccessException ex) {
+			// uruchamianie
+			//------------------------------------------------------------------------------
+
+		} catch (NullPointerException | IOException | NamingException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
 			Logger.getLogger(SimaticServer.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
 	}
 
 
+	private static HashMap<Integer, pjpl.s7.process.Process> processes;
+	private static pjpl.s7.process.Process process1;
+	private static Queue<pjpl.s7.command.Command> commandQueue;
+
+	private static pjpl.s7.util.DirCleaning dirCleaning;
+	private static pjpl.s7.command.CommandWebListener commandWebListener;
+
+	private static ScheduledExecutorService executor;
+	private static FileReader configReader;
+	private static FileWriter configWriter;
+
+
 }
 /**
- * @todo Wszystkie wystąpienia nazwy procesu : "Brama" zamienić na "process1"
+ * @prace 10 Wyrównać katalog Common między SimaticServer a SimaticWeb
  * @prace 20 utworzyć Command
  * @prace 30 modyfikować stan PLC za pomocą Command
+ *
+ * @todo Wszystkie wystąpienia nazwy procesu : "Brama" zamienić na "process1"
+ * @todo Kolejki komend powinne pozwolić przekazywać komendy pomiędzy procesami.
+ *				Prawdopodobnie każdy Process będzie zwracał swoją kolejkę któa będzie przekazana do CommandListenera
  */

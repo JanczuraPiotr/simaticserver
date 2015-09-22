@@ -1,9 +1,7 @@
 package pjpl.s7.util;
 
-import pjpl.s7.common.CellCode;
 import pjpl.s7.common.TypeCode;
 import pjpl.s7.device.PLC;
-import pjpl.s7.type.Variable;
 
 /**
  * Informacja o mapowaniu zmiennej procesowej na sterownik i obszar pamięci.
@@ -108,12 +106,4 @@ public class MemCell {
 	private int plcId; // @todo nie wiem czy jest konieczny ten identyfikator
 	// sterownik obsługujący tą zmienną
 	private PLC plc;
-
-	private byte BIT;
-	private short INT;
-	private int DINT;
-	private float REAL;
-	private double LREAL;
-
-
 }

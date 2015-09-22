@@ -5,6 +5,7 @@ import Moka7.S7Client;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 import java.util.TreeMap;
 import pjpl.s7.common.ConstPLC;
 import pjpl.s7.device.PLC;
@@ -24,15 +25,23 @@ import pjpl.s7.util.MemClip;
 	 public static final int PLC_OPERATION_RESULT_READ_Q = 2;
 	 public static final int PLC_OPERATION_RESULT_ = 3;
 
-	 public Process(){
-		System.out.println("Process.constructor");
-
+	 public Process(int id){
+		 this.id = id;
+		commandQueue = new PriorityQueue<>();
 		init();
 		memClip = new MemClip(memD, memI, memQ);
 	}
 
 	 //------------------------------------------------------------------------------
 	 // interfejs - początek
+
+	 public int id(){
+		 return id;
+	 }
+
+	 public PriorityQueue<pjpl.s7.command.Command> getCommadQueue(){
+		 return commandQueue;
+	 }
 
 	 // interfejs - koniec
 	 //------------------------------------------------------------------------------
@@ -88,8 +97,6 @@ import pjpl.s7.util.MemClip;
 	 */
 	protected void steepWrite(){
 		ArrayList<MemCell> modCells;
-		int start;
-
 
 		if( ( modCells = memD.getModifiedCells() ) != null){
 			byte[] mem = memD.getMem();
@@ -192,7 +199,7 @@ import pjpl.s7.util.MemClip;
 
 	//------------------------------------------------------------------------------
 	// atrybuty chronione
-
+	protected int id;
 	protected MemD memD;
 	protected MemI memI;
 	protected MemQ memQ;
@@ -207,6 +214,7 @@ import pjpl.s7.util.MemClip;
 	// Wyjścia zmienione podczas tego kroku. Będą wysłane do sterownika w metodzie steepWrite().
 	protected TreeMap<Integer, MemCell> memOutChangedId;
 
+	protected PriorityQueue<pjpl.s7.command.Command> commandQueue;
 
 	//------------------------------------------------------------------------------
 	// atrybuty prywatne

@@ -1,7 +1,7 @@
 package pjpl.s7.process;
 
 import Moka7.S7;
-import pjpl.s7.common.CellCode;
+import pjpl.s7.common.VarCode;
 import pjpl.s7.common.ConstPLC;
 import pjpl.s7.common.TypeCode;
 import pjpl.s7.device.PLC;
@@ -16,7 +16,7 @@ public class MemQ extends MemMap{
 
 	@Override
 	public void addCells() {
-		addCell(CellCode.OUT_1
+		addCell(VarCode.OUT_1
 				, new MemCell(
 						"out_1"
 						, pos(TypeCode.size[TypeCode.INT])

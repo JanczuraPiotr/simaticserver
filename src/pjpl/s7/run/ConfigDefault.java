@@ -8,8 +8,13 @@ public class ConfigDefault extends Properties{
 
 	public ConfigDefault(){
 
+		// Sieć.
+		setProperty("web-listener-port"    , "9000");
+		setProperty("scada-listener-port"  , "9001");
+
 		// Procesy
-		setProperty("process_brama_id"     , "1");
+		setProperty("process-1-id"         , "1");
+		setProperty("process-1-name"       , "Process 1");
 
 		// Sterowniki
 		setProperty("plc_brama_id"         , "1");

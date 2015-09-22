@@ -1,7 +1,7 @@
 package pjpl.s7.process;
 
 import Moka7.S7;
-import pjpl.s7.common.CellCode;
+import pjpl.s7.common.VarCode;
 import pjpl.s7.common.ConstPLC;
 import pjpl.s7.common.TypeCode;
 import pjpl.s7.device.PLC;
@@ -16,7 +16,7 @@ public class MemD extends MemMap{
 	}
 	@Override
 	public void addCells() {
-		addCell(CellCode.ZMIENNA_1
+		addCell(VarCode.ZMIENNA_1
 				, new MemCell(
 						"zmienna_1"
 						, pos(TypeCode.size[TypeCode.INT])
@@ -24,7 +24,7 @@ public class MemD extends MemMap{
 						, ConstPLC.PLC1
 						, plcs[ConstPLC.PLC1]
 		));
-		addCell(CellCode.ZMIENNA_2
+		addCell(VarCode.ZMIENNA_2
 				, new MemCell(
 						"zmienna_2"
 						, "opis zmiennej zmienna_2"
@@ -33,7 +33,7 @@ public class MemD extends MemMap{
 						, ConstPLC.PLC1
 						, plcs[ConstPLC.PLC1]
 		));
-		addCell(CellCode.ZMIENNA_3
+		addCell(VarCode.ZMIENNA_3
 				, new MemCell(
 						"zmienna_3"
 						, pos(TypeCode.size[TypeCode.INT])

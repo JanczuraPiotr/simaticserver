@@ -3,10 +3,9 @@ package pjpl.s7.process;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import javax.naming.NamingException;
-import pjpl.s7.common.CellCode;
+import pjpl.s7.common.VarCode;
 import pjpl.s7.common.ConstPLC;
 import pjpl.s7.run.SimaticServer;
-import pjpl.s7.type.Variable;
 import pjpl.s7.util.DumpThread;
 import pjpl.s7.util.DumpExpertBinFile;
 import pjpl.s7.util.DumpExpertBinMySql;
@@ -14,11 +13,12 @@ import pjpl.s7.util.DumpExpertBinMySql;
 
 public class Process1 extends Process{
 
-	public static final int id = Byte.parseByte( pjpl.s7.run.SimaticServer.config.getProperty("process_brama_id") );
+//	public static final int id = Byte.parseByte( pjpl.s7.run.SimaticServer.config.getProperty("process_brama_id") );
 
 
-	public Process1() throws NamingException, ClassNotFoundException, InstantiationException, IllegalAccessException{
-		super();
+	public Process1(int id)throws NamingException, ClassNotFoundException, InstantiationException	, IllegalAccessException{
+		super(id);
+
 		System.out.println("Process1 constructor");
 		dumpFile = new DumpThread(
 				memClip
@@ -51,20 +51,20 @@ public class Process1 extends Process{
 	protected void steep(){
 		System.out.println("Process1.steepStart()");
 
-		short zmienna_1 = memD.readInt(CellCode.ZMIENNA_1);
-		short zmienna_2 = memD.readInt(CellCode.ZMIENNA_2);
+		short zmienna_1 = memD.readInt(VarCode.ZMIENNA_1);
+		short zmienna_2 = memD.readInt(VarCode.ZMIENNA_2);
 
 		zmienna_1 += 1;
 		zmienna_2 += 2;
 
-		System.out.println("zmienna_1 = " + String.format("%02X",zmienna_1 ));
-		System.out.println("zmienna_2 = " + String.format("%02X",zmienna_2 ));
+		System.out.println("zmienna_1 = " + zmienna_1 + " jako hex = " + String.format("%02X",zmienna_1 ));
+		System.out.println("zmienna_2 = " + zmienna_2 + " jako hex = " + String.format("%02X",zmienna_2 ));
 
 
-		memD.write(CellCode.ZMIENNA_1, zmienna_1++);
-		memD.write(CellCode.ZMIENNA_2, zmienna_2++);
+		memD.write(VarCode.ZMIENNA_1, zmienna_1++);
+		memD.write(VarCode.ZMIENNA_2, zmienna_2++);
 
-		memQ.write(CellCode.OUT_1, out++);
+		memQ.write(VarCode.OUT_1, out++);
 
 		String s = "";
 		byte[] mem;
@@ -136,11 +136,11 @@ public class Process1 extends Process{
 	private static byte out = 1;
 
 	private final DateFormat datePCFormat = new SimpleDateFormat(pjpl.s7.run.SimaticServer.config.getProperty("format_dateMS"));
-	private volatile String startTime = new String();
-	private long msProcess1Start = 0;
-	private long msProcess1StopRead = 0;
-	private long msProcess1Stop = 0;
-	private String summaryRun;
+//	private volatile String startTime = new String();
+//	private long msProcess1Start = 0;
+//	private long msProcess1StopRead = 0;
+//	private long msProcess1Stop = 0;
+//	private String summaryRun;
 	private DumpThread dumpFile;
 	private DumpThread dumpMySql;
 

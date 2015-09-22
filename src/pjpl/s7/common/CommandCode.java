@@ -5,11 +5,13 @@ package pjpl.s7.common;
  */
 abstract public class CommandCode{
 	private static int codeInc = 0;
+	
+	// Kody nie ujmowane w przedziały
+	public static final int OK = 0x0000;
+	public static final int NO = 0xFFFF;
 
 	// Stałe ogólne
 	// 000000000000000B -> 0000111111111111B => 0x0000 -> 0x0FFF => 0 ->  4095
-	public static final int OK = 0x0000;
-	public static final int NO = 0x0001;
 
 	// Stałe wewnętrzne biblioteki pjpl.s7
 	// 000100000000000B -> 0001111111111111B => 0x1000 -> 0x1FFF => 4096 ->  8191

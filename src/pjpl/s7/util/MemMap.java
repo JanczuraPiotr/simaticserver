@@ -2,7 +2,6 @@ package pjpl.s7.util;
 
 import Moka7.S7;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import pjpl.s7.common.ConstPLC;
@@ -172,7 +171,9 @@ abstract public class MemMap {
 		onUpdateCell(cells[cellCode]);
 	}
 	/**
-	 * @deprecated falne ale mało wydajne
+	 * @param cellCode
+	 * @return
+	 * @deprecated fajne ale mało wydajne
 	 */
 	public Variable read(int cellCode){
 		Variable var = null;
