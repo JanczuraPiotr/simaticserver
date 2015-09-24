@@ -6,12 +6,11 @@ import java.io.IOException;
 /**
  * @author Piotr Janczura <piotr@janczura.pl>
  */
-public class BramaWriteDBByte extends Command{
+public class WriteDBByte extends Command{
 
-	public BramaWriteDBByte(DataInputStream commandInputStream) throws IOException {
-		super(commandInputStream);
+	public WriteDBByte(byte processId, DataInputStream commandInputStream) throws IOException {
+		super(processId, commandInputStream);
 	}
-
 	@Override
 	protected void prepareContent() {
 	}

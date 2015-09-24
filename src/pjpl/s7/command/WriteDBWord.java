@@ -5,10 +5,10 @@ import java.io.IOException;
 /**
  * @author Piotr Janczura <piotr@janczura.pl>
  */
-public class BramaWriteDBWord extends Command{
+public class WriteDBWord extends Command{
 
-	public BramaWriteDBWord(DataInputStream commandInputStream) throws IOException {
-		super(commandInputStream);
+	public WriteDBWord(byte processId, DataInputStream commandInputStream) throws IOException {
+		super(processId, commandInputStream);
 	}
 
 	@Override

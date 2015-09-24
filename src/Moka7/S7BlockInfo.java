@@ -21,7 +21,7 @@ public class S7BlockInfo {
     }
     public int BlkNumber()
     {
-       return S7.GetWordAt(Buffer, 3);
+       return S7.GetIntAt(Buffer, 3);
     }
     public int BlkLang()
     {
@@ -33,7 +33,7 @@ public class S7BlockInfo {
     }
     public int MC7Size()  // The real size in bytes
     {
-       return S7.GetWordAt(Buffer, 31);
+       return S7.GetIntAt(Buffer, 31);
     }
     public int LoadSize()
     {
@@ -41,15 +41,15 @@ public class S7BlockInfo {
     }
     public int LocalData()
     {
-       return S7.GetWordAt(Buffer, 29);
+       return S7.GetIntAt(Buffer, 29);
     }
     public int SBBLength()
     {
-       return S7.GetWordAt(Buffer, 25);
+       return S7.GetIntAt(Buffer, 25);
     }
     public int Checksum()
     {
-       return S7.GetWordAt(Buffer, 59);
+       return S7.GetIntAt(Buffer, 59);
     }
     public int Version()
     {
@@ -57,12 +57,12 @@ public class S7BlockInfo {
     }
     public Date CodeDate()
     {
-        long BlockDate = ((long)S7.GetWordAt(Buffer, 17))*86400000L+DeltaMilliSecs;
+        long BlockDate = ((long)S7.GetIntAt(Buffer, 17))*86400000L+DeltaMilliSecs;
         return new Date(BlockDate);
     }
     public Date IntfDate()
     {
-        long BlockDate = ((long)S7.GetWordAt(Buffer, 23))*86400000L+DeltaMilliSecs;
+        long BlockDate = ((long)S7.GetIntAt(Buffer, 23))*86400000L+DeltaMilliSecs;
         return new Date(BlockDate);
     }
     public String Author()

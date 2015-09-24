@@ -81,7 +81,7 @@ public class S7 {
      * @param Pos start position
      * @return
      */
-    public static int GetWordAt(byte[] Buffer, int Pos)
+    public static int GetIntAt(byte[] Buffer, int Pos)
     {
         int hi = (Buffer[Pos] & 0x00FF);
         int lo = (Buffer[Pos+1] & 0x00FF);

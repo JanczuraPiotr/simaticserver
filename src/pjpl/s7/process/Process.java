@@ -25,7 +25,7 @@ import pjpl.s7.util.MemClip;
 	 public static final int PLC_OPERATION_RESULT_READ_Q = 2;
 	 public static final int PLC_OPERATION_RESULT_ = 3;
 
-	 public Process(int id){
+	 public Process(byte id){
 		 this.id = id;
 		commandQueue = new PriorityQueue<>();
 		init();
@@ -35,7 +35,7 @@ import pjpl.s7.util.MemClip;
 	 //------------------------------------------------------------------------------
 	 // interfejs - początek
 
-	 public int id(){
+	 public byte id(){
 		 return id;
 	 }
 
@@ -166,7 +166,7 @@ import pjpl.s7.util.MemClip;
 			}
 			msSteepFinally = System.currentTimeMillis();
 		}
-		podsumowanieSteep();
+//		podsumowanieSteep();
 	}
 
 	//------------------------------------------------------------------------------
@@ -199,7 +199,7 @@ import pjpl.s7.util.MemClip;
 
 	//------------------------------------------------------------------------------
 	// atrybuty chronione
-	protected int id;
+	protected byte id;
 	protected MemD memD;
 	protected MemI memI;
 	protected MemQ memQ;
@@ -212,7 +212,7 @@ import pjpl.s7.util.MemClip;
 	// Komórki pamięci zmienione podczas tego kroku. Będą wysłane do sterownika w metodzie steepWrite().
 	protected TreeMap<Integer, MemCell> memDBChangedId;
 	// Wyjścia zmienione podczas tego kroku. Będą wysłane do sterownika w metodzie steepWrite().
-	protected TreeMap<Integer, MemCell> memOutChangedId;
+	protected TreeMap<Byte, MemCell> memOutChangedId;
 
 	protected PriorityQueue<pjpl.s7.command.Command> commandQueue;
 

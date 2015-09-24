@@ -5,10 +5,10 @@ package pjpl.s7.common;
  */
 abstract public class CommandCode{
 	private static int codeInc = 0;
-	
+
 	// Kody nie ujmowane w przedziały
-	public static final int OK = 0x0000;
-	public static final int NO = 0xFFFF;
+	public static final short OK = (short)0x0000;
+	public static final short NO = (short)0xFFFF;
 
 	// Stałe ogólne
 	// 000000000000000B -> 0000111111111111B => 0x0000 -> 0x0FFF => 0 ->  4095
@@ -27,16 +27,16 @@ abstract public class CommandCode{
 	// Kody komend niezależnych od procesu.
 	// 100000000000000B -> 1011111111111111B => 0x8000 -> 0xBFFF =>  32768 -> 49151
 
-	public static final int GET_BIT_IN  = 0x8001;
-	public static final int GET_BIT_OUT = 0x8002;
-	public static final int GET_BIT     = 0x8003;
-	public static final int GET_BYTE    = 0x8004;
-	public static final int GET_WORD    = 0x8005;
+	public static final short GET_BIT_IN  = (short)0x8001;
+	public static final short GET_BIT_OUT = (short)0x8002;
+	public static final short GET_BIT     = (short)0x8003;
+	public static final short GET_BYTE    = (short)0x8004;
+	public static final short GET_WORD    = (short)0x8005;
 
-	public static final int SET_BIT_OUT = 0x8006;
-	public static final int SET_BIT     = 0x8007;
-	public static final int SET_BYTE    = 0x8008;
-	public static final int SET_WORD    = 0x8009;
+	public static final short SET_BIT_OUT = (short)0x8006;
+	public static final short SET_BIT     = (short)0x8007;
+	public static final short SET_BYTE    = (short)0x8008;
+	public static final short SET_WORD    = (short)0x8009;
 
 	// Kody komend indywidualne dla tej aplikacji
 	// 110000000000000B -> 1111111111111111B => 0xC000 -> 0xCFFF =>  49152 -> 65535

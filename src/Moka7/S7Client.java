@@ -429,7 +429,7 @@ public class S7Client
             RecvPacket(PDU, 0, 4);
             if (LastError==0)
             {
-                Size=S7.GetWordAt(PDU,2);
+                Size=S7.GetIntAt(PDU,2);
                 // Check 0 bytes Data Packet (only TPKT+COTP = 7 bytes)
                 if (Size==IsoHSize)
                     RecvPacket(PDU,4, 3); // Skip remaining 3 bytes and Done is still false
@@ -499,7 +499,7 @@ public class S7Client
                 if ((Length==27) && (PDU[17]==0) && (PDU[18]==0))  // 20 = size of Negotiate Answer
                 {
                     // Get PDU Size Negotiated
-                    _PDULength = S7.GetWordAt(PDU,25);
+                    _PDULength = S7.GetIntAt(PDU,25);
                     if (_PDULength>0)
                         return 0;
                     else
@@ -740,7 +740,7 @@ public class S7Client
                 {
                     if (Length==22)
                     {
-                        if ((S7.GetWordAt(PDU,17)!=0) || (PDU[21]!=(byte)0xFF))
+                        if ((S7.GetIntAt(PDU,17)!=0) || (PDU[21]!=(byte)0xFF))
                             LastError = errS7DataWrite;
                     }
                     else
@@ -778,7 +778,7 @@ public class S7Client
             Length=RecvIsoPacket();
             if (Length > 32) // the minimum expected
             {
-                if ((S7.GetWordAt(PDU,27)==0) && (PDU[29]==(byte)0xFF))
+                if ((S7.GetIntAt(PDU,27)==0) && (PDU[29]==(byte)0xFF))
                 {
                     Block.Update(PDU, 42);
                 }
@@ -856,15 +856,15 @@ public class S7Client
                 {
                     if (Length > 32) // the minimum expected
                     {
-                        if ((S7.GetWordAt(PDU,27)==0) && (PDU[29]==(byte)0xFF))
+                        if ((S7.GetIntAt(PDU,27)==0) && (PDU[29]==(byte)0xFF))
                         {
                             // Gets Amount of this slice
-                            DataSZL=S7.GetWordAt(PDU,31)-8; // Skips extra params (ID, Index ...)
+                            DataSZL=S7.GetIntAt(PDU,31)-8; // Skips extra params (ID, Index ...)
                             Done=PDU[26]==0x00;
                             Seq_in=(byte)PDU[24]; // Slice sequence
 
-                            SZL.LENTHDR=S7.GetWordAt(PDU, 37);
-                            SZL.N_DR=S7.GetWordAt(PDU, 39);
+                            SZL.LENTHDR=S7.GetIntAt(PDU, 37);
+                            SZL.N_DR=S7.GetIntAt(PDU, 39);
                             SZL.Copy(PDU, 41, Offset, DataSZL);
                             Offset+=DataSZL;
                             SZL.DataSize+=DataSZL;
@@ -879,10 +879,10 @@ public class S7Client
                 {
                     if (Length > 32) // the minimum expected
                     {
-                        if ((S7.GetWordAt(PDU,27)==0) && (PDU[29]==(byte)0xFF))
+                        if ((S7.GetIntAt(PDU,27)==0) && (PDU[29]==(byte)0xFF))
                         {
                             // Gets Amount of this slice
-                            DataSZL=S7.GetWordAt(PDU,31);
+                            DataSZL=S7.GetIntAt(PDU,31);
                             Done=PDU[26]==0x00;
                             Seq_in=(byte)PDU[24]; // Slice sequence
                             SZL.Copy(PDU, 37, Offset, DataSZL);
@@ -951,7 +951,7 @@ public class S7Client
             Length=RecvIsoPacket();
             if (Length > 30) // the minimum expected
             {
-                if ((S7.GetWordAt(PDU,27)==0) && (PDU[29]==(byte)0xFF))
+                if ((S7.GetIntAt(PDU,27)==0) && (PDU[29]==(byte)0xFF))
                 {
                     DateTime=S7.GetDateAt(PDU, 34);
                 }
@@ -978,7 +978,7 @@ public class S7Client
             Length=RecvIsoPacket();
             if (Length > 30) // the minimum expected
             {
-                if (S7.GetWordAt(PDU,27)!=0)
+                if (S7.GetIntAt(PDU,27)!=0)
                     LastError = errS7FunctionError;
             }
             else
@@ -1004,7 +1004,7 @@ public class S7Client
             Length=RecvIsoPacket();
             if (Length > 18) // 18 is the minimum expected
             {
-                if (S7.GetWordAt(PDU,17)!=0)
+                if (S7.GetIntAt(PDU,17)!=0)
                     LastError = errS7FunctionError;
             }
             else
@@ -1024,7 +1024,7 @@ public class S7Client
             Length=RecvIsoPacket();
             if (Length > 18) // the minimum expected
             {
-                if (S7.GetWordAt(PDU,17)!=0)
+                if (S7.GetIntAt(PDU,17)!=0)
                     LastError = errS7FunctionError;
             }
             else
@@ -1044,7 +1044,7 @@ public class S7Client
             Length=RecvIsoPacket();
             if (Length > 18) // the minimum expected
             {
-                if (S7.GetWordAt(PDU,17)!=0)
+                if (S7.GetIntAt(PDU,17)!=0)
                     LastError = errS7FunctionError;
             }
             else
@@ -1064,7 +1064,7 @@ public class S7Client
             Length=RecvIsoPacket();
             if (Length > 30) // the minimum expected
             {
-                if (S7.GetWordAt(PDU,27)==0)
+                if (S7.GetIntAt(PDU,27)==0)
                 {
                     switch (PDU[44])
                     {
@@ -1124,7 +1124,7 @@ public class S7Client
                 Length=RecvIsoPacket();
                 if (Length > 32) // the minimum expected
                 {
-                    if (S7.GetWordAt(PDU,27)!=0)
+                    if (S7.GetIntAt(PDU,27)!=0)
                         LastError = errS7FunctionError;
                 }
                 else
@@ -1145,7 +1145,7 @@ public class S7Client
             Length=RecvIsoPacket();
             if (Length > 30) // the minimum expected
             {
-                if (S7.GetWordAt(PDU,27)!=0)
+                if (S7.GetIntAt(PDU,27)!=0)
                     LastError = errS7FunctionError;
             }
             else

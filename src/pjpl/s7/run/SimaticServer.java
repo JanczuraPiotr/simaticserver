@@ -121,7 +121,7 @@ public class SimaticServer {
 	}
 
 
-	private static HashMap<Integer, pjpl.s7.process.Process> processes;
+	private static HashMap<Byte, pjpl.s7.process.Process> processes;
 	private static pjpl.s7.process.Process process1;
 	private static Queue<pjpl.s7.command.Command> commandQueue;
 

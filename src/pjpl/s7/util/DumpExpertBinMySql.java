@@ -71,7 +71,7 @@ public class DumpExpertBinMySql extends DumpExpert{
 				summaryRun += "---- "+e.getMessage()+"\n";
 			} finally {
 			}
-			System.out.println(summaryRun);
+//			System.out.println(summaryRun);
 	}
 
 	//------------------------------------------------------------------------------

@@ -9,8 +9,8 @@ import java.io.IOException;
  */
 public class CommandNull extends Command{
 
-	public CommandNull(DataInputStream commandInputStream) throws IOException {
-		super(commandInputStream);
+	public CommandNull(byte processId, DataInputStream commandInputStream) throws IOException {
+		super(processId, commandInputStream);
 	}
 
 	@Override

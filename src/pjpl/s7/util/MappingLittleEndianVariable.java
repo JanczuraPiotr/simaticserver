@@ -79,15 +79,15 @@ public class MappingLittleEndianVariable{
 		throw new UnsupportedOperationException("Not supported yet. :  MappingStreamVariable._short(short val, byte[] buff, int start)");
 	}
 	/**
-	 * Pobiera ze strumienia wartość zmiennej typu int
-	 * @param stream
+	 * Pobiera ze strumienia wartość zmiennej typu short
+	 * @param inputStream
 	 * @return
 	 * @throws IOException
 	 */
-	public static int _int(DataInputStream stream) throws IOException{
-		byte lo = stream.readByte();
-		byte hi = stream.readByte();
-		return ( (( hi << 8 ) & 0x0000ff00 ) | ( lo & 0x000000ff ) );
+	public static short _short(DataInputStream inputStream) throws IOException{
+		byte lo = inputStream.readByte();
+		byte hi = inputStream.readByte();
+		return (short)( (( hi << 8 ) & 0x0000ff00 ) | ( lo & 0x000000ff ) );
 	}
 	public static int _int(byte[] buff, int start){
 		throw new UnsupportedOperationException("Not supported yet. :  MappingStreamVariable._int(byte[] buff, int start)");
@@ -116,7 +116,12 @@ public class MappingLittleEndianVariable{
 		return  Float.intBitsToFloat(( i3 | i2 | i1 | i0 )  );
 	}
 	public static float _float(byte[] buff, int start){
-		throw new UnsupportedOperationException("Not supported yet. :  MappingStreamVariable._float(byte[] buff, int start)");
+		int i0 =    buff[start] & 0x000000ff ;
+		int i1 = (( buff[start + 1] & 0x000000ff ) <<  8  );
+		int i2 = (( buff[start + 2] & 0x000000ff ) << 16  );
+		int i3 = (( buff[start + 3] & 0x000000ff ) << 24  );
+
+		return  Float.intBitsToFloat(( i3 | i2 | i1 | i0 )  );
 	}
 	public static void _float(float val, byte[] buff, int start){
 		throw new UnsupportedOperationException("Not supported yet. :  MappingStreamVariable._float(float val, byte[] buff, int start)");

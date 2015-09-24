@@ -9,10 +9,10 @@ public class S7Protection {
    public int anl_sch;
    protected void Update(byte[] Src)
    {
-       sch_schal = S7.GetWordAt(Src,2);
-       sch_par   = S7.GetWordAt(Src,4);
-       sch_rel   = S7.GetWordAt(Src,6);
-       bart_sch  = S7.GetWordAt(Src,8);
-       anl_sch   = S7.GetWordAt(Src,10);
+       sch_schal = S7.GetIntAt(Src,2);
+       sch_par   = S7.GetIntAt(Src,4);
+       sch_rel   = S7.GetIntAt(Src,6);
+       bart_sch  = S7.GetIntAt(Src,8);
+       anl_sch   = S7.GetIntAt(Src,10);
    }
 }
