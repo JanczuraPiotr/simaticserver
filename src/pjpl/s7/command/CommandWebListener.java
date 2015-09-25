@@ -1,18 +1,17 @@
 package pjpl.s7.command;
 
-import Moka7.S7;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Hashtable;
-import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.layout.Priority;
-import pjpl.s7.util.MappingLittleEndianVariable;
 
 /**
  * Nasłuchuje komend do wykonania na procesie.
@@ -25,7 +24,7 @@ public class CommandWebListener extends Thread{
 	public CommandWebListener(int port) throws IOException{
 		this.listener = new ServerSocket(port);
 		this.commandBuilder = new CommandBuilder();
-		this.processesCommands = new Hashtable<Byte, PriorityQueue<pjpl.s7.command.Command> >();
+		this.processesCommands = new Hashtable< >();
 
 		doRun = true;
 	}
@@ -33,10 +32,7 @@ public class CommandWebListener extends Thread{
 	//------------------------------------------------------------------------------
 	// intefejs
 
-		public void addQueue( byte processId, PriorityQueue<pjpl.s7.command.Command> queue){
-			System.out.println("CommandWebListener.addQueue");
-			System.out.println("processId = "+processId);
-
+		public void addQueue( byte processId, Queue<pjpl.s7.command.Command> queue){
 			processesCommands.put(processId, queue);
 		}
 
@@ -45,31 +41,27 @@ public class CommandWebListener extends Thread{
 
 	@Override
 	public void run(){
-		short commandCode = 0;
-		byte commandAddr = 0;
+		short commandCode;
+		byte commandAddr;
 		Command command = null;
 
 		String s = "";
-		// kod komendy
-		int code = 0;
-		// aresat komendy 0xFFFF - bez adresu
-		int addr = 0;
-		float f = 0;
 
 		while( doRun ){
 			try {
 				doRead = true;
-				System.out.println("CommandWebListener.run : czekanie na gniazdko");
 				socket = listener.accept();
-				socketStream = socket.getInputStream();
-				inputData =  new DataInputStream( socketStream );
-				System.out.println("CommandWebListener.run : gniazdko otwarte");
+				inputSocketStream = socket.getInputStream();
+				outputSocketStream = socket.getOutputStream();
+				inputData =  new DataInputStream( inputSocketStream );
+				outputData = new DataOutputStream(outputSocketStream);
+				socketPrintWriter = new PrintWriter(socket.getOutputStream(), true);
 
 				commandCode = inputData.readShort();
 				commandAddr = inputData.readByte();
 
-				System.out.println("commandCode = " + String.format("hex : %04X dec   = %d",commandCode, commandCode ));
-				System.out.println("commandAddr = " + String.format("hex : %04X dec   = %d",commandAddr, commandAddr ));
+				s += "commandCode = " + String.format("hex : %04X ", commandCode ) + "\n";
+				s += "commandAddr = " + String.format("hex : %04X ", commandAddr ) + "\n";
 
 				switch(commandCode){
 					// OK, true, YES
@@ -81,15 +73,21 @@ public class CommandWebListener extends Thread{
 						// @todo !!!!
 						break;
 					default:
-						// @prace 00 wyjątek podczas dodawania kolejnej komendy
-						PriorityQueue<Command> tmpQ = processesCommands.get(commandAddr);
-						command = commandBuilder.build(commandCode, commandAddr, inputData);
-						System.out.println("processId = " + command.getProcesId());
-						tmpQ.add(command);
-//						processesCommands.get(commandAddr).add((Command)command);
-						System.out.println("processCommand.queue.size = "+processesCommands.get(commandAddr).size());
-//						System.out.println("processCommand.queue.peek.pricessId = "+processesCommands.get(commandAddr).peek().getProcesId());
+						processesCommands
+								.get(commandAddr)
+								.add(
+										(Command)commandBuilder
+												.build(
+														commandCode
+														, commandAddr
+														, inputData
+														, outputSocketStream
+												)
+								);
 				}
+				outputData.writeShort((short)0x1234);
+				outputData.writeShort((short)0x5678);
+				outputData.close();
 			} catch (NullPointerException | IOException ex) {
 				Logger.getLogger(CommandWebListener.class.getName()).log(Level.SEVERE, null, ex);
 				System.out.println(s);
@@ -100,11 +98,13 @@ public class CommandWebListener extends Thread{
 	private boolean doRead = true;
 
 	private final ServerSocket listener;
-	private InputStream socketStream;
+	private InputStream inputSocketStream;
+	private OutputStream outputSocketStream;
 	private DataInputStream inputData;
+	private DataOutputStream outputData;
+	private PrintWriter socketPrintWriter;
 	private Socket socket;
 	private final CommandBuilder commandBuilder;
-//	private final Queue<pjpl.s7.command.Command> commandQueue;
-	private final Hashtable<Byte, PriorityQueue<pjpl.s7.command.Command> > processesCommands;
+	private final Hashtable<Byte, Queue<pjpl.s7.command.Command> > processesCommands;
 
 }

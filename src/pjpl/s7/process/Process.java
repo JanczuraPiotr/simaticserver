@@ -5,8 +5,10 @@ import Moka7.S7Client;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.PriorityQueue;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.TreeMap;
+import java.util.concurrent.LinkedBlockingQueue;
 import pjpl.s7.common.ConstPLC;
 import pjpl.s7.device.PLC;
 import pjpl.s7.util.MemCell;
@@ -25,9 +27,12 @@ import pjpl.s7.util.MemClip;
 	 public static final int PLC_OPERATION_RESULT_READ_Q = 2;
 	 public static final int PLC_OPERATION_RESULT_ = 3;
 
+	 // @prace 00 utworzyć i uruchomić wątek który będzie oczekiwał na kolejce commandResponseQueue i na dla odczytanych
+	 // obiektów będzie wykonywał komunikację z na podstawie danych zawartych w CommandRequest
 	 public Process(byte id){
 		 this.id = id;
-		commandQueue = new PriorityQueue<>();
+		commandQueue = new LinkedList<>();
+		commandResponseQueue = new LinkedBlockingQueue<>();
 		init();
 		memClip = new MemClip(memD, memI, memQ);
 	}
@@ -39,7 +44,7 @@ import pjpl.s7.util.MemClip;
 		 return id;
 	 }
 
-	 public PriorityQueue<pjpl.s7.command.Command> getCommadQueue(){
+	 public Queue<pjpl.s7.command.Command> getCommadQueue(){
 		 return commandQueue;
 	 }
 
@@ -93,6 +98,16 @@ import pjpl.s7.util.MemClip;
 	 */
 	abstract protected void steep();
 	/**
+	 * Wykonywanie ewentualnych komend nadesłancyh do procesu przez sieć.
+	 */
+	protected void steepCommands(){
+		pjpl.s7.command.Command command;
+		while( null != ( command = commandQueue.poll() )){
+			commandResponseQueue.add(command.action(this));
+			System.out.printf("Odebrano komendę : %02X \n",command.getCommandCode());
+		}
+	}
+	/**
 	 * Zapisywanie zmodyfikowanych zmiennych do sterownika
 	 */
 	protected void steepWrite(){
@@ -145,6 +160,7 @@ import pjpl.s7.util.MemClip;
 			memClip.timeStamp = System.currentTimeMillis();
 			steepRead();             msSteepRead = System.currentTimeMillis();
 			steep();                 msSteep = System.currentTimeMillis();
+			steepCommands();         msSteepCommands = System.currentTimeMillis();
 			steepWrite();            msSteepWrite = System.currentTimeMillis();
 			steepPrepareNextSteep(); msSteepPrepareNextSteep = System.currentTimeMillis();
 			msSteepEnd = System.currentTimeMillis();
@@ -166,7 +182,7 @@ import pjpl.s7.util.MemClip;
 			}
 			msSteepFinally = System.currentTimeMillis();
 		}
-//		podsumowanieSteep();
+		podsumowanieSteep();
 	}
 
 	//------------------------------------------------------------------------------
@@ -214,7 +230,12 @@ import pjpl.s7.util.MemClip;
 	// Wyjścia zmienione podczas tego kroku. Będą wysłane do sterownika w metodzie steepWrite().
 	protected TreeMap<Byte, MemCell> memOutChangedId;
 
-	protected PriorityQueue<pjpl.s7.command.Command> commandQueue;
+	// Kolejka na odebrane komendy.
+	// Komendy odbierane są w bocznym wątku i wstawiane do tej kolejki. Przetwarzanie odbywa się w głównym wątku procesu.
+	protected Queue<pjpl.s7.command.Command> commandQueue;
+	// Kolejka na odpowiedzi wygenerowane przez komendy.
+	// Odpowiedzi od komend wysyłane są w wątku bocznym uruchamianym gdy w kolejce znajduje się jakiś obiekt.
+	protected LinkedBlockingQueue<pjpl.s7.command.CommandResponse> commandResponseQueue;
 
 	//------------------------------------------------------------------------------
 	// atrybuty prywatne
@@ -235,6 +256,7 @@ import pjpl.s7.util.MemClip;
 	protected long msSteepWaitRead = 0;
 	protected long msSteepRead = 0;
 	protected long msSteep = 0;
+	protected long msSteepCommands = 0;
 	protected long msSteepWrite = 0;
 	protected long msSteepPrepareNextSteep = 0;
 	protected long msSteepEnd = 0;
@@ -255,6 +277,9 @@ import pjpl.s7.util.MemClip;
 		System.out.println( datePCFormat.format(msSteep)
 				+ " Process.msSteep                  "
 				+ String.format("%4d", msSteep - msSteepRead) + " [ms]");
+		System.out.println(datePCFormat.format(msSteepCommands)
+				+ " Process.msSteepCommands          "
+				+ String.format("%4d", msSteepCommands - msSteep ) + " [ms]" );
 		System.out.println( datePCFormat.format(msSteepWrite)
 				+ " Process.msSteepWrite             "
 				+ String.format("%4d", msSteepWrite - msSteep) + " [ms]");

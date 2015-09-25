@@ -5,10 +5,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -132,12 +130,12 @@ public class SimaticServer {
 	private static FileReader configReader;
 	private static FileWriter configWriter;
 
-
 }
 /**
  * @prace 10 Wyrównać katalog Common między SimaticServer a SimaticWeb
  * @prace 20 utworzyć Command
  * @prace 30 modyfikować stan PLC za pomocą Command
+ * @prace 90 wzorując się na S7.java i BigEndian opracować klasę do obsługii bajtowego bufora, np: VariableInBuff ByteArrayStream VariableByteArray
  *
  * @todo Wszystkie wystąpienia nazwy procesu : "Brama" zamienić na "process1"
  * @todo Kolejki komend powinne pozwolić przekazywać komendy pomiędzy procesami.
