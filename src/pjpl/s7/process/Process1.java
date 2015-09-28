@@ -59,8 +59,8 @@ public class Process1 extends Process{
 //		System.out.println("zmienna_2 = " + zmienna_2 + " jako hex = " + String.format("%02X",zmienna_2 ));
 
 
-		memD.write(VarCode.ZMIENNA_1, zmienna_1++);
-		memD.write(VarCode.ZMIENNA_2, zmienna_2++);
+//		memD.write(VarCode.ZMIENNA_1, zmienna_1++);
+//		memD.write(VarCode.ZMIENNA_2, zmienna_2++);
 
 //		memQ.write(VarCode.OUT_1, out++);
 

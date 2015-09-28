@@ -132,8 +132,6 @@ public class SimaticServer {
 
 }
 /**
- * @prace 10 Wyrównać katalog Common między SimaticServer a SimaticWeb
- * @prace 20 utworzyć Command
  * @prace 30 modyfikować stan PLC za pomocą Command
  * @prace 90 wzorując się na S7.java i BigEndian opracować klasę do obsługii bajtowego bufora, np: VariableInBuff ByteArrayStream VariableByteArray
  *

@@ -133,7 +133,14 @@ abstract public class MemMap {
 		return memModified[plcId][PLC_MEM_MODIFIED_LAST] - memModified[plcId][PLC_MEM_MODIFIED_FIRST] + 1;
 	}
 
-
+	// @prace 05 poprawić nazwy metod zapisu i odczytu zmiennych z mem.
+	public void write(int cellCode, byte val){
+		writeByte(cellCode, (byte)val);
+		onUpdateCell(cells[cellCode]);
+	}
+	public void write(int cellCode, short val){
+		onUpdateCell(cells[cellCode]);
+	}
 	public void write(int cellCode, int val){
 		switch(cells[cellCode].getTyp()){
 			case TypeCode.BYTE:

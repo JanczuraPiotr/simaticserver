@@ -48,6 +48,9 @@ import pjpl.s7.util.MemClip;
 	 public Queue<pjpl.s7.command.Command> getCommadQueue(){
 		 return commandQueue;
 	 }
+	 public MemClip getMemClip(){
+		 return memClip;
+	 }
 
 	 // interfejs - koniec
 	 //------------------------------------------------------------------------------
@@ -109,7 +112,6 @@ import pjpl.s7.util.MemClip;
 		pjpl.s7.command.Command command;
 		while( null != ( command = commandQueue.poll() )){
 			commandResponseQueue.add(command.action(this));
-			System.out.printf("Odebrano komendę : %02X \n",command.getCommandCode());
 		}
 	}
 	/**

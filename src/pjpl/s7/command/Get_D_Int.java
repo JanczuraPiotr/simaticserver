@@ -16,7 +16,6 @@ public class Get_D_Int extends Command{
 
 	@Override
 	protected void loadParameters() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
