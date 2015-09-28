@@ -1,17 +1,17 @@
 package pjpl.s7.command;
 
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import pjpl.s7.common.CommandCode;
-import pjpl.s7.util.MemClip;
 
 /**
  */
 public class Set_D_Byte extends Command{
 
-	public Set_D_Byte(byte processId, DataInputStream commandInputStream, OutputStream outputStream) throws IOException {
-		super(processId, commandInputStream, outputStream);
+	public Set_D_Byte(byte processId, Socket socket) throws IOException {
+		super(processId, socket);
 	}
 	@Override
 	protected void loadParameters() {
@@ -19,7 +19,12 @@ public class Set_D_Byte extends Command{
 
 	@Override
 	public CommandResponse action(pjpl.s7.process.Process process) {
-		return new ResponseNo(processId, outputStream);
+		try {
+			return new ResponseNo(processId, getCommandCode(), socket);
+		} catch (IOException ex) {
+			Logger.getLogger(Set_D_Byte.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		return null;
 	}
 
 	@Override

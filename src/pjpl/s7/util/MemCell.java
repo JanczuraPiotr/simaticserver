@@ -32,8 +32,8 @@ public class MemCell {
 	/**
 	 * Wstawia definicję zmiennej procesowej do mapy pamięci.
 	 * @param name Nazwa zmiennej
-	 * @param pos pozycja w buforze gdzie umieszczony jest pierwszy bajt tej zmiennej. Należu pobierać z MemoryMap.pos()
-	 * @param typ itentyfikator typu zmiennej z TypeCode.xxx
+	 * @param pos pozycja w buforze gdzie umieszczony jest pierwszy bajt tej zmiennej. Należy pobierać z MemoryMap.pos()
+	 * @param typ identyfikator typu zmiennej z TypeCode.xxx
 	 * @param plcId identyfikator sterownika
 	 * @param plc  wskaźnik do sterownika
 	 *

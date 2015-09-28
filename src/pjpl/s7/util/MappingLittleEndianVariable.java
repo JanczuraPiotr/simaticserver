@@ -10,7 +10,7 @@ import java.io.IOException;
 public class MappingLittleEndianVariable{
 
 	/**
-	 * Jeżeli odycztany bajt != 0 zwracane jest true w innym przypadku false
+	 * Jeżeli odczytany bajt != 0 zwracane jest true w innym przypadku false
 	 * @param stream
 	 * @return
 	 * @throws IOException Puste wejście

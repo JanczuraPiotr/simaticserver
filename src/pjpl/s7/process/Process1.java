@@ -13,9 +13,6 @@ import pjpl.s7.util.DumpExpertBinMySql;
 
 public class Process1 extends Process{
 
-//	public static final int id = Byte.parseByte( pjpl.s7.run.SimaticServer.config.getProperty("process_brama_id") );
-
-
 	public Process1(byte id)throws NamingException, ClassNotFoundException, InstantiationException	, IllegalAccessException{
 		super(id);
 
@@ -47,6 +44,7 @@ public class Process1 extends Process{
 		dumpFile.newData();
 		dumpMySql.newData();
 	}
+
 	@Override
 	protected void steep(){
 		System.out.println("Process1.steepStart()");

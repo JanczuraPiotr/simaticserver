@@ -9,7 +9,7 @@ public class MemByteClip{
 	public byte[] buffQ;
 	/**
 	 * Moment wykonania zrzutu.
-	 * Jeżel < 0 to dane utworzono wewnątrz SimaticServer
+	 * Jeżeli < 0 to dane utworzono wewnątrz SimaticServer
 	 */
 	public long timeStamp;
 	/**

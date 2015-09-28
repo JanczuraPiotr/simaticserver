@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pjpl.s7.util;
 
 import java.net.URLConnection;
@@ -20,7 +15,7 @@ public class SimaticWeb implements Runnable{
 	}
 
 	/**
-	 * Inicjuje połączenie z serverem Web.
+	 * Inicjuje połączenie z serwerem Web.
 	 */
 	private void initConnection(){
 

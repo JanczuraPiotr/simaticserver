@@ -18,7 +18,7 @@ import pjpl.s7.run.SimaticServer;
  * Nazwa pliku składa się z pieczęci czasu a rozszerzeniem jest symbol bloku i nazwa urzadzenia:
  * 20150824180056113.pa.plc
  * 20150824180056113.pe.plc
- * lub plik będzie przechowywał całą zawrtość procesora
+ * lub plik będzie przechowywał całą zawartość procesora
  *
  * @author Piotr Janczura <piotr@janczura.pl>
  */

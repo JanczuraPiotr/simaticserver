@@ -30,19 +30,19 @@ public class CommandWebListener extends Thread{
 	}
 
 	//------------------------------------------------------------------------------
-	// intefejs
+	// interfejs
 
 		public void addQueue( byte processId, Queue<pjpl.s7.command.Command> queue){
 			processesCommands.put(processId, queue);
 		}
 
-	// intefejs
+	// interfejs
 	//------------------------------------------------------------------------------
 
 	@Override
 	public void run(){
 		short commandCode;
-		byte commandAddr;
+		byte processId;
 		Command command = null;
 
 		String s = "";
@@ -58,10 +58,10 @@ public class CommandWebListener extends Thread{
 				socketPrintWriter = new PrintWriter(socket.getOutputStream(), true);
 
 				commandCode = inputData.readShort();
-				commandAddr = inputData.readByte();
+				processId = inputData.readByte();
 
 				s += "commandCode = " + String.format("hex : %04X ", commandCode ) + "\n";
-				s += "commandAddr = " + String.format("hex : %04X ", commandAddr ) + "\n";
+				s += "commandAddr = " + String.format("hex : %04X ", processId ) + "\n";
 
 				switch(commandCode){
 					// OK, true, YES
@@ -74,20 +74,16 @@ public class CommandWebListener extends Thread{
 						break;
 					default:
 						processesCommands
-								.get(commandAddr)
+								.get(processId)
 								.add(
 										(Command)commandBuilder
 												.build(
 														commandCode
-														, commandAddr
-														, inputData
-														, outputSocketStream
+														, processId
+														, socket
 												)
 								);
 				}
-				outputData.writeShort((short)0x1234);
-				outputData.writeShort((short)0x5678);
-				outputData.close();
 			} catch (NullPointerException | IOException ex) {
 				Logger.getLogger(CommandWebListener.class.getName()).log(Level.SEVERE, null, ex);
 				System.out.println(s);

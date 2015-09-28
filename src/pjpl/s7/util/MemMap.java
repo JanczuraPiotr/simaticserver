@@ -117,7 +117,7 @@ abstract public class MemMap {
 		return buff;
 	}
 	/**
-	 * Zwraca index komórki w pamięci procesora gdzie znjduje się początek pamięci zawierającej zmodyfikowane zmienne.
+	 * Zwraca index komórki w pamięci procesora gdzie znajduje się początek pamięci zawierającej zmodyfikowane zmienne.
 	 * @param plcId
 	 * @return
 	 */
@@ -125,7 +125,7 @@ abstract public class MemMap {
 		return memModified[plcId][PLC_MEM_MODIFIED_FIRST] - memArrange[plcId][PLC_MEM_ARRANGE_START];
 	}
 	/**
-	 * Zwraca rozmiar pamięci procesrora zawierającego zmodyfikowane zmienne.
+	 * Zwraca rozmiar pamięci procesora zawierającego zmodyfikowane zmienne.
 	 * @param plcId
 	 * @return
 	 */
@@ -333,9 +333,9 @@ abstract public class MemMap {
 		mem = new byte[memSize];
 	}
 	/**
-	 * Na podstawie tymczasowaje mapy w której zostały zebrane zmienne podczas tworzenia obiektu, tworzona jest
+	 * Na podstawie tymczasowej mapy w której zostały zebrane zmienne podczas tworzenia obiektu, tworzona jest
 	 * tablica cells przechowująca zmienne w postaci tablicy dla szybszego działania. W czasie normalnej pracy
-	 * obiektu dostęp do zmiennyc odbywa się tylko z apomocą tablicy cells.
+	 * obiektu dostęp do zmiennych odbywa się tylko za pomocą tablicy cells.
 	 */
 	private void initArrCells(){
 		cellsCount = tempCellMap.size();

@@ -5,7 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Pobiera zrzut zmiennych porcesu i zapisuje je za pomocą DumpExpert.
+ * Pobiera zrzut zmiennych procesu i zapisuje je za pomocą DumpExpert.
  * Metoda i miejsce zapisania zrzutu zależy od klasy obiektu DunpExpert.
  *
  * @author Piotr Janczura <piotr@janczura.pl>
@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class DumpThread extends Thread{
 	/**
 	 * @param memClip Bloki danych procesu z których ma być wykonywany zrzut.
-	 * @param dumpExpert Obiekt klasy wyspecjalozowanej w zapisie zrzutu.
+	 * @param dumpExpert Obiekt klasy wyspecjalizowanej w zapisie zrzutu.
 	 */
 	public DumpThread(MemClip memClip, DumpExpert dumpExpert){
 		this.memClip = memClip;
@@ -67,7 +67,7 @@ public class DumpThread extends Thread{
 	//------------------------------------------------------------------------------
 	// poniższe chyba nie
 
-	// Bufory tymczasowe na bloki danych przkopowane z processMemoryX przed wstawieniem ich do kolejki
+	// Bufory tymczasowe na bloki danych przekopiwane z processMemoryX przed wstawieniem ich do kolejki
 	// w której oczekują na zapis przez obiekt dumpReceiver.
 	private byte[] tmpBuffD;
 	private byte[] tmpBuffI;

@@ -62,13 +62,13 @@ public class SimaticServer {
 		try {
 
 			//------------------------------------------------------------------------------
-			// processy
+			// procesy
 
 			process1 = new pjpl.s7.process.Process1(ConstProcess.PROCESS1_ID);
 
 			processes.put(process1.id(), process1 );
 
-			// processy
+			// procesy
 			//------------------------------------------------------------------------------
 
 			//------------------------------------------------------------------------------
@@ -139,5 +139,5 @@ public class SimaticServer {
  *
  * @todo Wszystkie wystąpienia nazwy procesu : "Brama" zamienić na "process1"
  * @todo Kolejki komend powinne pozwolić przekazywać komendy pomiędzy procesami.
- *				Prawdopodobnie każdy Process będzie zwracał swoją kolejkę któa będzie przekazana do CommandListenera
+ *				Prawdopodobnie każdy Process będzie zwracał swoją kolejkę która będzie przekazana do CommandListenera
  */

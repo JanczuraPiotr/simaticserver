@@ -44,6 +44,6 @@ public class ConfigDefault extends Properties{
 		// Nie można łączyć np : 5d12h3m
 		setProperty("time_interval"        , "1000"); // Czas pomiędzy wywołaniami głównej pętli ( pętli "sterowania" )
 		setProperty("time_storage"         , "5s");   // Czas przechowywania plików zanim zostaną usunięte
-		setProperty("time_storageClean"    , "2s");   // Czas wuruchamiania procedury czyszczenia bufora przechowującego zrzuty z PLC
+		setProperty("time_storageClean"    , "2s");   // Czas uruchamiania procedury czyszczenia bufora przechowującego zrzuty z PLC
 	}
 }

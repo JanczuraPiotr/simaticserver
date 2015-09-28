@@ -9,6 +9,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.TreeMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import pjpl.s7.command.CommandResponse;
 import pjpl.s7.common.ConstPLC;
 import pjpl.s7.device.PLC;
 import pjpl.s7.util.MemCell;
@@ -27,8 +30,6 @@ import pjpl.s7.util.MemClip;
 	 public static final int PLC_OPERATION_RESULT_READ_Q = 2;
 	 public static final int PLC_OPERATION_RESULT_ = 3;
 
-	 // @prace 00 utworzyć i uruchomić wątek który będzie oczekiwał na kolejce commandResponseQueue i na dla odczytanych
-	 // obiektów będzie wykonywał komunikację z na podstawie danych zawartych w CommandRequest
 	 public Process(byte id){
 		 this.id = id;
 		commandQueue = new LinkedList<>();
@@ -80,7 +81,11 @@ import pjpl.s7.util.MemClip;
 		*/
 	 protected void steepWaitRead(){
 		 // Obecny sposób wykonywania zapytań do sterownika kończy się w metodzie steepPrepareRead().
-		 // Nie ma więc potrzeby zatrzymywania wątku na czas skompletowania odpowiedzi
+		 // Nie ma więc potrzeby zatrzymywania wątku na czas skompletowania odpowiedzi.
+		 // Docelowo w metodzie steepPrepareRead() będą uruchamiane wątki komunikujące się ze sterownikami. Po wysłaniu
+		 // wszystkich zapytań należy poczekać na aż zakończy się ostatnia komunikacja i dane prcosesowe zostaną
+		 // skompletowane. Ta metoda powinna zawierać kod zatrzymujący prace wątku do tego czasu. Przed uruchomieniem
+		 // testu na odbiór całości danych można tu wykonać dodatkowe zadania.
 	 }
 	 /**
 		* Wykonane gdy zakończyły pracę wszystkie operacje odczytu danych.
@@ -94,11 +99,11 @@ import pjpl.s7.util.MemClip;
 		}
 	};
 	/**
-	 * Główne operacje wątku
+	 * Główne operacje wątku. Tu można wykonanć obliczenia na zmniennych procesu.
 	 */
 	abstract protected void steep();
 	/**
-	 * Wykonywanie ewentualnych komend nadesłancyh do procesu przez sieć.
+	 * Wykonywanie ewentualnych komend nadesłanych do procesu przez sieć.
 	 */
 	protected void steepCommands(){
 		pjpl.s7.command.Command command;
@@ -203,6 +208,25 @@ import pjpl.s7.util.MemClip;
 		}
 		resultPlcsOperations = new int[plcs.length][PLC_OPERATION_RESULT_];
 	}
+	private void initCommandResposeThread(){
+		commandResponseThread = new Thread(
+				new Runnable() {
+					@Override
+					public void run() {
+						CommandResponse commandResponse;
+						while(true){
+							try {
+								commandResponse = commandResponseQueue.take();
+								commandResponse.sendToStream();
+							} catch (InterruptedException ex) {
+								Logger.getLogger(Process.class.getName()).log(Level.SEVERE, null, ex);
+							}
+						}
+					}
+			}
+		);
+		commandResponseThread.start();
+	}
 
 	//------------------------------------------------------------------------------
 	// metody prywatne
@@ -211,6 +235,7 @@ import pjpl.s7.util.MemClip;
 		initPlcs();
 		initMemory();
 		initInputBuff();
+		initCommandResposeThread();
 	}
 
 	//------------------------------------------------------------------------------
@@ -236,6 +261,8 @@ import pjpl.s7.util.MemClip;
 	// Kolejka na odpowiedzi wygenerowane przez komendy.
 	// Odpowiedzi od komend wysyłane są w wątku bocznym uruchamianym gdy w kolejce znajduje się jakiś obiekt.
 	protected LinkedBlockingQueue<pjpl.s7.command.CommandResponse> commandResponseQueue;
+	// Wątek odsyłający odpowiedzi na wykonane komendy
+	protected Thread commandResponseThread;
 
 	//------------------------------------------------------------------------------
 	// atrybuty prywatne
