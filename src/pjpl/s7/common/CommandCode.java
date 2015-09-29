@@ -4,8 +4,7 @@ package pjpl.s7.common;
  * Kody sterujące pracą programu
  */
 abstract public class CommandCode{
-
-	// Kody nie ujmowane w przedziały
+	
 	public static final short NO = (short)0x0000;
 	public static final short OK = (short)0xFFFF;
 
@@ -23,7 +22,7 @@ abstract public class CommandCode{
 	// Kod może wymagać parametrów do pracy i te umieszczone są w tym samym buforze zaraz za nim. Obsługą kody wraz z
 	// odczytaniem parametrów i wykonaniem algorytmu w ramach procesu zajmują się obiekty klas pochodnych po Command.
 
-	// Kody komend niezależnych od procesu.
+	// Kody komend
 	// 100000000000000B -> 1011111111111111B => 0x8000 -> 0xBFFF =>  32768 -> 49151
 
 	public static final short GET_I_BYTE  = (short)0x8001;
@@ -38,7 +37,7 @@ abstract public class CommandCode{
 	public static final short GET_D_REAL  = (short)0x800A;
 	public static final short SET_D_REAL  = (short)0x800B;
 
-	// Kody komend indywidualne dla tej aplikacji
+	// Kody odpowiedzi na komendy. Definicje w ResponseCode
 	// 110000000000000B -> 1111111111111111B => 0xC000 -> 0xCFFF =>  49152 -> 65535
 
 }

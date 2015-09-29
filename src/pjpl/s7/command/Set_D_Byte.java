@@ -15,12 +15,19 @@ public class Set_D_Byte extends Command{
 	}
 	@Override
 	protected void loadParameters() {
+		try {
+			addr = dataInputStream.readUnsignedShort();
+			val = dataInputStream.readByte();
+		} catch (IOException ex) {
+			Logger.getLogger(Set_D_Byte.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 
 	@Override
 	public CommandResponse action(pjpl.s7.process.Process process) {
 		try {
-			return new ResponseNo(processId, getCommandCode(), socket);
+			process.getMemClip().memD.write(addr, val);
+			return new ResponseOk(getProcessId(), getCommandCode(), socket);
 		} catch (IOException ex) {
 			Logger.getLogger(Set_D_Byte.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -32,4 +39,6 @@ public class Set_D_Byte extends Command{
 		return (short)CommandCode.SET_D_BYTE;
 	}
 
+	private int addr;
+	private byte val;
 }

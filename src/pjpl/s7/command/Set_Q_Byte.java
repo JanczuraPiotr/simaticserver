@@ -18,12 +18,8 @@ public class Set_Q_Byte extends Command{
 	@Override
 	protected void loadParameters() {
 		try {
-			addrQ = dataInputStream.readShort();
-			valQ = dataInputStream.readByte();
-			System.out.printf("commandCode = %04X \n", getCommandCode());
-			System.out.printf("processId = %04X \n", getProcesId());
-			System.out.printf("addrQ = %02X \n", addrQ);
-			System.out.printf("valQ = %02X \n", valQ);
+			addr = dataInputStream.readUnsignedShort();
+			val = dataInputStream.readByte();
 		} catch (IOException ex) {
 			Logger.getLogger(Set_Q_Byte.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -33,9 +29,9 @@ public class Set_Q_Byte extends Command{
 	public CommandResponse action(pjpl.s7.process.Process process) {
 		try {
 			MemClip memClip = process.getMemClip();
-			memClip.memQ.write(addrQ,valQ);
+			memClip.memQ.write(addr,val);
 
-			return new ResponseNo(processId, getCommandCode(), socket);
+			return new ResponseNo(getProcessId(), getCommandCode(), socket);
 		} catch (IOException ex) {
 			Logger.getLogger(Set_Q_Byte.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -47,7 +43,7 @@ public class Set_Q_Byte extends Command{
 		return (short)CommandCode.SET_Q_BYTE;
 	}
 
-	private int addrQ;
-	private byte valQ;
+	private int addr;
+	private byte val;
 
 }

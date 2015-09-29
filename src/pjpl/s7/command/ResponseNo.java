@@ -2,36 +2,17 @@ package pjpl.s7.command;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import pjpl.s7.common.CommandCode;
-import pjpl.s7.util.VariableInArray;
+import pjpl.s7.common.ResponseCode;
+import pjpl.s7.common.ResponseGeneral;
 
 /**
+ * Odpowiedź zwracana gdy komenda zakończyła się niepowodzeniem lub gdy komenda była zapytaniem na które odpowiedzią
+ * może być TAK lub NIE.
  */
-public class ResponseNo extends CommandResponse{
+public class ResponseNo extends ResponseGeneral{
 
-	public ResponseNo( byte processId, short commandCode, Socket socket) throws IOException {
-		super(processId, commandCode, socket);
-	}
-
-	@Override
-	public short getResponseCode() {
-		return CommandCode.NO;
-	}
-
-	@Override
-	public void sendToStream() {
-		VariableInArray._byte(getProcessId(), buff, 0);
-		VariableInArray._short(getCommandCode(), buff, 1);
-		VariableInArray._short(getResponseCode(), buff, 3);
-		try {
-			outputStream.write(buff);
-			outputStream.close();
-		} catch (IOException ex) {
-			Logger.getLogger(ResponseOk.class.getName()).log(Level.SEVERE, null, ex);
-		}
-
+	public ResponseNo(byte processId, short commandCode, Socket socket) throws IOException {
+		super(processId, commandCode, ResponseCode.NO, socket);
 	}
 
 }

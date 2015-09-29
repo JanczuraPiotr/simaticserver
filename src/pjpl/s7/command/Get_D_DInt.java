@@ -21,7 +21,7 @@ public class Get_D_DInt extends Command{
 	@Override
 	public CommandResponse action(pjpl.s7.process.Process process) {
 		try {
-			return new ResponseOk(processId, getCommandCode(), socket);
+			return new ResponseOk(getProcessId(), getCommandCode(), socket);
 		} catch (IOException ex) {
 			Logger.getLogger(Get_D_DInt.class.getName()).log(Level.SEVERE, null, ex);
 		}

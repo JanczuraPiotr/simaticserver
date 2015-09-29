@@ -7,7 +7,14 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 /**
- * @author Piotr Janczura <piotr@janczura.pl>
+ * Komenda nadesłana do procesu.
+ * Komenda przychodzi w postaci bufora przez socket.
+ *
+ * Domyślny format bufora - stała zawartość dla każdego pochodnego Command
+ * buff[0] identyfikator procesu do którego skierowana jest konenda
+ * buff[1..2] kod komendy
+ * W zależności od klasy pochodnej mogą być dołączane kolejne parametry definiowane w klasach pochgodnych
+ *
  */
 abstract public class Command { // _cmd
 
@@ -29,7 +36,7 @@ abstract public class Command { // _cmd
 	 * @return
 	 */
 	public abstract short getCommandCode();
-	public byte getProcesId(){
+	public byte getProcessId(){
 		return  processId;
 	}
 	/*
@@ -56,6 +63,6 @@ abstract public class Command { // _cmd
 	 * Identyfikator procesu, który powinien wykonać komendę
 	 * Wartość zmiennej przekazywana jest w parametrach komendy w buforze za kodem Komendy.
 	 */
-	protected byte processId;
+	private byte processId;
 
 }

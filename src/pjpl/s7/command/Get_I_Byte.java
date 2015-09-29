@@ -17,7 +17,7 @@ public class Get_I_Byte extends Command{
 	@Override
 	public CommandResponse action(pjpl.s7.process.Process process) {
 		try {
-			return new ResponseNo(processId, getCommandCode(), socket);
+			return new ResponseNo(getProcessId(), getCommandCode(), socket);
 		} catch (IOException ex) {
 			Logger.getLogger(Get_I_Byte.class.getName()).log(Level.SEVERE, null, ex);
 		}

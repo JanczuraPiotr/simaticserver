@@ -21,7 +21,7 @@ public class Get_D_Real extends Command{
 	@Override
 	public CommandResponse action(pjpl.s7.process.Process process) {
 		try {
-			return new ResponseNo(processId, getCommandCode(), socket);
+			return new ResponseNo(getProcessId(), getCommandCode(), socket);
 		} catch (IOException ex) {
 			Logger.getLogger(Get_D_Real.class.getName()).log(Level.SEVERE, null, ex);
 		}
