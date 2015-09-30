@@ -2,6 +2,7 @@ package pjpl.s7.process;
 
 import Moka7.S7;
 import Moka7.S7Client;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -222,6 +223,8 @@ import pjpl.s7.util.MemClip;
 								commandResponse.sendToStream();
 							} catch (InterruptedException ex) {
 								Logger.getLogger(Process.class.getName()).log(Level.SEVERE, null, ex);
+							} catch (IOException ex) {
+								Logger.getLogger(Process.class.getName()).log(Level.SEVERE, null, ex);
 							}
 						}
 					}
@@ -311,7 +314,7 @@ import pjpl.s7.util.MemClip;
 				+ String.format("%4d", msSteepCommands - msSteep ) + " [ms]" );
 		System.out.println( datePCFormat.format(msSteepWrite)
 				+ " Process.msSteepWrite             "
-				+ String.format("%4d", msSteepWrite - msSteep) + " [ms]");
+				+ String.format("%4d", msSteepWrite - msSteepCommands) + " [ms]");
 		System.out.println( datePCFormat.format(msSteepPrepareNextSteep)
 				+ " Process.msSteepPrepareNextSteep  "
 				+ String.format("%4d", msSteepPrepareNextSteep - msSteepWrite) + " [ms]" );

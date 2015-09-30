@@ -2,12 +2,13 @@ package pjpl.s7.command;
 
 import java.io.IOException;
 import java.net.Socket;
+import pjpl.s7.common.ResponseCode;
 import pjpl.s7.util.VariableInArray;
 
 public class ResponseDInt extends CommandResponse{
 
-	public ResponseDInt(byte processId, short commandCode, short responseCode, int val, Socket socket) throws IOException {
-		super(processId, commandCode, responseCode, socket);
+	public ResponseDInt(byte processId, short commandCode, int val, Socket socket) throws IOException {
+		super(processId, commandCode, ResponseCode.GET_D_DINT, socket);
 		this.val = val;
 	}
 	public int getValue(){
@@ -15,7 +16,7 @@ public class ResponseDInt extends CommandResponse{
 	}
 	@Override
 	protected void calculateBuffSize() {
-		buffSize = 7;
+		buffSize = 9;
 	}
 
 	@Override

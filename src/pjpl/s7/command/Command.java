@@ -11,8 +11,12 @@ import java.net.Socket;
  * Komenda przychodzi w postaci bufora przez socket.
  *
  * Domyślny format bufora - stała zawartość dla każdego pochodnego Command
- * buff[0] identyfikator procesu do którego skierowana jest konenda
- * buff[1..2] kod komendy
+ * buff[0]
+ * jeżeli 0x00 < buff[0] < 0xFF identyfikator procesu do którego skierowana jest konenda
+ *		buff[1..2] kod komendy
+ * jeżeli 0x00 = buff[0] - komenda dotyczy SimaticServer
+ * jeżeli 0xff = buff[0] - komenda dotyczy Klienta. Nie jest tym samym co odpowiedź na komendę.
+ *
  * W zależności od klasy pochodnej mogą być dołączane kolejne parametry definiowane w klasach pochgodnych
  *
  */

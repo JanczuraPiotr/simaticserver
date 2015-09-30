@@ -49,19 +49,19 @@ public class Process1 extends Process{
 	protected void steep(){
 		System.out.println("Process1.steepStart()");
 
-		short zmienna_1 = memD.readInt(VarCode.ZMIENNA_1);
-		short zmienna_2 = memD.readInt(VarCode.ZMIENNA_2);
-
-		zmienna_1 += 1;
-		zmienna_2 += 2;
-
+//		short zmienna_1 = memD.readInt(VarCode.ZMIENNA_1);
+//		short zmienna_2 = memD.readInt(VarCode.ZMIENNA_2);
+//
+//		zmienna_1 += 1;
+//		zmienna_2 += 2;
+//
 //		System.out.println("zmienna_1 = " + zmienna_1 + " jako hex = " + String.format("%02X",zmienna_1 ));
 //		System.out.println("zmienna_2 = " + zmienna_2 + " jako hex = " + String.format("%02X",zmienna_2 ));
-
-
+//
+//
 //		memD.write(VarCode.ZMIENNA_1, zmienna_1++);
 //		memD.write(VarCode.ZMIENNA_2, zmienna_2++);
-
+//
 //		memQ.write(VarCode.OUT_1, out++);
 
 //		String s = "";

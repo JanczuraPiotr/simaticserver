@@ -133,7 +133,6 @@ public class SimaticServer {
 }
 /**
  * @prace 30 modyfikować stan PLC za pomocą Command
- * @prace 90 wzorując się na S7.java i BigEndian opracować klasę do obsługii bajtowego bufora, np: VariableInBuff ByteArrayStream VariableByteArray
  *
  * @todo Wszystkie wystąpienia nazwy procesu : "Brama" zamienić na "process1"
  * @todo Kolejki komend powinne pozwolić przekazywać komendy pomiędzy procesami.

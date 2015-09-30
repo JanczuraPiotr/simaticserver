@@ -2,12 +2,13 @@ package pjpl.s7.command;
 
 import java.io.IOException;
 import java.net.Socket;
+import pjpl.s7.common.ResponseCode;
 import pjpl.s7.util.VariableInArray;
 
 public class ResponseInt extends CommandResponse{
 
-	public ResponseInt(byte processId, short commandCode, short responseCode, short val, Socket socket) throws IOException {
-		super(processId, commandCode, responseCode, socket);
+	public ResponseInt(byte processId, short commandCode,short val, Socket socket) throws IOException {
+		super(processId, commandCode, ResponseCode.GET_D_INT, socket);
 		this.val = val;
 	}
 	public short getValue(){

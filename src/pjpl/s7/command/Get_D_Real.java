@@ -16,12 +16,18 @@ public class Get_D_Real extends Command{
 
 	@Override
 	protected void loadParameters() {
+		try {
+			addr = dataInputStream.readUnsignedShort();
+		} catch (IOException ex) {
+			Logger.getLogger(Get_D_Byte.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 
 	@Override
 	public CommandResponse action(pjpl.s7.process.Process process) {
 		try {
-			return new ResponseNo(getProcessId(), getCommandCode(), socket);
+			val = process.getMemClip().memD.readReal(addr);
+			return new ResponseReal(getProcessId(), getCommandCode(), val, socket);
 		} catch (IOException ex) {
 			Logger.getLogger(Get_D_Real.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -33,4 +39,6 @@ public class Get_D_Real extends Command{
 		return (short)CommandCode.GET_D_REAL;
 	}
 
+	private int addr;
+	private float val;
 }

@@ -31,7 +31,7 @@ public class Set_Q_Byte extends Command{
 			MemClip memClip = process.getMemClip();
 			memClip.memQ.write(addr,val);
 
-			return new ResponseNo(getProcessId(), getCommandCode(), socket);
+			return new ResponseOk(getProcessId(), getCommandCode(), socket);
 		} catch (IOException ex) {
 			Logger.getLogger(Set_Q_Byte.class.getName()).log(Level.SEVERE, null, ex);
 		}

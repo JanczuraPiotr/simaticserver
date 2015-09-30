@@ -21,11 +21,11 @@ public class ResponseCode {
 
 	public static final short RETURN_BUFF    = (short)0xC100;
 	public static final short RETURN_BYTE    = (short)0xC101;
-	public static final short RETURN_SHORT   = (short)0xC102;
-	public static final short RETURN_INT     = (short)0xC103;
+	public static final short RETURN_INT     = (short)0xC102;
+	public static final short RETURN_DINT    = (short)0xC103;
 	public static final short RETURN_LONG    = (short)0xC104;
-	public static final short RETURN_FLOAT   = (short)0xC105;
-	public static final short RETURN_DOUBLE  = (short)0xC106;
+	public static final short RETURN_REAL    = (short)0xC105;
+	public static final short RETURN_LREAL   = (short)0xC106;
 
 
 }

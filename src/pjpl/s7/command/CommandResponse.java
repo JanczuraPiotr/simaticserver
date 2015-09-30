@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import pjpl.s7.common.ResponseCode;
 
 /**
  * Klasa bazowa dla klas opakowujących dane wygenerowane jako odpowiedź na komendę obsługiwaną w obiekcie klasy Command.
@@ -32,6 +33,7 @@ public abstract class CommandResponse {
 		this.commandCode = commandCode;
 		this.responseCode = responseCode;
 		this.socket = socket;
+		this.outputStream = socket.getOutputStream();
 	}
 
 	//------------------------------------------------------------------------------
@@ -55,7 +57,7 @@ public abstract class CommandResponse {
 	 * Wysyła do gniazdka bufor z danymi.
 	 * Zamyka strumień.
 	 */
-	public final void sendToStream(){
+	public final void sendToStream() throws IOException{
 		calculateBuffSize();
 		buff = new byte[getBuffSize()];
 		prepareBuff();
@@ -63,7 +65,10 @@ public abstract class CommandResponse {
 			outputStream.write(buff);
 			outputStream.close();
 		} catch (IOException ex) {
-			Logger.getLogger(ResponseOk.class.getName()).log(Level.SEVERE, null, ex);
+			String errString = ex.getMessage();
+			outputStream.write(new byte[0]);
+			outputStream.write(errString.getBytes());
+			// Logger.getLogger(ResponseOk.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 

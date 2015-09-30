@@ -16,12 +16,19 @@ public class Get_D_DInt extends Command{
 
 	@Override
 	protected void loadParameters() {
+		try {
+			addr = dataInputStream.readUnsignedShort();
+		} catch (IOException ex) {
+			Logger.getLogger(Get_D_Byte.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
 	}
 
 	@Override
 	public CommandResponse action(pjpl.s7.process.Process process) {
 		try {
-			return new ResponseOk(getProcessId(), getCommandCode(), socket);
+			val = process.getMemClip().memD.readDInt(addr);
+			return new ResponseDInt(getProcessId(), getCommandCode(), val, socket);
 		} catch (IOException ex) {
 			Logger.getLogger(Get_D_DInt.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -33,4 +40,6 @@ public class Get_D_DInt extends Command{
 		return (short)CommandCode.GET_D_DINT;
 	}
 
+	private int addr;
+	private int val;
 }

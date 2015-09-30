@@ -2,12 +2,13 @@ package pjpl.s7.command;
 
 import java.io.IOException;
 import java.net.Socket;
+import pjpl.s7.common.ResponseCode;
 import pjpl.s7.util.VariableInArray;
 
 public class ResponseReal extends CommandResponse{
 
-	public ResponseReal(byte processId, short commandCode, short responseCode, float val, Socket socket) throws IOException {
-		super(processId, commandCode, responseCode, socket);
+	public ResponseReal(byte processId, short commandCode, float val, Socket socket) throws IOException {
+		super(processId, commandCode, ResponseCode.GET_D_REAL, socket);
 		this.val = val;
 	}
 
