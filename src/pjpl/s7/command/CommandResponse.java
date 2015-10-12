@@ -3,9 +3,6 @@ package pjpl.s7.command;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import pjpl.s7.common.ResponseCode;
 
 /**
  * Klasa bazowa dla klas opakowujących dane wygenerowane jako odpowiedź na komendę obsługiwaną w obiekcie klasy Command.
@@ -15,7 +12,7 @@ import pjpl.s7.common.ResponseCode;
  * Nagłówek bufora - stała zawartość dla każdego pochodnego CommandResponse
  * buff[0] identyfikator procesu który wygenerował odpowiedź
  * buff[1..2] kod komendy która była obsługiwana przez process
- * buff[3..5] kod odpowiedzi z jaką zakończyła się praca komendy na którą wygenerowano tą opowiedź
+ * buff[3..5] kod odpowiedzi z jaką zakończyła się praca komendy na którą wygenerowano tą odpowiedź
  * jeżeli buff[3..5] == 0x0000 odpowiedź negatywna na komendę wymagającą tylko potwierdzenia lub niepowodzenie komendy
  * jeżeli buff[3..5] == 0xFFFF odpowiedź tak na komendę wymagającą tylko potwierdzenia
  * jeżeli 0x0000 < buff[3..5] < 0xFFFF specyficzna odpowiedź od której mogą zależeć pozostałe parametry bufora.

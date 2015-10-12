@@ -16,7 +16,7 @@ public class MemCell {
 	 * @param description Opis zmiennej, np w celu wyświetlania podpowiedzi w interfejsie graficznym
 	 * @param pos pozycja w buforze gdzie umieszczony jest pierwszy bajt tej zmiennej.
 	 *         Należy pobierać z memoryMap.pos(TypeCode.size[TypeCode.xxx])
-	 * @param typ itentyfikator typu zmiennej z TypeCode.xxx
+	 * @param typ identyfikator typu zmiennej z TypeCode.xxx
 	 * @param plcId identyfikator sterownika
 	 * @param plc  wskaźnik do sterownika
 	 */

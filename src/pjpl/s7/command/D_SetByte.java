@@ -8,9 +8,9 @@ import pjpl.s7.common.CommandCode;
 
 /**
  */
-public class Set_D_Byte extends Command{
+public class D_SetByte extends Command{
 
-	public Set_D_Byte(byte processId, Socket socket) throws IOException {
+	public D_SetByte(byte processId, Socket socket) throws IOException {
 		super(processId, socket);
 	}
 	@Override
@@ -19,7 +19,7 @@ public class Set_D_Byte extends Command{
 			addr = dataInputStream.readUnsignedShort();
 			val = dataInputStream.readByte();
 		} catch (IOException ex) {
-			Logger.getLogger(Set_D_Byte.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(D_SetByte.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 
@@ -29,14 +29,14 @@ public class Set_D_Byte extends Command{
 			process.getMemClip().memD.write(addr, val);
 			return new ResponseOk(getProcessId(), getCommandCode(), socket);
 		} catch (IOException ex) {
-			Logger.getLogger(Set_D_Byte.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(D_SetByte.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		return null;
 	}
 
 	@Override
 	public short getCommandCode() {
-		return (short)CommandCode.SET_D_BYTE;
+		return (short)CommandCode.D_SET_BYTE;
 	}
 
 	private int addr;

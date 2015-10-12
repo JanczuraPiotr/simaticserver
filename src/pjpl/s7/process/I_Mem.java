@@ -8,19 +8,19 @@ import pjpl.s7.device.PLC;
 import pjpl.s7.util.MemCell;
 import pjpl.s7.util.MemMap;
 
-public class MemQ extends MemMap{
+public class I_Mem extends MemMap{
 
-	public MemQ(PLC[] plcs) {
+	public I_Mem(PLC[] plcs) {
 		super(plcs);
 	}
 
 	@Override
 	public void addCells() {
-		addCell(VarCode.OUT_1
+		addCell(VarCode.IN_1
 				, new MemCell(
-						"out_1"
-						, pos(TypeCode.size[TypeCode.INT])
-						,	TypeCode.BYTE
+						"in_1"
+						, pos(TypeCode.size[TypeCode.BYTE])
+						, TypeCode.BYTE
 						, ConstPLC.PLC1
 						, plcs[ConstPLC.PLC1]
 		));
@@ -28,11 +28,11 @@ public class MemQ extends MemMap{
 
 	@Override
 	protected int areaCode() {
-		return S7.Q;
+		return S7.I;
 	}
 
 	@Override
-	protected int dbNumber() {// @todo określić sposób wyznaczania
+	protected int dbNumber() {
 		return 0;
 	}
 

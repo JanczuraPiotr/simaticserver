@@ -2,7 +2,7 @@ package pjpl.s7.common;
 
 /**
  *
- * @author pjanczura
+ * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class ConstProcess {
 	public final static byte PROCESS1_ID = 1;

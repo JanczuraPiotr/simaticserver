@@ -5,22 +5,22 @@ package pjpl.s7.common;
  */
 public class TypeCode {
 
-	public static final int BIT   = 0;
-	public static final int BYTE  = 1; // 8 bit
-	public static final int INT   = 2; // 16 bit
-	public static final int DINT  = 3; // 32 bit
-	public static final int REAL  = 4; // 32 bit float
-	public static final int LREAL = 5; // 64 bit double
+	public static final int BIT   = 0x0000000000;
+	public static final int BYTE  = 0x0000000001; // 8 bit
+	public static final int INT   = 0x0000000002; // 16 bit
+	public static final int DINT  = 0x0000000003; // 32 bit
+	public static final int REAL  = 0x0000000004; // 32 bit float
+	public static final int LREAL = 0x0000000005; // 64 bit double
 
 
 
 	public static final int[] size = new int[6];
 	static{
-		size[BYTE]  = 1;
-		size[INT]   = 2;
-		size[DINT]  = 4;
-		size[REAL]  = 4;
-		size[LREAL] = 8;
+		size[BYTE]  = 0x0000000001;
+		size[INT]   = 0x0000000002;
+		size[DINT]  = 0x0000000004;
+		size[REAL]  = 0x0000000004;
+		size[LREAL] = 0x0000000008;
 	}
 
 	public static final String[] name = new String[6];

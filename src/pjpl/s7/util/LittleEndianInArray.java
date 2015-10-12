@@ -7,7 +7,7 @@ import java.io.IOException;
  * Wspiera wymianę danych z systemem opartym na formacie zapisu danych little endian
  * @author Piotr Janczura <piotr@janczura.pl>
  */
-public class MappingLittleEndianVariable{
+public class LittleEndianInArray{
 
 	/**
 	 * Jeżeli odczytany bajt != 0 zwracane jest true w innym przypadku false

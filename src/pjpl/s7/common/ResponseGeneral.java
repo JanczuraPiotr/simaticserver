@@ -3,7 +3,7 @@ package pjpl.s7.common;
 import java.io.IOException;
 import java.net.Socket;
 import pjpl.s7.command.CommandResponse;
-import pjpl.s7.util.VariableInArray;
+import pjpl.s7.util.BigEndianInArray;
 
 /**
  * Domyślna klasa do generowania odpowiedzi.
@@ -19,9 +19,9 @@ public class ResponseGeneral extends CommandResponse{
 	}
 	@Override
 	protected void prepareBuff() {
-		VariableInArray._byte(getProcessId(), buff, 0);
-		VariableInArray._short(getCommandCode(), buff, 1);
-		VariableInArray._short(getResponseCode(), buff, 3);
+		BigEndianInArray._byte(getProcessId(), buff, 0);
+		BigEndianInArray._short(getCommandCode(), buff, 1);
+		BigEndianInArray._short(getResponseCode(), buff, 3);
 	}
 
 }

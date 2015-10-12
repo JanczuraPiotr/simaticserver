@@ -3,7 +3,7 @@ package pjpl.s7.util;
 /**
  * Obsługuje przechowywanie zmiennych w tablicy bajtowej w porządku big endian
  */
-public abstract class VariableInArray {
+public abstract class BigEndianInArray {
 	public static void _byte(byte val, byte[] buff, int start) throws ArrayIndexOutOfBoundsException {
 		buff[start] = val;
 	}

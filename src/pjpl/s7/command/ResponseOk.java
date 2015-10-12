@@ -7,7 +7,7 @@ import pjpl.s7.common.ResponseGeneral;
 
 /**
  * Odpowiedź zwracana gdy komenda zakończyła się powodzeniem a komenda nie rządała szczegółowej odpowiedzi lub gdy
- * komenda rządała odpowiedzi w formie TAK lub NIE.
+ * komenda żądała odpowiedzi w formie TAK lub NIE.
  */
 public class ResponseOk extends ResponseGeneral{
 

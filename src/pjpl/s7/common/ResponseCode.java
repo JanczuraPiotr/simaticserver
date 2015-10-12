@@ -7,17 +7,17 @@ public class ResponseCode {
 
 	public static final short GENERAL     = (short)0xC000;
 
-	public static final short GET_I_BYTE  = (short)0xC001;
-	public static final short GET_Q_BYTE  = (short)0xC002;
-	public static final short SET_Q_BYTE  = (short)0xC003;
-	public static final short GET_D_BYTE  = (short)0xC004;
-	public static final short SET_D_BYTE  = (short)0xC005;
-	public static final short GET_D_INT   = (short)0xC006;
-	public static final short SET_D_INT   = (short)0xC007;
-	public static final short GET_D_DINT  = (short)0xC008;
-	public static final short SET_D_DINT  = (short)0xC009;
-	public static final short GET_D_REAL  = (short)0xC00A;
-	public static final short SET_D_REAL  = (short)0xC00B;
+	public static final short I_GET_BYTE  = (short)0xC001;
+	public static final short Q_GET_BYTE  = (short)0xC002;
+	public static final short Q_SET_BYTE  = (short)0xC003;
+	public static final short D_GET_BYTE  = (short)0xC004;
+	public static final short D_SET_BYTE  = (short)0xC005;
+	public static final short D_GET_INT   = (short)0xC006;
+	public static final short D_SET_INT   = (short)0xC007;
+	public static final short D_GET_DINT  = (short)0xC008;
+	public static final short D_SET_DINT  = (short)0xC009;
+	public static final short D_GET_REAL  = (short)0xC00A;
+	public static final short D_SET_REAL  = (short)0xC00B;
 
 	public static final short RETURN_BUFF    = (short)0xC100;
 	public static final short RETURN_BYTE    = (short)0xC101;

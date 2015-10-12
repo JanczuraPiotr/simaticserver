@@ -9,38 +9,51 @@ import pjpl.s7.util.MemCell;
 import pjpl.s7.util.MemMap;
 
 
-public class MemD extends MemMap{
+public class D_Mem extends MemMap{
 
-	public MemD(PLC[] plcs) {
+	public D_Mem(PLC[] plcs) {
 		super(plcs);
 	}
 	@Override
 	public void addCells() {
-		addCell(VarCode.ZMIENNA_1
+		addCell(VarCode.ZMIENNA_BYTE
 				, new MemCell(
-						"zmienna_1"
+						"zmiennaByte"
+						, pos(TypeCode.size[TypeCode.BYTE])
+						, TypeCode.BYTE
+						, ConstPLC.PLC1
+						, plcs[ConstPLC.PLC1]
+				)
+		);
+		addCell(VarCode.ZMIENNA_INT
+				, new MemCell(
+						"zmiennaInt"
+						, "opis zmiennej zmiennaInt"
 						, pos(TypeCode.size[TypeCode.INT])
 						, TypeCode.INT
 						, ConstPLC.PLC1
 						, plcs[ConstPLC.PLC1]
-		));
-		addCell(VarCode.ZMIENNA_2
+				)
+		);
+		addCell(VarCode.ZMIENNA_DINT
 				, new MemCell(
-						"zmienna_2"
-						, "opis zmiennej zmienna_2"
-						, pos(TypeCode.size[TypeCode.INT])
-						, TypeCode.INT
+						"zmiennaDInt"
+						, pos(TypeCode.size[TypeCode.DINT])
+						, TypeCode.DINT
 						, ConstPLC.PLC1
 						, plcs[ConstPLC.PLC1]
-		));
-		addCell(VarCode.ZMIENNA_3
-				, new MemCell(
-						"zmienna_3"
-						, pos(TypeCode.size[TypeCode.INT])
-						, TypeCode.INT
+				)
+		);
+		addCell(VarCode.ZMIENNA_REAL
+				,	new MemCell(
+						"zmiennaReal"
+						, "opis dla zmiennej zmiennaReal"
+						, pos(TypeCode.size[TypeCode.REAL])
+						, TypeCode.REAL
 						, ConstPLC.PLC1
 						, plcs[ConstPLC.PLC1]
-		));
+				)
+		);
 	}
 
 	@Override

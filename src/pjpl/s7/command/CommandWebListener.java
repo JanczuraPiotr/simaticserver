@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  * Nasłuchuje komend do wykonania na procesie.
  * Jedynym źródłem komend jest sieć.
  * @author Piotr Janczura <piotr@janczura.pl>
- * @todo Przerobić by każdy process miał własną kolejkę a CommandListener umieszczał commendy we właściwych kolejkach
+ * @todo Przerobić by każdy process miał własną kolejkę a CommandListener umieszczał komendy we właściwych kolejkach
  */
 public class CommandWebListener extends Thread{
 

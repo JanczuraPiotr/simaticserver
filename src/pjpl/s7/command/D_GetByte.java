@@ -8,9 +8,9 @@ import pjpl.s7.common.CommandCode;
 
 /**
  */
-public class Get_D_DInt extends Command{
+public class D_GetByte extends Command{
 
-	public Get_D_DInt(byte processId, Socket socket) throws IOException {
+	public D_GetByte(byte processId, Socket socket) throws IOException {
 		super(processId, socket);
 	}
 
@@ -19,7 +19,7 @@ public class Get_D_DInt extends Command{
 		try {
 			addr = dataInputStream.readUnsignedShort();
 		} catch (IOException ex) {
-			Logger.getLogger(Get_D_Byte.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(D_GetByte.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
 	}
@@ -27,19 +27,20 @@ public class Get_D_DInt extends Command{
 	@Override
 	public CommandResponse action(pjpl.s7.process.Process process) {
 		try {
-			val = process.getMemClip().memD.readDInt(addr);
-			return new ResponseDInt(getProcessId(), getCommandCode(), val, socket);
+			val = process.getMemClip().memD.readByte(addr);
+			return new ResponseByte(getProcessId(), getCommandCode(), val, socket);
 		} catch (IOException ex) {
-			Logger.getLogger(Get_D_DInt.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(D_GetByte.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		return null;
 	}
 
 	@Override
 	public short getCommandCode() {
-		return (short)CommandCode.GET_D_DINT;
+		return (short)CommandCode.D_GET_BYTE;
 	}
 
 	private int addr;
-	private int val;
+	private byte val;
+
 }

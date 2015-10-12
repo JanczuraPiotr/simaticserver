@@ -1,5 +1,4 @@
 package pjpl.s7.command;
-
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -8,21 +7,21 @@ import pjpl.s7.common.CommandCode;
 
 /**
  */
-public class Set_D_DInt extends Command{
+public class D_SetInt extends Command{
 
-	public Set_D_DInt(byte processId, Socket socket) throws IOException {
+	public D_SetInt(byte processId, Socket socket) throws IOException {
 		super(processId, socket);
 	}
 
 	@Override
 	protected void loadParameters() {
+
 		try {
 			addr = dataInputStream.readUnsignedShort();
 			val = dataInputStream.readShort();
 		} catch (IOException ex) {
-			Logger.getLogger(Set_D_DInt.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(D_SetByte.class.getName()).log(Level.SEVERE, null, ex);
 		}
-
 	}
 
 	@Override
@@ -31,16 +30,17 @@ public class Set_D_DInt extends Command{
 			process.getMemClip().memD.write(addr, val);
 			return new ResponseOk(getProcessId(), getCommandCode(), socket);
 		} catch (IOException ex) {
-			Logger.getLogger(Set_D_DInt.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(D_SetInt.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		return null;
 	}
 
 	@Override
 	public short getCommandCode() {
-		return (short)CommandCode.SET_D_DINT;
+		return (short)CommandCode.D_SET_DINT;
 	}
 
 	private int addr;
 	private short val;
+
 }

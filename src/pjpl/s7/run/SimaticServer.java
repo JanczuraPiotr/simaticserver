@@ -132,7 +132,6 @@ public class SimaticServer {
 
 }
 /**
- * @prace 30 modyfikować stan PLC za pomocą Command
  *
  * @todo Wszystkie wystąpienia nazwy procesu : "Brama" zamienić na "process1"
  * @todo Kolejki komend powinne pozwolić przekazywać komendy pomiędzy procesami.

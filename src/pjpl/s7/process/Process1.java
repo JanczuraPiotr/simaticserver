@@ -3,7 +3,6 @@ package pjpl.s7.process;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import javax.naming.NamingException;
-import pjpl.s7.common.VarCode;
 import pjpl.s7.common.ConstPLC;
 import pjpl.s7.run.SimaticServer;
 import pjpl.s7.util.DumpThread;
@@ -13,7 +12,12 @@ import pjpl.s7.util.DumpExpertBinMySql;
 
 public class Process1 extends Process{
 
-	public Process1(byte id)throws NamingException, ClassNotFoundException, InstantiationException	, IllegalAccessException{
+	public Process1(byte id)
+					throws NamingException
+								, ClassNotFoundException
+								, InstantiationException
+								, IllegalAccessException
+								{
 		super(id);
 
 		System.out.println("Process1 constructor");
@@ -91,9 +95,9 @@ public class Process1 extends Process{
 
 	@Override
 	protected void initMemory() {
-		memD = new MemD(plcs);
-		memI = new MemI(plcs);
-		memQ = new MemQ(plcs);
+		memD = new D_Mem(plcs);
+		memI = new I_Mem(plcs);
+		memQ = new Q_Mem(plcs);
 	}
 
 	@Override

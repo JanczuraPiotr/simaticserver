@@ -25,17 +25,17 @@ abstract public class CommandCode{
 	// Kody komend
 	// 100000000000000B -> 1011111111111111B => 0x8000 -> 0xBFFF =>  32768 -> 49151
 
-	public static final short GET_I_BYTE  = (short)0x8001;
-	public static final short GET_Q_BYTE  = (short)0x8002;
-	public static final short SET_Q_BYTE  = (short)0x8003;
-	public static final short GET_D_BYTE  = (short)0x8004;
-	public static final short SET_D_BYTE  = (short)0x8005;
-	public static final short GET_D_INT   = (short)0x8006;
-	public static final short SET_D_INT   = (short)0x8007;
-	public static final short GET_D_DINT  = (short)0x8008;
-	public static final short SET_D_DINT  = (short)0x8009;
-	public static final short GET_D_REAL  = (short)0x800A;
-	public static final short SET_D_REAL  = (short)0x800B;
+	public static final short I_GET_BYTE  = (short)0x8001;
+	public static final short Q_GET_BYTE  = (short)0x8002;
+	public static final short Q_SET_BYTE  = (short)0x8003;
+	public static final short D_GET_BYTE  = (short)0x8004;
+	public static final short D_SET_BYTE  = (short)0x8005;
+	public static final short D_GET_INT   = (short)0x8006;
+	public static final short D_SET_INT   = (short)0x8007;
+	public static final short D_GET_DINT  = (short)0x8008;
+	public static final short D_SET_DINT  = (short)0x8009;
+	public static final short D_GET_REAL  = (short)0x800A;
+	public static final short D_SET_REAL  = (short)0x800B;
 
 	// Kody odpowiedzi na komendy. Definicje w ResponseCode
 	// 110000000000000B -> 1111111111111111B => 0xC000 -> 0xCFFF =>  49152 -> 65535

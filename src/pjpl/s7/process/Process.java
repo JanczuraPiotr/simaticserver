@@ -246,9 +246,9 @@ import pjpl.s7.util.MemClip;
 	//------------------------------------------------------------------------------
 	// atrybuty chronione
 	protected byte id;
-	protected MemD memD;
-	protected MemI memI;
-	protected MemQ memQ;
+	protected D_Mem memD;
+	protected I_Mem memI;
+	protected Q_Mem memQ;
 	protected MemClip memClip;
 	// @todo opracować pozostałe bloki pamięci
 

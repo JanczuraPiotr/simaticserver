@@ -8,9 +8,9 @@ import pjpl.s7.common.CommandCode;
 
 /**
  */
-public class Set_D_Real extends Command{
+public class D_GetReal extends Command{
 
-	public Set_D_Real(byte processId, Socket socket) throws IOException {
+	public D_GetReal(byte processId, Socket socket) throws IOException {
 		super(processId, socket);
 	}
 
@@ -18,26 +18,25 @@ public class Set_D_Real extends Command{
 	protected void loadParameters() {
 		try {
 			addr = dataInputStream.readUnsignedShort();
-			val = dataInputStream.readFloat();
 		} catch (IOException ex) {
-			Logger.getLogger(Set_D_Real.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(D_GetByte.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 
 	@Override
 	public CommandResponse action(pjpl.s7.process.Process process) {
 		try {
-			process.getMemClip().memD.write(addr, val);
-			return new ResponseOk(getProcessId(), getCommandCode(), socket);
+			val = process.getMemClip().memD.readReal(addr);
+			return new ResponseReal(getProcessId(), getCommandCode(), val, socket);
 		} catch (IOException ex) {
-			Logger.getLogger(Set_D_Real.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(D_GetReal.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		return null;
 	}
 
 	@Override
 	public short getCommandCode() {
-		return (short)CommandCode.SET_D_REAL;
+		return (short)CommandCode.D_GET_REAL;
 	}
 
 	private int addr;

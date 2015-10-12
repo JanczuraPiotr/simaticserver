@@ -5,12 +5,13 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import pjpl.s7.common.CommandCode;
+import pjpl.s7.util.MemClip;
 
 /**
  */
-public class Get_D_Int extends Command{
+public class Q_SetByte extends Command{
 
-	public Get_D_Int(byte processId, Socket socket) throws IOException {
+	public Q_SetByte(byte processId, Socket socket) throws IOException {
 		super(processId, socket);
 	}
 
@@ -18,29 +19,31 @@ public class Get_D_Int extends Command{
 	protected void loadParameters() {
 		try {
 			addr = dataInputStream.readUnsignedShort();
+			val = dataInputStream.readByte();
 		} catch (IOException ex) {
-			Logger.getLogger(Get_D_Byte.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(Q_SetByte.class.getName()).log(Level.SEVERE, null, ex);
 		}
-
 	}
 
 	@Override
 	public CommandResponse action(pjpl.s7.process.Process process) {
 		try {
-			val = process.getMemClip().memD.readInt(addr);
-			return new ResponseInt(getProcessId(), getCommandCode(), val, socket);
+			MemClip memClip = process.getMemClip();
+			memClip.memQ.write(addr,val);
+
+			return new ResponseOk(getProcessId(), getCommandCode(), socket);
 		} catch (IOException ex) {
-			Logger.getLogger(Get_D_Int.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(Q_SetByte.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		return null;
 	}
 
 	@Override
 	public short getCommandCode() {
-		return (short)CommandCode.GET_D_DINT;
+		return (short)CommandCode.Q_SET_BYTE;
 	}
 
 	private int addr;
-	private short val;
+	private byte val;
 
 }

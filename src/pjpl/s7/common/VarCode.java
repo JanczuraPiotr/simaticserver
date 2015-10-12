@@ -7,17 +7,21 @@ package pjpl.s7.common;
 abstract public class VarCode{
 	// @todo Przenieść do tej klasy definicje dla mapy komórek w postaci tablicy a w MemMap.init() na podstawie tej tablicy budować mapę
 	/**
-	 * DInt
+	 * Byte
 	 */
-	public static final int ZMIENNA_1 = 0;
+	public static final int ZMIENNA_BYTE = 0;
+	/**
+	 * Int
+	 */
+	public static final int ZMIENNA_INT = 1;
 	/**
 	 * DInt
 	 */
-	public static final int ZMIENNA_2 = 1;
+	public static final int ZMIENNA_DINT = 2;
 	/**
-	 * DInt
+	 * Real
 	 */
-	public static final int ZMIENNA_3 = 2;
+	public static final int ZMIENNA_REAL = 3;
 
 	/**
 	 * Byte
