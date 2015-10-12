@@ -28,7 +28,7 @@ public class CommandBuilder {
 			case (short)CommandCode.Q_SET_BYTE: command = new Q_SetByte(processId, socket); break;
 			case (short)CommandCode.D_GET_BYTE: command = new D_GetByte(processId, socket); break;
 			case (short)CommandCode.D_SET_BYTE: command = new D_SetByte(processId, socket); break;
-			case (short)CommandCode.D_GET_INT : command = new D_IGetnt( processId, socket); break;
+			case (short)CommandCode.D_GET_INT : command = new D_GetInt( processId, socket); break;
 			case (short)CommandCode.D_SET_INT : command = new D_SetInt( processId, socket); break;
 			case (short)CommandCode.D_GET_DINT: command = new D_GetDInt(processId, socket); break;
 			case (short)CommandCode.D_SET_DINT: command = new D_SetDInt(processId, socket); break;

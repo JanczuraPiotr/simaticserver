@@ -8,9 +8,9 @@ import pjpl.s7.common.CommandCode;
 
 /**
  */
-public class D_IGetnt extends Command{
+public class D_GetInt extends Command{
 
-	public D_IGetnt(byte processId, Socket socket) throws IOException {
+	public D_GetInt(byte processId, Socket socket) throws IOException {
 		super(processId, socket);
 	}
 
@@ -30,7 +30,7 @@ public class D_IGetnt extends Command{
 			val = process.getMemClip().memD.readInt(addr);
 			return new ResponseInt(getProcessId(), getCommandCode(), val, socket);
 		} catch (IOException ex) {
-			Logger.getLogger(D_IGetnt.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(D_GetInt.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		return null;
 	}
