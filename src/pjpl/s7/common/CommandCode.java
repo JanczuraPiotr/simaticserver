@@ -4,7 +4,8 @@ package pjpl.s7.common;
  * Kody sterujące pracą programu
  */
 abstract public class CommandCode{
-	
+	public static final short MINIMAL_COMMAND_SIZE = 5;
+
 	public static final short NO = (short)0x0000;
 	public static final short OK = (short)0xFFFF;
 

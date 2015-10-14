@@ -5,6 +5,9 @@ import java.net.Socket;
 import pjpl.s7.common.CommandCode;
 
 /**
+ * Klasa budująca komendę do wykonania na procesie na podstawie strumienia nadesłanego gniazdem z SimaticWeb lub
+ * SimaticDesctop.
+ *
  *
  * @author Piotr Janczura <piotr@janczura.pl>
  */

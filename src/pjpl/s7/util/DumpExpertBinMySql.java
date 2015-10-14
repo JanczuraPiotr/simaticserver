@@ -1,6 +1,5 @@
 package pjpl.s7.util;
 
-import Moka7.S7;
 import com.mysql.jdbc.Connection;
 import java.io.ByteArrayInputStream;
 import java.sql.DriverManager;

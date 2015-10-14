@@ -8,7 +8,7 @@ import pjpl.s7.util.BigEndianInArray;
 public class ResponseReal extends CommandResponse{
 
 	public ResponseReal(byte processId, short commandCode, float val, Socket socket) throws IOException {
-		super(processId, commandCode, ResponseCode.D_GET_REAL, socket);
+		super(processId, commandCode, ResponseCode.RETURN_REAL, socket);
 		this.val = val;
 	}
 

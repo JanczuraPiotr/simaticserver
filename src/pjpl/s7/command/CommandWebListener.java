@@ -1,9 +1,12 @@
 package pjpl.s7.command;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -12,6 +15,7 @@ import java.util.Hashtable;
 import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import pjpl.s7.common.CommandCode;
 
 /**
  * Nasłuchuje komend do wykonania na procesie.
@@ -55,13 +59,13 @@ public class CommandWebListener extends Thread{
 				outputSocketStream = socket.getOutputStream();
 				inputData =  new DataInputStream( inputSocketStream );
 				outputData = new DataOutputStream(outputSocketStream);
-				socketPrintWriter = new PrintWriter(socket.getOutputStream(), true);
 
+				waitForSocket(CommandCode.MINIMAL_COMMAND_SIZE);
 				commandCode = inputData.readShort();
 				processId = inputData.readByte();
 
-				s += "commandCode = " + String.format("hex : %04X ", commandCode ) + "\n";
-				s += "commandAddr = " + String.format("hex : %04X ", processId ) + "\n";
+				s += String.format("commandCode = %04X \n", commandCode );
+				s += String.format("commandAddr = %04X \n", processId );
 
 				switch(commandCode){
 					// OK, true, YES
@@ -90,16 +94,40 @@ public class CommandWebListener extends Thread{
 			}
 		}
 	}
+	private void waitForSocket(short minimalCommandSize ){
+		long currentSleep = 0;
+		System.out.println(String.format("sleepStart : %d",sleepStart));
+		try {
+			while ( inputData.available() < minimalCommandSize ) {
+				try {
+					sleep(sleepStart);
+					currentSleep += sleepStart;
+					if(sleepStart > 1 ){
+						sleepStart -= sleepStart * 0.9;
+						if(sleepStart < 1){
+							sleepStart = 1;
+						}
+					}
+				} catch (InterruptedException ex) {
+					Logger.getLogger(CommandWebListener.class.getName()).log(Level.SEVERE, null, ex);
+				}
+			}
+		} catch (IOException ex) {
+			Logger.getLogger(CommandWebListener.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		sleepStart = currentSleep - (long) (currentSleep * 0.1);
+	}
+
 	private boolean doRun = true;
 	private boolean doRead = true;
+	private long sleepStart = 1;
 
 	private final ServerSocket listener;
+	private Socket socket;
 	private InputStream inputSocketStream;
 	private OutputStream outputSocketStream;
 	private DataInputStream inputData;
 	private DataOutputStream outputData;
-	private PrintWriter socketPrintWriter;
-	private Socket socket;
 	private final CommandBuilder commandBuilder;
 	private final Hashtable<Byte, Queue<pjpl.s7.command.Command> > processesCommands;
 

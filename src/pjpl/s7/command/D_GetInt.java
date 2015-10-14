@@ -28,6 +28,7 @@ public class D_GetInt extends Command{
 	public CommandResponse action(pjpl.s7.process.Process process) {
 		try {
 			val = process.getMemClip().memD.readInt(addr);
+			System.out.println(String.format("wartość komórki o kodzie 0x%02X = 0x%04X", addr, val));
 			return new ResponseInt(getProcessId(), getCommandCode(), val, socket);
 		} catch (IOException ex) {
 			Logger.getLogger(D_GetInt.class.getName()).log(Level.SEVERE, null, ex);
@@ -37,7 +38,7 @@ public class D_GetInt extends Command{
 
 	@Override
 	public short getCommandCode() {
-		return (short)CommandCode.D_GET_DINT;
+		return (short)CommandCode.D_GET_INT;
 	}
 
 	private int addr;

@@ -8,7 +8,7 @@ import pjpl.s7.util.BigEndianInArray;
 public class ResponseDInt extends CommandResponse{
 
 	public ResponseDInt(byte processId, short commandCode, int val, Socket socket) throws IOException {
-		super(processId, commandCode, ResponseCode.D_GET_DINT, socket);
+		super(processId, commandCode, ResponseCode.RETURN_DINT, socket);
 		this.val = val;
 	}
 	public int getValue(){
