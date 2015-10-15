@@ -15,11 +15,10 @@ public abstract class BigEndianInArray {
 		buff[start +1 ] =  (byte)( ( val & 0x00FF ));
 	}
 	public static short _short(byte[] buff, int start) throws ArrayIndexOutOfBoundsException {
-		return
-				(short) (
+		return (short) (
 					(
-						(buff[start  ] << 8 ) & 0x0000FF00 +
-						 buff[start+1]        & 0x000000FF
+						( (buff[start  ] << 8 ) & 0x0000FF00 )+
+						(buff[start+1]        & 0x000000FF )
 					)
 				);
 	}
@@ -37,10 +36,11 @@ public abstract class BigEndianInArray {
 		return ( i3 | i2 | i1 | i0 );
 	}
 	public static void _float(float val, byte[] buff, int start) throws ArrayIndexOutOfBoundsException {
-		buff[start]   = (byte)(((int)val & 0xFF000000) >> 24);
-		buff[start+1] = (byte)(((int)val & 0x00FF0000) >> 16);
-		buff[start+2] = (byte)(((int)val & 0x0000FF00) >> 8);
-		buff[start+3] = (byte)(((int)val & 0x000000FF));
+		int intFloat = Float.floatToIntBits(val);
+		buff[start]   = (byte)(((int)intFloat & 0xFF000000) >> 24);
+		buff[start+1] = (byte)(((int)intFloat & 0x00FF0000) >> 16);
+		buff[start+2] = (byte)(((int)intFloat & 0x0000FF00) >> 8);
+		buff[start+3] = (byte)(((int)intFloat & 0x000000FF));
 	}
 	public static float _float(byte[] buff, int start) throws ArrayIndexOutOfBoundsException {
 		int i3 = (( buff[start]     & 0x000000FF ) << 24);

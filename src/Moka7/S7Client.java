@@ -668,7 +668,7 @@ public class S7Client
 				int DataSize;
 				int IsoSize;
 				int Length;
-				int Offset = 0;
+				int Offset = Start;
 				int WordSize = 1;
 
 				LastError=0;

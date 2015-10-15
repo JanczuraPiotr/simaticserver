@@ -4,6 +4,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import pjpl.s7.common.CommandCode;
+import pjpl.s7.util.BigEndianInArray;
 
 /**
  */
@@ -17,8 +18,9 @@ public class D_SetInt extends Command{
 	protected void loadParameters() {
 
 		try {
-			addr = dataInputStream.readUnsignedShort();
-			val = dataInputStream.readShort();
+			varCode = dataInputStream.readUnsignedShort();
+			varVal = dataInputStream.readShort();
+
 		} catch (IOException ex) {
 			Logger.getLogger(D_SetByte.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -27,7 +29,7 @@ public class D_SetInt extends Command{
 	@Override
 	public CommandResponse action(pjpl.s7.process.Process process) {
 		try {
-			process.getMemClip().memD.write(addr, val);
+			process.getMemClip().memD.write(varCode, varVal);
 			return new ResponseOk(getProcessId(), getCommandCode(), socket);
 		} catch (IOException ex) {
 			Logger.getLogger(D_SetInt.class.getName()).log(Level.SEVERE, null, ex);
@@ -37,10 +39,10 @@ public class D_SetInt extends Command{
 
 	@Override
 	public short getCommandCode() {
-		return (short)CommandCode.D_SET_DINT;
+		return (short)CommandCode.D_SET_INT;
 	}
 
-	private int addr;
-	private short val;
+	private int varCode;
+	private short varVal;
 
 }

@@ -17,8 +17,8 @@ public class D_SetDInt extends Command{
 	@Override
 	protected void loadParameters() {
 		try {
-			addr = dataInputStream.readUnsignedShort();
-			val = dataInputStream.readShort();
+			varCode = dataInputStream.readUnsignedShort();
+			varVal = dataInputStream.readInt();
 		} catch (IOException ex) {
 			Logger.getLogger(D_SetDInt.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -28,7 +28,7 @@ public class D_SetDInt extends Command{
 	@Override
 	public CommandResponse action(pjpl.s7.process.Process process) {
 		try {
-			process.getMemClip().memD.write(addr, val);
+			process.getMemClip().memD.write(varCode, varVal);
 			return new ResponseOk(getProcessId(), getCommandCode(), socket);
 		} catch (IOException ex) {
 			Logger.getLogger(D_SetDInt.class.getName()).log(Level.SEVERE, null, ex);
@@ -41,6 +41,6 @@ public class D_SetDInt extends Command{
 		return (short)CommandCode.D_SET_DINT;
 	}
 
-	private int addr;
-	private short val;
+	private int varCode;
+	private int varVal;
 }

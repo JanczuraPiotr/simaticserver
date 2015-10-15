@@ -135,10 +135,11 @@ abstract public class MemMap {
 
 	// @todo poprawić nazwy metod zapisu i odczytu zmiennych z mem.
 	public void write(int cellCode, byte val){
-		writeByte(cellCode, (byte)val);
+		writeByte(cellCode, val);
 		onUpdateCell(cells[cellCode]);
 	}
 	public void write(int cellCode, short val){
+		writeInt(cellCode, val);
 		onUpdateCell(cells[cellCode]);
 	}
 	public void write(int cellCode, int val){
@@ -157,17 +158,13 @@ abstract public class MemMap {
 		}
 		onUpdateCell(cells[cellCode]);
 	}
-	public void write(int cellCode, float val){
-		switch(cells[cellCode].getTyp()){
-			case TypeCode.REAL:
-				break;
-			case TypeCode.LREAL:
-				break;
-			default:
-				// @todo rzuć wyjątek
-		}
+	public void writeReal(int cellCode, float val){
+		S7.SetFloatAt(mem, cells[cellCode].getPos(), val);
 		onUpdateCell(cells[cellCode]);
 	}
+//	public void writeLReal(int cellCode, double val){
+//		onUpdateCell(cells[cellCode]);
+//	}
 	public void write(int cellCode, double val){
 		switch(cells[cellCode].getTyp()){
 			case TypeCode.LREAL:
@@ -253,7 +250,7 @@ abstract public class MemMap {
 	 * @param val
 	 */
 	private void writeInt(int cellCode, short val){
-		S7.SetShortAt(mem, cells[cellCode].getPos(), val);
+		S7.SetIntAt(mem, cells[cellCode].getPos(), val);
 	}
 	/**
 	 * Modyfikuje zmienną PLC DInt 32 bity ze znakiem

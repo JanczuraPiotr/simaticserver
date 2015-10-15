@@ -17,8 +17,12 @@ public class D_SetReal extends Command{
 	@Override
 	protected void loadParameters() {
 		try {
-			addr = dataInputStream.readUnsignedShort();
-			val = dataInputStream.readFloat();
+			varCode = dataInputStream.readUnsignedShort();
+			varVal = dataInputStream.readFloat();
+
+			System.out.println(String.format("varCode = 0x%04X",varCode));
+			System.out.println(String.format("varVal = %s",varVal));
+
 		} catch (IOException ex) {
 			Logger.getLogger(D_SetReal.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -27,7 +31,7 @@ public class D_SetReal extends Command{
 	@Override
 	public CommandResponse action(pjpl.s7.process.Process process) {
 		try {
-			process.getMemClip().memD.write(addr, val);
+			process.getMemClip().memD.writeReal(varCode, varVal);
 			return new ResponseOk(getProcessId(), getCommandCode(), socket);
 		} catch (IOException ex) {
 			Logger.getLogger(D_SetReal.class.getName()).log(Level.SEVERE, null, ex);
@@ -40,6 +44,6 @@ public class D_SetReal extends Command{
 		return (short)CommandCode.D_SET_REAL;
 	}
 
-	private int addr;
-	private float val;
+	private int varCode;
+	private float varVal;
 }

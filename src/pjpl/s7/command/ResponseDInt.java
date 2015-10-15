@@ -25,6 +25,9 @@ public class ResponseDInt extends CommandResponse{
 		BigEndianInArray._short(getCommandCode(), buff, 1);
 		BigEndianInArray._short(getResponseCode(), buff, 3);
 		BigEndianInArray._int(getValue(), buff, 5);
+		for(int i = 0 ; i < buffSize; i++){
+			System.out.println(String.format("buff[%d] = 0x%02X", i, buff[i]));
+		}
 	}
 	private final int val;
 }

@@ -128,6 +128,7 @@ public class S7 {
     public static float GetFloatAt(byte[] Buffer, int Pos)
     {
         int IntFloat = GetDIntAt(Buffer, Pos);
+				System.out.println(String.format("intFloat = %d", IntFloat));
         return Float.intBitsToFloat(IntFloat);
     }
 

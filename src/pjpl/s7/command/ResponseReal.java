@@ -7,17 +7,17 @@ import pjpl.s7.util.BigEndianInArray;
 
 public class ResponseReal extends CommandResponse{
 
-	public ResponseReal(byte processId, short commandCode, float val, Socket socket) throws IOException {
+	public ResponseReal(byte processId, short commandCode, float varVal, Socket socket) throws IOException {
 		super(processId, commandCode, ResponseCode.RETURN_REAL, socket);
-		this.val = val;
+		this.varVal = varVal;
 	}
 
 	public float getValue(){
-		return val;
+		return varVal;
 	}
 	@Override
 	protected void calculateBuffSize() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		buffSize = 9;
 	}
 
 	@Override
@@ -28,5 +28,5 @@ public class ResponseReal extends CommandResponse{
 		BigEndianInArray._float(getValue(), buff, 5);
 	}
 
-	private final float val;
+	private final float varVal;
 }

@@ -17,17 +17,28 @@ public class D_GetReal extends Command{
 	@Override
 	protected void loadParameters() {
 		try {
-			addr = dataInputStream.readUnsignedShort();
+			varCode = dataInputStream.readUnsignedShort();
 		} catch (IOException ex) {
 			Logger.getLogger(D_GetByte.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 
+	public float getVarVal(){
+		return varVal;
+	}
+
 	@Override
 	public CommandResponse action(pjpl.s7.process.Process process) {
 		try {
-			val = process.getMemClip().memD.readReal(addr);
-			return new ResponseReal(getProcessId(), getCommandCode(), val, socket);
+
+			byte[] mem = process.getMemClip().memD.getMem();
+
+			for(int i = 0 ; i < mem.length; i++){
+				System.out.println(String.format("buff[%d] = 0x%02X",i, mem[i]));
+			}
+
+			varVal = process.getMemClip().memD.readReal(varCode);
+			return new ResponseReal(getProcessId(), getCommandCode(), varVal, socket);
 		} catch (IOException ex) {
 			Logger.getLogger(D_GetReal.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -39,6 +50,6 @@ public class D_GetReal extends Command{
 		return (short)CommandCode.D_GET_REAL;
 	}
 
-	private int addr;
-	private float val;
+	private int varCode;
+	private float varVal;
 }

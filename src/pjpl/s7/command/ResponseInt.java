@@ -25,9 +25,7 @@ public class ResponseInt extends CommandResponse{
 		BigEndianInArray._short(getCommandCode(), buff, 1);
 		BigEndianInArray._short(getResponseCode(), buff, 3);
 		BigEndianInArray._short(getValue(), buff, 5);
-		System.out.println(String.format("commandCode : 0x%04X", getCommandCode()));
-		System.out.println(String.format("responseCode : 0x%04X", getResponseCode()));
-		System.out.println(String.format("val : 0x%04X", getValue()));
+
 	}
 
 	private final short val;
