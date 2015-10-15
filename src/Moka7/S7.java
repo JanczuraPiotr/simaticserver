@@ -212,6 +212,11 @@ public class S7 {
         Buffer[Pos]   = (byte) (Value >> 8);
         Buffer[Pos+1] = (byte) (Value & 0x00FF);
     }
+    public static void SetIntAt(byte[] Buffer, int Pos, int Value)
+    {
+        Buffer[Pos]   = (byte) (Value >> 8);
+        Buffer[Pos+1] = (byte) (Value & 0x00FF);
+    }
     public static void SetDWordAt(byte[] Buffer, int Pos, long Value)
     {
         long DWord = Value &0x0FFFFFFFF;
