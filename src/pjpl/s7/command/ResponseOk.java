@@ -6,7 +6,7 @@ import pjpl.s7.common.ResponseCode;
 import pjpl.s7.common.ResponseGeneral;
 
 /**
- * Odpowiedź zwracana gdy komenda zakończyła się powodzeniem a komenda nie rządała szczegółowej odpowiedzi lub gdy
+ * Odpowiedź zwracana gdy komenda zakończyła się powodzeniem a komenda nie żądała szczegółowej odpowiedzi lub gdy
  * komenda żądała odpowiedzi w formie TAK lub NIE.
  */
 public class ResponseOk extends ResponseGeneral{

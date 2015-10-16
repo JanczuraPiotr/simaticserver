@@ -25,6 +25,13 @@ public class MemByteClip{
 		this.timeStamp = timeStamp;
 		this.plcId = plcId;
 	}
+	public MemByteClip(byte[] buffD, byte[] buffI, byte[] buffQ, long timeStamp){
+		this.buffD = buffD;
+		this.buffI = buffI;
+		this.buffQ = buffQ;
+		this.timeStamp = timeStamp;
+		this.plcId = -1;
+	}
 	public MemByteClip(byte[] buffD, byte[] buffI, byte[] buffQ){
 		this.buffD = buffD;
 		this.buffI = buffI;

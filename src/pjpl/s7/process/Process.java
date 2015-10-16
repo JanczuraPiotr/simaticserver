@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import pjpl.s7.command.CommandResponse;
 import pjpl.s7.common.ConstPLC;
 import pjpl.s7.device.PLC;
+import pjpl.s7.util.MemByteClip;
 import pjpl.s7.util.MemCell;
 import pjpl.s7.util.MemClip;
 
@@ -51,6 +52,9 @@ import pjpl.s7.util.MemClip;
 	 }
 	 public MemClip getMemClip(){
 		 return memClip;
+	 }
+	 public MemByteClip getRaport(){
+		 return memRaport;
 	 }
 
 	 // interfejs - koniec
@@ -101,6 +105,7 @@ import pjpl.s7.util.MemClip;
 			memI.writeMem(inputPlcsBuffs[plcIx][PLC_INTPUT_BUFF_I], plcIx);
 			memQ.writeMem(inputPlcsBuffs[plcIx][PLC_INTPUT_BUFF_Q], plcIx);
 		}
+		memRaport = new MemByteClip(memD.getMemCopy(), memI.getMemCopy(), memQ.getMemCopy(),msStartRun);
 	};
 	/**
 	 * Główne operacje wątku. Tu można wykonanć obliczenia na zmniennych procesu.
@@ -162,6 +167,7 @@ import pjpl.s7.util.MemClip;
 	@Override
 	public void run(){
 		try{
+			msStartRun =  System.currentTimeMillis();
 			msSteepStart =  System.currentTimeMillis();
 			steepPrepareRead();      msSteepPrepareRead = System.currentTimeMillis();
 			steepWaitRead();         msSteepWaitRead = System.currentTimeMillis();
@@ -245,11 +251,13 @@ import pjpl.s7.util.MemClip;
 
 	//------------------------------------------------------------------------------
 	// atrybuty chronione
+	protected long msStartRun;
 	protected byte id;
 	protected D_Mem memD;
 	protected I_Mem memI;
 	protected Q_Mem memQ;
 	protected MemClip memClip;
+	protected MemByteClip memRaport;
 	// @todo opracować pozostałe bloki pamięci
 
 	// Sterowniki obsługujące process.

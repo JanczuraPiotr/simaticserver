@@ -1,7 +1,6 @@
 package pjpl.s7.common;
 
 /**
- *
  * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class ConstProcess {

@@ -25,7 +25,13 @@ public class MemClip {
 		this.timeStamp = timeStamp;
 		this.plcId = plcId;
 	}
-
+	public MemClip(MemMap memD, MemMap memI, MemMap memQ, long timeStamp){
+		this.memD = memD;
+		this.memI = memI;
+		this.memQ = memQ;
+		this.timeStamp = timeStamp;
+		this.plcId = -1;
+	}
 	public MemClip(MemMap memD, MemMap memI, MemMap memQ){
 		this.memD = memD;
 		this.memI = memI;

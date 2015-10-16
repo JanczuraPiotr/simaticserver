@@ -4,7 +4,7 @@ package pjpl.s7.common;
  * Kody sterujące pracą programu
  */
 abstract public class CommandCode{
-	public static final short MINIMAL_COMMAND_SIZE = 5;
+	public static final short MINIMAL_COMMAND_SIZE = 3;
 
 	public static final short NO = (short)0x0000;
 	public static final short OK = (short)0xFFFF;
@@ -37,6 +37,7 @@ abstract public class CommandCode{
 	public static final short D_SET_DINT  = (short)0x8009;
 	public static final short D_GET_REAL  = (short)0x800A;
 	public static final short D_SET_REAL  = (short)0x800B;
+	public static final short RAPORT_FULL = (short)0x800C;
 
 	// Kody odpowiedzi na komendy. Definicje w ResponseCode
 	// 110000000000000B -> 1111111111111111B => 0xC000 -> 0xCFFF =>  49152 -> 65535
