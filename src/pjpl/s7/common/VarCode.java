@@ -9,27 +9,27 @@ abstract public class VarCode{
 	/**
 	 * Byte
 	 */
-	public static final int ZMIENNA_BYTE = 0;
+	public static final short ZMIENNA_BYTE = 0;
 	/**
 	 * Int
 	 */
-	public static final int ZMIENNA_INT = 1;
+	public static final short ZMIENNA_INT = 1;
 	/**
 	 * DInt
 	 */
-	public static final int ZMIENNA_DINT = 2;
+	public static final short ZMIENNA_DINT = 2;
 	/**
 	 * Real
 	 */
-	public static final int ZMIENNA_REAL = 3;
+	public static final short ZMIENNA_REAL = 3;
 
 	/**
 	 * Byte
 	 */
-	public static final int IN_1  = 0;
+	public static final short IN_1  = 0;
 
 	/**
 	 * Byte
 	 */
-	public static final int OUT_1 = 0;
+	public static final short OUT_1 = 0;
 }

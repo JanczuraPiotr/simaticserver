@@ -33,9 +33,7 @@ public class ResponseRaportFull extends CommandResponse{
 		System.arraycopy(raport.buffD, 0, buff, 17,  raport.buffD.length);
 		System.arraycopy(raport.buffI, 0, buff, 17 + raport.buffD.length, raport.buffI.length);
 		System.arraycopy(raport.buffQ, 0, buff, 17 + raport.buffD.length + raport.buffI.length, raport.buffQ.length);
-		for(int i = 0 ; i < buffSize; i++){
-			System.out.println(String.format("buff[%d] = 0x%02X", i, buff[i]));
-		}
+
 	}
 
 	private MemByteClip raport;
