@@ -8,6 +8,9 @@ import pjpl.s7.util.Bits;
  * @author pjanczura
  */
 public class BitsCode {
+	public static byte memType = 0;
+	public static short varCode = 0;
+	public static byte bitNr = 0;
 
 	public static final int I_O_0 = prepare(S7.I, VarCode.IN_1, Bits.BIT_0);
 	public static final int I_O_1 = prepare(S7.I, VarCode.IN_1, Bits.BIT_1);
@@ -26,14 +29,16 @@ public class BitsCode {
 	public static final int Q_0_5 = prepare(S7.Q, VarCode.OUT_1,Bits.BIT_5);
 
 
-	public static int prepare(byte typ, short varCode, byte bitNr){
+	public static int prepare(byte memType, short varCode, byte bitNr){
 		return  (
-				( ( typ << 24 ) & 0xFF000000 ) +
-				( ( varCode << 8 ) & 0x00FFF00 )+
+				( ( memType << 24 ) & 0xFF000000 ) +
+				( ( varCode << 8 ) & 0x00FFFF00 ) +
 				bitNr
 		);
 	}
 	public static void parse(int bitCode){
-		// @prace 00 zwróć obiekt opisiujący bit
+		memType = (byte)(( bitCode & 0xFF000000 ) >> 24);
+		varCode = (short)( (bitCode & 0x00FFFF00) >> 8 );
+		bitNr = (byte)( (bitCode & 0x000000FF ));
 	}
 }

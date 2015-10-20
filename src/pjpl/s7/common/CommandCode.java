@@ -38,6 +38,9 @@ abstract public class CommandCode{
 	public static final short D_GET_REAL  = (short)0x800A;
 	public static final short D_SET_REAL  = (short)0x800B;
 	public static final short RAPORT_FULL = (short)0x800C;
+	public static final short BIT_ON      = (short)0x800D;
+	public static final short BIT_OFF     = (short)0x800E;
+	public static final short BIT_SWITCH  = (short)0x800F;
 
 	// Kody odpowiedzi na komendy. Definicje w ResponseCode
 	// 110000000000000B -> 1111111111111111B => 0xC000 -> 0xCFFF =>  49152 -> 65535

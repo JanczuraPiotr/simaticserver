@@ -104,9 +104,8 @@ abstract public class MemMap {
 	}
 	/**
 	 * Odczytuje obszar oznaczony jako przeznaczony do przesłania do sterownika.
-	 * @deprecated Zamiast całego bufora są wysyłane pojedynczo
+	 * @deprecated Zamiast całego bufora zmienne są wysyłane pojedynczo
 	 * @param plcId
-	 * @param start
 	 * @return
 	 */
 	public byte[] readModifiedMem(int plcId){
@@ -162,9 +161,6 @@ abstract public class MemMap {
 		S7.SetFloatAt(mem, cells[cellCode].getPos(), val);
 		onUpdateCell(cells[cellCode]);
 	}
-//	public void writeLReal(int cellCode, double val){
-//		onUpdateCell(cells[cellCode]);
-//	}
 	public void write(int cellCode, double val){
 		switch(cells[cellCode].getTyp()){
 			case TypeCode.LREAL:
@@ -218,10 +214,25 @@ abstract public class MemMap {
 		// @todo sprawdź rzeczywisty typ zmiennej i ewentualnie rzuć wyjątek
 		return (float)S7.GetFloatAt(mem, cells[cellCode].getPos());
 	}
-//	public double readLReal(int cellCode){
-//		// @prace public double readLReal(int cellCode)
-//		return 1;
-//	}
+	/**
+	 * Tablica bajtów opisująca zmienną o podanym kodzie
+	 * @param varCode
+	 * @return
+	 */
+	public byte[] varBuff(int varCode){
+		byte[] buff = new byte[cells[varCode].getSize()];
+		System.arraycopy(mem, cells[varCode].getPos(), buff, 0, cells[varCode].getSize());
+		return buff;
+	}
+	/**
+	 * Zmienia wartość zmiennej urzywając tablicy bajtów obrazującej zmienną
+	 * @param varCode kod zmiennej
+	 * @param varBuff buforowa postać zmiennej
+	 */
+	public void varBuff(int varCode, byte[] varBuff){
+		System.arraycopy(varBuff, 0, mem, cells[varCode].getPos(), cells[varCode].getSize());
+		onUpdateCell(cells[varCode]);
+	}
 
 	public int getSize(){
 		return memSize;

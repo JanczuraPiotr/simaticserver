@@ -52,6 +52,7 @@ public class CommandWebListener extends Thread{
 		String s = "";
 
 		while( doRun ){
+			s = "";
 			try {
 				doRead = true;
 				socket = listener.accept();
@@ -64,8 +65,8 @@ public class CommandWebListener extends Thread{
 				commandCode = inputData.readShort();
 				processId = inputData.readByte();
 
-				s += String.format("commandCode = %04X \n", commandCode );
-				s += String.format("commandAddr = %04X \n", processId );
+				s += String.format("commandCode = 0x%04X \n", commandCode );
+				s += String.format("processId = 0x%04X \n", processId );
 
 				switch(commandCode){
 					// OK, true, YES
@@ -90,6 +91,7 @@ public class CommandWebListener extends Thread{
 				}
 			} catch (NullPointerException | IOException ex) {
 				Logger.getLogger(CommandWebListener.class.getName()).log(Level.SEVERE, null, ex);
+			}finally{
 				System.out.println(s);
 			}
 		}

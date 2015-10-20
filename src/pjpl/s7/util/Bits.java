@@ -71,6 +71,7 @@ public class Bits {
 	public static final byte BIT_61 = 61;
 	public static final byte BIT_62 = 62;
 	public static final byte BIT_63 = 63;
+
 	public static final byte BIT_A = BIT_10;
 	public static final byte BIT_B = BIT_11;
 	public static final byte BIT_C = BIT_12;
@@ -140,5 +141,188 @@ public class Bits {
 			0x40000000,
 			0x80000000
 	};
+	public static final long[] maskLong = {
+			0x0000000000000001L,
+			0x0000000000000002L,
+			0x0000000000000004L,
+			0x0000000000000008L,
+			0x0000000000000010L,
+			0x0000000000000020L,
+			0x0000000000000040L,
+			0x0000000000000080L,
+			0x0000000000000100L,
+			0x0000000000000200L,
+			0x0000000000000400L,
+			0x0000000000000800L,
+			0x0000000000001000L,
+			0x0000000000002000L,
+			0x0000000000004000L,
+			0x0000000000008000L,
+			0x0000000000010000L,
+			0x0000000000020000L,
+			0x0000000000040000L,
+			0x0000000000080000L,
+			0x0000000000100000L,
+			0x0000000000200000L,
+			0x0000000000400000L,
+			0x0000000000800000L,
+			0x0000000001000000L,
+			0x0000000002000000L,
+			0x0000000004000000L,
+			0x0000000008000000L,
+			0x0000000010000000L,
+			0x0000000020000000L,
+			0x0000000040000000L,
+			0x0000000080000000L,
+			0x0000000010000000L,
+			0x0000000020000000L,
+			0x0000000040000000L,
+			0x0000000080000000L,
+			0x0000000100000000L,
+			0x0000002000000000L,
+			0x0000004000000000L,
+			0x0000008000000000L,
+			0x0000010000000000L,
+			0x0000020000000000L,
+			0x0000040000000000L,
+			0x0000080000000000L,
+			0x0000100000000000L,
+			0x0000200000000000L,
+			0x0000400000000000L,
+			0x0000800000000000L,
+			0x0001000000000000L,
+			0x0002000000000000L,
+			0x0004000000000000L,
+			0x0008000000000000L,
+			0x0010000000000000L,
+			0x0020000000000000L,
+			0x0040000000000000L,
+			0x0080000000000000L,
+			0x0100000000000000L,
+			0x0200000000000000L,
+			0x0400000000000000L,
+			0x0800000000000000L,
+			0x1000000000000000L,
+			0x2000000000000000L,
+			0x4000000000000000L,
+			0x8000000000000000L
+
+	};
+
+	public static int get(byte var, byte bitNr){
+		return ( ( var & maskByte[bitNr] ) > 0 ? 1 : 0 ) ;
+	}
+	public static int get(short var, byte bitNr){
+		return ( ( var & maskShort[bitNr] ) > 0 ? 1 : 0 ) ;
+	}
+	public static int get(int var, byte bitNr){
+		return ( ( var & maskInt[bitNr] ) > 0 ? 1 : 0 ) ;
+	}
+	public static int get(long var, byte bitNr){
+		return ( ( var & maskLong[bitNr] ) > 0 ? 1 : 0 ) ;
+	}
+	public static int get(byte[] var, byte bitNr){
+		// @todo rzucić wyjątek gdy bitNie nie mieści się w buforze
+
+		int buffSize = var.length;
+		// ilość bitów w całym buforze
+		int bitsVar = buffSize * 8;
+		// w którym bajcie zmiennej znaduje się bit
+		int bitInVarByte =  bitNr / 8  ;
+		// w którym bajcie bufora znajduje się bit. Bajty w zmiennej mają odwrotną kolejność do bajtów w buforze.
+		int bitInBuffByte = ( buffSize - 1 ) - bitInVarByte;
+		// którym bitem jest w bajcie
+		int bitInByte = bitNr % 8;
+
+		return ( ( var[bitInBuffByte] & maskByte[bitInByte] ) > 0 ? 1 : 0 ) ;
+	}
+	public static byte on(byte var, byte bitNr){
+		return (byte) (var | maskByte[bitNr]);
+	}
+	public static short on(short var, byte bitNr){
+		return (short) (var | maskShort[bitNr]);
+	}
+	public static int on(int var, byte bitNr){
+		return  (var | maskInt[bitNr]);
+	}
+	public static long on(long var, byte bitNr){
+		return  (var | maskLong[bitNr]);
+	}
+	public static void on(byte[] var, byte bitNr){
+
+		int buffSize = var.length;
+		// ilość bitów w całym buforze
+		int bitsVar = buffSize * 8;
+		// w którym bajcie zmiennej znaduje się bit
+		int bitInVarByte =  bitNr / 8  ;
+		// w którym bajcie bufora znajduje się bit. Bajty w zmiennej mają odwrotną kolejność do bajtów w buforze.
+		int bitInBuffByte = ( buffSize - 1 ) - bitInVarByte;
+		// którym bitem jest w bajcie
+		int bitInByte = bitNr % 8;
+
+		var[bitInBuffByte] = (byte)( var[bitInBuffByte] | maskByte[bitInByte] ) ;
+	}
+	public static byte off(byte var, byte bitNr){
+		return (byte) (var & ~maskByte[bitNr]);
+	}
+	public static short off(short var, byte bitNr){
+		return (short) (var & ~maskShort[bitNr]);
+	}
+	public static int off(int var, byte bitNr){
+	 return (int) (var & ~maskInt[bitNr]);
+	}
+	public static long off(long var, byte bitNr){
+	 return (long) (var & ~maskLong[bitNr]);
+	}
+	public static void off(byte[] var, byte bitNr){
+
+		int buffSize = var.length;
+		// ilość bitów w całym buforze
+		int bitsVar = buffSize * 8;
+		// w którym bajcie zmiennej znaduje się bit
+		int bitInVarByte =  bitNr / 8  ;
+		// w którym bajcie bufora znajduje się bit. Bajty w zmiennej mają odwrotną kolejność do bajtów w buforze.
+		int bitInBuffByte = ( buffSize - 1 ) - bitInVarByte;
+		// którym bitem jest w bajcie
+		int bitInByte = bitNr % 8;
+
+		var[bitInBuffByte] = (byte)( var[bitInBuffByte] & ~maskByte[bitInByte] ) ;
+
+	}
+	public static byte sw(byte var, byte bitNr){
+		if( get(var, bitNr) == 1){
+			return off(var, bitNr);
+		}else{
+			return on(var,bitNr);
+		}
+	}
+	public static int sw(short var, byte bitNr){
+		if( get(var, bitNr) == 1){
+			return off(var, bitNr);
+		}else{
+			return on(var,bitNr);
+		}
+	}
+	public static int sw(int var, byte bitNr){
+		if( get(var, bitNr) == 1){
+			return off(var, bitNr);
+		}else{
+			return on(var,bitNr);
+		}
+	}
+	public static long sw(long var, byte bitNr){
+		if( get(var, bitNr) == 1){
+			return off(var, bitNr);
+		}else{
+			return on(var,bitNr);
+		}
+	}
+	public static void sw(byte[] var, byte bitNr){
+		if( get(var, bitNr) == 1){
+			off(var, bitNr);
+		}else{
+			on(var,bitNr);
+		}
+	}
 
 }

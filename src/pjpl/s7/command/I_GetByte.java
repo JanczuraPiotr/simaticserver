@@ -17,8 +17,8 @@ public class I_GetByte extends Command{
 	@Override
 	public CommandResponse action(pjpl.s7.process.Process process) {
 		try {
-			val = process.getMemClip().memI.readByte(addr);
-			return new ResponseByte(getProcessId(), getCommandCode(), val, socket);
+			varVal = process.getMemClip().memI.readByte(varCode);
+			return new ResponseByte(getProcessId(), getCommandCode(), varVal, socket);
 		} catch (IOException ex) {
 			Logger.getLogger(I_GetByte.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -28,7 +28,7 @@ public class I_GetByte extends Command{
 	@Override
 	protected void loadParameters() {
 		try {
-			addr = dataInputStream.readUnsignedShort();
+			varCode = dataInputStream.readUnsignedShort();
 		} catch (IOException ex) {
 			Logger.getLogger(D_SetByte.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -40,6 +40,6 @@ public class I_GetByte extends Command{
 	}
 
 	//------------------------------------------------------------------------------
-	private int addr;
-	private byte val;
+	private int varCode;
+	private byte varVal;
 }
