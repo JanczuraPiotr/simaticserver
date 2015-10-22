@@ -1,14 +1,10 @@
 package pjpl.s7.command;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Hashtable;
@@ -97,6 +93,7 @@ public class CommandWebListener extends Thread{
 		}
 	}
 	private void waitForSocket(short minimalCommandSize ){
+		// @todo !!! MatkoBosko zrób coś z tym !!!
 		long currentSleep = 0;
 		System.out.println(String.format("sleepStart : %d",sleepStart));
 		try {

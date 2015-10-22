@@ -12,7 +12,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
+import pjpl.s7.command.CommandWebListener;
 import pjpl.s7.common.ConstProcess;
+import pjpl.s7.net.SocketServerThread;
 
 /**
  * @author Piotr Janczura <piotr@janczura.pl>
@@ -74,9 +76,12 @@ public class SimaticServer {
 			//------------------------------------------------------------------------------
 			// komunikacja
 
-			commandWebListener = new pjpl.s7.command.CommandWebListener(Integer.parseInt(config.getProperty("web-listener-port")));
+			commandWebListener = new CommandWebListener(Integer.parseInt(config.getProperty("web-listener-port")));
 			commandWebListener.addQueue(process1.id(), process1.getCommadQueue());
 			commandWebListener.start();
+
+			socketServerThread1 = new SocketServerThread(Integer.parseInt(config.getProperty("scada-listener-port")), processes);
+			socketServerThread1.start();
 
 			// komunikacja
 			//------------------------------------------------------------------------------
@@ -124,7 +129,8 @@ public class SimaticServer {
 	private static Queue<pjpl.s7.command.Command> commandQueue;
 
 	private static pjpl.s7.util.DirCleaning dirCleaning;
-	private static pjpl.s7.command.CommandWebListener commandWebListener;
+	private static CommandWebListener commandWebListener;
+	private static SocketServerThread socketServerThread1;
 
 	private static ScheduledExecutorService executor;
 	private static FileReader configReader;
