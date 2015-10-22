@@ -6,7 +6,7 @@ import java.io.InputStream;
 /**
  * @author Piotr Janczura <piotr@janczura.pl>
  */
-public class ReadSocketData {
+public class ReadStreamData {
 
 	public byte readByte(InputStream is) throws IOException{
 		int inputVar = is.read();
