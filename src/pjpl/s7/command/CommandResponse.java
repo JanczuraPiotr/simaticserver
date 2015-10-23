@@ -60,7 +60,6 @@ public abstract class CommandResponse {
 		prepareBuff();
 		try {
 			outputStream.write(buff);
-			outputStream.close();
 		} catch (IOException ex) {
 			String errString = ex.getMessage();
 			outputStream.write(new byte[0]);
