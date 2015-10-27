@@ -16,7 +16,7 @@ public class Q_Mem extends MemMap{
 
 	@Override
 	public void addCells() {
-		addCell(VarCode.OUT_1
+		addCell(VarCode.Q_0
 				, new MemCell(
 						"out_1"
 						, pos(TypeCode.size[TypeCode.INT])

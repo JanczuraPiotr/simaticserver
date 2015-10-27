@@ -5,9 +5,10 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  *
- * @author pjanczura
+ * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class SocketServerThread extends Thread{
 

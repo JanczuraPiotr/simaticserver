@@ -58,7 +58,6 @@ public final class ScadaThread extends Thread{
 				commandCode = CommandCode.NO;
 				processId = (byte)255;
 
-//				waitForSocket(CommandCode.MINIMAL_COMMAND_SIZE);
 				commandCode = ReadDataStream.readShort(is);
 				processId = ReadDataStream.readByte(is);
 
@@ -90,7 +89,8 @@ public final class ScadaThread extends Thread{
 			} catch (NullPointerException ex){
 				System.err.println(String.format("NullPointerException"));
 			} catch (IOException ex) {
-				Logger.getLogger(ScadaThread.class.getName()).log(Level.SEVERE, null, ex);
+//				Logger.getLogger(ScadaThread.class.getName()).log(Level.SEVERE, null, ex);
+				return;
 			}finally{
 				if(s.length() > 1){
 					System.out.println(s);
@@ -99,30 +99,6 @@ public final class ScadaThread extends Thread{
 		}
 	}
 
-	private void waitForSocket(short minimalCommandSize ){
-		// @todo !!! MatkoBosko zrób coś z tym !!!
-		long currentSleep = 0;
-		System.out.println(String.format("sleepStart : %d",sleepStart));
-		try {
-			while ( is.available() < minimalCommandSize ) {
-				try {
-					sleep(sleepStart);
-					currentSleep += sleepStart;
-					if(sleepStart > 1 ){
-						sleepStart -= sleepStart * 0.9;
-						if(sleepStart < 1){
-							sleepStart = 1;
-						}
-					}
-				} catch (InterruptedException ex) {
-					Logger.getLogger(CommandWebListener.class.getName()).log(Level.SEVERE, null, ex);
-				}
-			}
-		} catch (IOException ex) {
-			Logger.getLogger(CommandWebListener.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		sleepStart = currentSleep - (long) (currentSleep * 0.1);
-	}
 
 	/**
 	 * Process dla którego powstał ten wątek

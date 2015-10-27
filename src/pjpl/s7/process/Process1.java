@@ -51,7 +51,7 @@ public class Process1 extends Process{
 
 	@Override
 	protected void steep(){
-		System.out.println("Process1.steepStart()");
+//		System.out.println("Process1.steepStart()");
 
 //		short zmienna_1 = memD.readInt(VarCode.ZMIENNA_1);
 //		short zmienna_2 = memD.readInt(VarCode.ZMIENNA_2);
@@ -129,7 +129,7 @@ public class Process1 extends Process{
 
 	@Override
 	public void steepFinaly() {
-		System.out.println("Process1.steepFinally");
+//		System.out.println("Process1.steepFinally");
 	}
 
 

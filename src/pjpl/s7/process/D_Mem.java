@@ -16,7 +16,7 @@ public class D_Mem extends MemMap{
 	}
 	@Override
 	public void addCells() {
-		addCell(VarCode.ZMIENNA_BYTE
+		addCell(VarCode.ZMIENNA_1
 				, new MemCell(
 						"zmiennaByte"
 						, pos(TypeCode.size[TypeCode.BYTE])
@@ -25,7 +25,7 @@ public class D_Mem extends MemMap{
 						, plcs[ConstPLC.PLC1]
 				)
 		);
-		addCell(VarCode.ZMIENNA_INT
+		addCell(VarCode.ZMIENNA_2
 				, new MemCell(
 						"zmiennaInt"
 						, "opis zmiennej zmiennaInt"
@@ -35,7 +35,7 @@ public class D_Mem extends MemMap{
 						, plcs[ConstPLC.PLC1]
 				)
 		);
-		addCell(VarCode.ZMIENNA_DINT
+		addCell(VarCode.ZMIENNA_3
 				, new MemCell(
 						"zmiennaDInt"
 						, pos(TypeCode.size[TypeCode.DINT])
@@ -44,7 +44,7 @@ public class D_Mem extends MemMap{
 						, plcs[ConstPLC.PLC1]
 				)
 		);
-		addCell(VarCode.ZMIENNA_REAL
+		addCell(VarCode.ZMIENNA_4
 				,	new MemCell(
 						"zmiennaReal"
 						, "opis dla zmiennej zmiennaReal"

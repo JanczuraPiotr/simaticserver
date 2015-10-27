@@ -12,6 +12,7 @@ import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import pjpl.s7.common.CommandCode;
+import pjpl.s7.util.ReadDataStream;
 
 /**
  * Nasłuchuje komend do wykonania na procesie.
@@ -57,9 +58,9 @@ public class CommandWebListener extends Thread{
 				inputData =  new DataInputStream( inputSocketStream );
 				outputData = new DataOutputStream(outputSocketStream);
 
-				waitForSocket(CommandCode.MINIMAL_COMMAND_SIZE);
-				commandCode = inputData.readShort();
-				processId = inputData.readByte();
+//				waitForSocket(CommandCode.MINIMAL_COMMAND_SIZE);
+				commandCode = ReadDataStream.readShort(inputSocketStream); //inputData.readShort();
+				processId = ReadDataStream.readByte(inputSocketStream);//inputData.readByte();
 
 				s += String.format("commandCode = 0x%04X \n", commandCode );
 				s += String.format("processId = 0x%04X \n", processId );

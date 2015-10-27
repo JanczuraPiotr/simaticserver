@@ -64,6 +64,10 @@ public class BitSwitch extends Command{
 			memType = dataInputStream.readByte();
 			varCode = dataInputStream.readShort();
 			bitNr = dataInputStream.readByte();
+
+			System.err.println(String.format("memType = 0x%02X",memType));
+			System.err.println(String.format("varCode = 0x%04X",varCode));
+			System.err.println(String.format("bitNr = 0x%04X", bitNr));
 		} catch (IOException ex) {
 			Logger.getLogger(D_SetByte.class.getName()).log(Level.SEVERE, null, ex);
 		}
