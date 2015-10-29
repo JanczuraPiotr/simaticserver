@@ -130,7 +130,7 @@ import pjpl.s7.util.MemClip;
 			byte[] mem = memD.getMem();
 			modCells.forEach(
 					(el)->{
-						el.getPlc().WriteArea(S7.D, PLC_DB_BLOCK, el.getPos(), el.getSize(), mem);
+						el.getPlc().WriteArea(S7.D, PLC_DB_BLOCK, el.getPos(), el.getOccupiedMemSpace(), mem);
 					}
 			);
 			modCells.clear();
@@ -139,7 +139,7 @@ import pjpl.s7.util.MemClip;
 			byte[] mem = memI.getMem();
 			modCells.forEach(
 					(el)->{
-						el.getPlc().WriteArea(S7.I, 0, el.getPos(), el.getSize(), mem);
+						el.getPlc().WriteArea(S7.I, 0, el.getPos(), el.getOccupiedMemSpace(), mem);
 					}
 			);
 			modCells.clear();
@@ -148,7 +148,7 @@ import pjpl.s7.util.MemClip;
 			byte[] mem = memQ.getMem();
 			modCells.forEach(
 					(el)->{
-						el.getPlc().WriteArea(S7.Q, 0, el.getPos(), el.getSize(), mem);
+						el.getPlc().WriteArea(S7.Q, 0, el.getPos(), el.getOccupiedMemSpace(), mem);
 					}
 			);
 			modCells.clear();
@@ -196,7 +196,7 @@ import pjpl.s7.util.MemClip;
 			}
 			msSteepFinally = System.currentTimeMillis();
 		}
-		podsumowanieSteep();
+//		podsumowanieSteep();
 	}
 
 	//------------------------------------------------------------------------------

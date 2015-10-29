@@ -19,7 +19,7 @@ public class D_Mem extends MemMap{
 		addCell(VarCode.ZMIENNA_1
 				, new MemCell(
 						"zmiennaByte"
-						, pos(TypeCode.size[TypeCode.BYTE])
+						, pos(TypeCode.occupiedMemSpace[TypeCode.BYTE])
 						, TypeCode.BYTE
 						, ConstPLC.PLC1
 						, plcs[ConstPLC.PLC1]
@@ -29,7 +29,7 @@ public class D_Mem extends MemMap{
 				, new MemCell(
 						"zmiennaInt"
 						, "opis zmiennej zmiennaInt"
-						, pos(TypeCode.size[TypeCode.INT])
+						, pos(TypeCode.occupiedMemSpace[TypeCode.INT])
 						, TypeCode.INT
 						, ConstPLC.PLC1
 						, plcs[ConstPLC.PLC1]
@@ -38,7 +38,7 @@ public class D_Mem extends MemMap{
 		addCell(VarCode.ZMIENNA_3
 				, new MemCell(
 						"zmiennaDInt"
-						, pos(TypeCode.size[TypeCode.DINT])
+						, pos(TypeCode.occupiedMemSpace[TypeCode.DINT])
 						, TypeCode.DINT
 						, ConstPLC.PLC1
 						, plcs[ConstPLC.PLC1]
@@ -48,7 +48,7 @@ public class D_Mem extends MemMap{
 				,	new MemCell(
 						"zmiennaReal"
 						, "opis dla zmiennej zmiennaReal"
-						, pos(TypeCode.size[TypeCode.REAL])
+						, pos(TypeCode.occupiedMemSpace[TypeCode.REAL])
 						, TypeCode.REAL
 						, ConstPLC.PLC1
 						, plcs[ConstPLC.PLC1]

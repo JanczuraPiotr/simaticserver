@@ -15,7 +15,7 @@ public class MemCell {
 	 * @param name Nazwa zmiennej
 	 * @param description Opis zmiennej, np w celu wyświetlania podpowiedzi w interfejsie graficznym
 	 * @param pos pozycja w buforze gdzie umieszczony jest pierwszy bajt tej zmiennej.
-	 *         Należy pobierać z memoryMap.pos(TypeCode.size[TypeCode.xxx])
+         Należy pobierać z memoryMap.pos(TypeCode.occupiedMemSpace[TypeCode.xxx])
 	 * @param typ identyfikator typu zmiennej z TypeCode.xxx
 	 * @param plcId identyfikator sterownika
 	 * @param plc  wskaźnik do sterownika
@@ -27,6 +27,7 @@ public class MemCell {
 		this.description = description;
 		this.plcId = plcId;
 		this.plc = plc;
+		this.occupiedMemSpace = TypeCode.occupiedMemSpace[typ];
 		this.size = TypeCode.size[typ];
 	}
 	/**
@@ -85,6 +86,13 @@ public class MemCell {
 		return plc;
 	}
 	/**
+	 * Ilość bajtów w pamięci zajmowanych przez zmienną.
+	 * @return
+	 */
+	public int getOccupiedMemSpace(){
+		return TypeCode.occupiedMemSpace[getTyp()];
+	}
+	/**
 	 * Ilość bajtów zajmowanych przez zmienną.
 	 * @return
 	 */
@@ -97,6 +105,7 @@ public class MemCell {
 	private int pos;
 	// typ danych
 	private int typ;
+	private int occupiedMemSpace;
 	private int size;
 	// nazwa zmiennej
 	private String name;

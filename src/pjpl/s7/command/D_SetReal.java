@@ -19,10 +19,6 @@ public class D_SetReal extends Command{
 		try {
 			varCode = dataInputStream.readUnsignedShort();
 			varVal = dataInputStream.readFloat();
-
-			System.out.println(String.format("varCode = 0x%04X",varCode));
-			System.out.println(String.format("varVal = %s",varVal));
-
 		} catch (IOException ex) {
 			Logger.getLogger(D_SetReal.class.getName()).log(Level.SEVERE, null, ex);
 		}

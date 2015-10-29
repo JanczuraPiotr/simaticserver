@@ -19,8 +19,8 @@ public class I_Mem extends MemMap{
 		addCell(VarCode.IN_1
 				, new MemCell(
 						"in_1"
-						, pos(TypeCode.size[TypeCode.BYTE])
-						, TypeCode.BYTE
+						, pos(TypeCode.occupiedMemSpace[TypeCode.PORT])
+						, TypeCode.PORT
 						, ConstPLC.PLC1
 						, plcs[ConstPLC.PLC1]
 		));

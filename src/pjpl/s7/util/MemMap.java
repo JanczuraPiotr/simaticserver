@@ -220,8 +220,8 @@ abstract public class MemMap {
 	 * @return
 	 */
 	public byte[] varBuff(int varCode){
-		byte[] buff = new byte[cells[varCode].getSize()];
-		System.arraycopy(mem, cells[varCode].getPos(), buff, 0, cells[varCode].getSize());
+		byte[] buff = new byte[cells[varCode].getOccupiedMemSpace()];
+		System.arraycopy(mem, cells[varCode].getPos(), buff, 0, cells[varCode].getOccupiedMemSpace());
 		return buff;
 	}
 	/**
@@ -230,7 +230,7 @@ abstract public class MemMap {
 	 * @param varBuff buforowa postać zmiennej
 	 */
 	public void varBuff(int varCode, byte[] varBuff){
-		System.arraycopy(varBuff, 0, mem, cells[varCode].getPos(), cells[varCode].getSize());
+		System.arraycopy(varBuff, 0, mem, cells[varCode].getPos(), cells[varCode].getOccupiedMemSpace());
 		onUpdateCell(cells[varCode]);
 	}
 
@@ -274,7 +274,7 @@ abstract public class MemMap {
 
 	protected void addCell(int cellCode, MemCell cell){
 		tempCellMap.put(cellCode, cell);
-		memSize += cell.getSize();
+		memSize += cell.getOccupiedMemSpace();
 	}
 	/**
 	 * Kod obszaru obsługiwanego przez obiekt.
@@ -342,7 +342,7 @@ abstract public class MemMap {
 		memSize = 0;
 		tempCellMap.entrySet().stream().forEach(
 				(el)->{
-					memSize += el.getValue().getSize();
+					memSize += el.getValue().getOccupiedMemSpace();
 				}
 		);
 		mem = new byte[memSize];
@@ -371,10 +371,10 @@ abstract public class MemMap {
 
 		clearMemArrange();
 		for( int c = 0 ; c < cellsCount ; c++ ){
-			memArrange[cells[c].getPlcId()][PLC_MEM_ARRANGE_SIZE] += cells[c].getSize();
+			memArrange[cells[c].getPlcId()][PLC_MEM_ARRANGE_SIZE] += cells[c].getOccupiedMemSpace();
 			// Dla wszystkich procesorów leżących w dalszej kolejności przesuwa się punkt startowy
 			for ( int p = cells[c].getPlcId() + 1 ; p < plcs.length ; p++){
-				memArrange[p][PLC_MEM_ARRANGE_START] += cells[c].getSize();
+				memArrange[p][PLC_MEM_ARRANGE_START] += cells[c].getOccupiedMemSpace();
 			}
 		}
 	}

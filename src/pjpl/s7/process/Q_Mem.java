@@ -16,11 +16,11 @@ public class Q_Mem extends MemMap{
 
 	@Override
 	public void addCells() {
-		addCell(VarCode.Q_0
+		addCell(VarCode.OUT_1
 				, new MemCell(
 						"out_1"
-						, pos(TypeCode.size[TypeCode.INT])
-						,	TypeCode.BYTE
+						, pos(TypeCode.occupiedMemSpace[TypeCode.PORT])
+						,	TypeCode.PORT
 						, ConstPLC.PLC1
 						, plcs[ConstPLC.PLC1]
 		));

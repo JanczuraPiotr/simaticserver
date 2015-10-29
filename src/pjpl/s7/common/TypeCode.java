@@ -5,7 +5,7 @@ package pjpl.s7.common;
  */
 public class TypeCode {
 
-	public static final int BIT   = 0x0000000000;
+	public static final int PORT   = 0x0000000000;
 	public static final int BYTE  = 0x0000000001; // 8 bit
 	public static final int INT   = 0x0000000002; // 16 bit
 	public static final int DINT  = 0x0000000003; // 32 bit
@@ -14,17 +14,28 @@ public class TypeCode {
 
 
 
+	public static final int[] occupiedMemSpace = new int[6];
+	static{
+		occupiedMemSpace[PORT]  = 1;
+		occupiedMemSpace[BYTE]  = 2;
+		occupiedMemSpace[INT]   = 2;
+		occupiedMemSpace[DINT]  = 4;
+		occupiedMemSpace[REAL]  = 4;
+		occupiedMemSpace[LREAL] = 8;
+	}
 	public static final int[] size = new int[6];
 	static{
-		size[BYTE]  = 0x0000000001;
-		size[INT]   = 0x0000000002;
-		size[DINT]  = 0x0000000004;
-		size[REAL]  = 0x0000000004;
-		size[LREAL] = 0x0000000008;
+		size[BYTE]  = 1;
+		size[INT]   = 2;
+		size[DINT]  = 4;
+		size[REAL]  = 4;
+		size[LREAL] = 8;
 	}
+
 
 	public static final String[] name = new String[6];
 	static{
+		name[PORT]  = "Port";
 		name[BYTE]  = "Byte";
 		name[INT]   = "Int";
 		name[DINT]  = "DInt";
