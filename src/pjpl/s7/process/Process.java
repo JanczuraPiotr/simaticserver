@@ -196,7 +196,7 @@ import pjpl.s7.util.MemClip;
 			}
 			msSteepFinally = System.currentTimeMillis();
 		}
-//		podsumowanieSteep();
+		podsumowanieSteep();
 	}
 
 	//------------------------------------------------------------------------------
