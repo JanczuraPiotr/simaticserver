@@ -14,7 +14,7 @@ public class D_Mem extends MemMap{
 	public D_Mem(PLC[] plcs) {
 		super(plcs);
 	}
-	@Override
+	@Override	
 	public void addCells() {
 		addCell(VarCode.ZMIENNA_1
 				, new MemCell(

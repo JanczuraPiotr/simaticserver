@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import javax.naming.NamingException;
 import pjpl.s7.common.ConstPLC;
+import pjpl.s7.common.VarCode;
 import pjpl.s7.run.SimaticServer;
 import pjpl.s7.util.DumpThread;
 import pjpl.s7.util.DumpExpertBinFile;
@@ -58,14 +59,16 @@ public class Process1 extends Process{
 //
 //		zmienna_1 += 1;
 //		zmienna_2 += 2;
+
+
 //
 //		System.out.println("zmienna_1 = " + zmienna_1 + " jako hex = " + String.format("%02X",zmienna_1 ));
 //		System.out.println("zmienna_2 = " + zmienna_2 + " jako hex = " + String.format("%02X",zmienna_2 ));
 //
-//
 //		memD.write(VarCode.ZMIENNA_1, zmienna_1++);
 //		memD.write(VarCode.ZMIENNA_2, zmienna_2++);
 //
+////
 //		memQ.write(VarCode.OUT_1, out++);
 
 //		String s = "";
