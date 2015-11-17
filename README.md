@@ -1,4 +1,4 @@
-SimaticScada
+SimaticServer
 ============
 
 Projekty ** Simatic* ** tworzą oprogramowanie do komunikacji ze sterownikami przemysłowymi Simatic S7-1200 firmy  Simens.
