@@ -12,6 +12,7 @@ import pjpl.s7.run.SimaticServer;
 
 /**
  * Zapisywanie stanu procesora do pliku tekstowego.
+ * @todo Chyba nie wejdzie do użytku. Usunę.
  * Kompletny odczyt stanu sterownika zapisany jest jako jeden obiekt JSON. Nazwą obiektu jest timestamp zebrania danych.
  * @author Piotr Janczura <piotr@janczura.pl>
  */

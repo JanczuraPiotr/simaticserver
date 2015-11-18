@@ -1,6 +1,8 @@
 package pjpl.s7.util;
 
 /**
+ * Klasa Zosta³a rozbudowana by umo¿liwiæ podawanie jesdnostki zmiennych opisuj¹cych czas.
+ *
  * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class Properties extends java.util.Properties{

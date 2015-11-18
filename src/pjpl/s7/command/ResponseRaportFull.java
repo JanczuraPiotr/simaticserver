@@ -8,7 +8,7 @@ import pjpl.s7.util.MemByteClip;
 
 /**
  *
- * @author pjanczura
+ * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class ResponseRaportFull extends CommandResponse{
 

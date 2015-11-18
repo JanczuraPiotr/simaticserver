@@ -67,32 +67,6 @@ public class Process1 extends Process{
 //
 //		memD.write(VarCode.ZMIENNA_1, zmienna_1++);
 //		memD.write(VarCode.ZMIENNA_2, zmienna_2++);
-//
-////
-//		memQ.write(VarCode.OUT_1, out++);
-
-//		String s = "";
-//		byte[] mem;
-//
-//		mem =	memD.getMem();
-//		for ( int i = 0 ; i < mem.length ; i++ ){
-//			s += " "+String.format("%02X", mem[i]);
-//		}
-//		System.out.println(" memD : " + s);
-//		s = "";
-//		mem =	memI.getMem();
-//		for( int i = 0; i < mem.length ; i++ ){
-//			s += " "+String.format("%02X", mem[i]);
-//		}
-//		System.out.println(" memI : "+ s);
-//		mem =	memQ.getMem();
-//
-//		s = "";
-//		for( int i = 0; i < mem.length ; i++ ){
-//			s += " "+String.format("%02X", mem[i]);
-//		}
-//		System.out.println(" memQ : "+ s);
-
 
 	}
 

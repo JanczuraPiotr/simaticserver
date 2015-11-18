@@ -43,7 +43,7 @@ public class TypeCode {
 		name[LREAL] = "LReal";
 	}
 }
-/*
+/* Próba zapisania inforamcji o typie kodu w stałej kodowej
  *
  * Podział kodów.
  * 0x0000

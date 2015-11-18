@@ -5,7 +5,7 @@ import pjpl.s7.util.Bits;
 
 /**
  *
- * @author pjanczura
+ * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class BitsCode {
 	public static byte memType = 0;

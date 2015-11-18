@@ -10,8 +10,8 @@ import pjpl.s7.common.CommandCode;
 import pjpl.s7.util.Bits;
 
 /**
- *
- * @author pjanczura
+ * 
+ * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class BitOn extends Command{
 

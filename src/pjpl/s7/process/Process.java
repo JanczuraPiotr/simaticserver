@@ -41,7 +41,7 @@ import pjpl.s7.util.MemClip;
 	}
 
 	 //------------------------------------------------------------------------------
-	 // interfejs - początek
+	 // interfejs
 
 	 public byte id(){
 		 return id;
@@ -57,7 +57,7 @@ import pjpl.s7.util.MemClip;
 		 return memRaport;
 	 }
 
-	 // interfejs - koniec
+	 // interfejs
 	 //------------------------------------------------------------------------------
 
 

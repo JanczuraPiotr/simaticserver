@@ -4,7 +4,9 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 /**
- * Wspiera wymianę danych z systemem opartym na formacie zapisu danych little endian
+ * Wspiera wymianę danych z systemem opartym na formacie zapisu danych little endian.
+ * Po utworzeniu tego pliku zdecydowałem że obowiązek przesłania danych w formacie bigendian spoczywa na klientach 
+ * servera wobec czego ta kalasa zostanie usunięta z projektu
  * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class LittleEndianInArray{

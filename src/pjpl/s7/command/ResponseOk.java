@@ -8,6 +8,8 @@ import pjpl.s7.common.ResponseGeneral;
 /**
  * Odpowiedź zwracana gdy komenda zakończyła się powodzeniem a komenda nie żądała szczegółowej odpowiedzi lub gdy
  * komenda żądała odpowiedzi w formie TAK lub NIE.
+ * 
+ * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class ResponseOk extends ResponseGeneral{
 

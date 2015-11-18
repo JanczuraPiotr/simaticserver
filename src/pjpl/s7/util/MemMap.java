@@ -11,8 +11,8 @@ import pjpl.s7.type.Variable;
 
 /**
  * Mapuje zmienne procesowe na bloki danych sterowników obsługujących proces.
- * Jako klasa abstrakcyjna nie rozróżnia typu zbiorów danych, pamięć danych, wejścia, wyjścia. W celu specjalizowania
- * na te obszary utworzone są klasy pochodne MemoryD, MemoryI, MemoryQ
+ * Jako klasa abstrakcyjna nie rozróżnia typu zbiorów danych, pamięć danych, wejścia, wyjścia. 
+ * Na podstawie tej kalasy powstały klasy specjalizowane w obsłudze bloków pamięci sterownika : MemoryD, MemoryI, MemoryQ
  */
 abstract public class MemMap {
 
@@ -38,10 +38,6 @@ abstract public class MemMap {
 
 		init();
 	}
-
-
-	//------------------------------------------------------------------------------
-	// interfejs - początek
 
 	/**
 	 * Zwraca referencję do bufora przechowującego wszystkie zmienne procesu.
@@ -241,8 +237,6 @@ abstract public class MemMap {
 		return memArrange[plcId][PLC_MEM_ARRANGE_SIZE];
 	}
 
-	// interfejs - koniec
-	//------------------------------------------------------------------------------
 
 	//------------------------------------------------------------------------------
 	// metody chronione
@@ -306,7 +300,7 @@ abstract public class MemMap {
 	}
 
 	//------------------------------------------------------------------------------
-	// private
+	// metody prywatne
 
 	/**
 	 * Czyści informację o rozmieszczeniu pamięci sterowników plcs w buforze danych procesowych.

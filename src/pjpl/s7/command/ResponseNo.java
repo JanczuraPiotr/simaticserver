@@ -8,6 +8,8 @@ import pjpl.s7.common.ResponseGeneral;
 /**
  * Odpowiedź zwracana gdy komenda zakończyła się niepowodzeniem lub gdy komenda była zapytaniem na które odpowiedzią
  * może być TAK lub NIE.
+ * 
+ * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class ResponseNo extends ResponseGeneral{
 

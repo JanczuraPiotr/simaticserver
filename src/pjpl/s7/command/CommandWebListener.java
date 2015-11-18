@@ -11,14 +11,13 @@ import java.util.Hashtable;
 import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import pjpl.s7.common.CommandCode;
 import pjpl.s7.util.ReadDataStream;
 
 /**
  * Nasłuchuje komend do wykonania na procesie.
  * Jedynym źródłem komend jest sieć.
  * @author Piotr Janczura <piotr@janczura.pl>
- * @todo Przerobić by każdy process miał własną kolejkę a CommandListener umieszczał komendy we właściwych kolejkach
+ * @todo Przerobić by każdy proces miał własną kolejkę a CommandListener umieszczał komendy we właściwych kolejkach
  */
 public class CommandWebListener extends Thread{
 

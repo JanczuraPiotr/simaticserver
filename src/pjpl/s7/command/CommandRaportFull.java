@@ -7,11 +7,11 @@ import java.util.logging.Logger;
 import pjpl.s7.process.Process;
 import pjpl.s7.common.CommandCode;
 import pjpl.s7.util.MemByteClip;
-//import pjpl.s7.command.CommandRaportFull;
 
 /**
  *
- * @author pjanczura
+ * 
+ * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class CommandRaportFull extends Command{
 

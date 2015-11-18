@@ -1,8 +1,9 @@
 package pjpl.s7.util;
 
 /**
+ * Pomicnik do prac z bitami.
  *
- * @author pjanczura
+ * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class Bits {
 	public static final byte BIT_0 = 0;

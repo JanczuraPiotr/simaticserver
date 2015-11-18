@@ -11,8 +11,8 @@ import pjpl.s7.process.Process;
 import pjpl.s7.util.Bits;
 
 /**
- *
- * @author pjanczura
+ * 
+ * @author Piotr Janczura <piotr@janczura.pl>
  */
 public class BitOff extends Command{
 
